@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Clean App</string>
+    <string name="no_connection">No Internet Connection!</string>
+    <string name="comments">%1$d Comments</string>
+</resources>
