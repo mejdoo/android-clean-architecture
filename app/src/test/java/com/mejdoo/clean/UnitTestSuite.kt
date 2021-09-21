@@ -24,22 +24,22 @@ import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    PostEntityMapperTest::class,
-    UserEntityMapperTest::class,
-    CommentEntityMapperTest::class,
-    PostRemoteDataSourceImplTest::class,
-    UserRemoteDataSourceImplTest::class,
-    CommentRemoteDataSourceImplTest::class,
-    PostLocalDataSourceImplTest::class,
-    UserLocalDataSourceImplTest::class,
-    CommentLocalDataSourceImplTest::class,
-    PostRepositoryImplTest::class,
-    CommentRepositoryImplTest::class,
-    UserRepositoryImplTest::class,
-    PostListUseCaseTest::class,
-    PostItemMapperTest::class,
-    PostDetailMapperTest::class,
-    PostListViewModelTest::class,
-    PostDetailViewModelTest::class
+        PostEntityMapperTest::class,
+        UserEntityMapperTest::class,
+        CommentEntityMapperTest::class,
+        PostRemoteDataSourceImplTest::class,
+        UserRemoteDataSourceImplTest::class,
+        CommentRemoteDataSourceImplTest::class,
+        PostLocalDataSourceImplTest::class,
+        UserLocalDataSourceImplTest::class,
+        CommentLocalDataSourceImplTest::class,
+        PostRepositoryImplTest::class,
+        CommentRepositoryImplTest::class,
+        UserRepositoryImplTest::class,
+        PostListUseCaseTest::class,
+        PostItemMapperTest::class,
+        PostDetailMapperTest::class,
+        PostListViewModelTest::class,
+        PostDetailViewModelTest::class
 )
 class UnitTestSuite

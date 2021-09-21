@@ -55,6 +55,4 @@ class PostListUseCaseTest {
 
         test.assertError(throwable)
     }
-
-
 }

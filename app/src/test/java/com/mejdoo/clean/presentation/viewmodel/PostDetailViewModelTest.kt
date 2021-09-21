@@ -31,10 +31,10 @@ class PostDetailViewModelTest {
 
 
     private val combinedPostUserComments =
-        CombinedPostUserComments(
-            post1,
-            user1, listOf(comment1, comment2)
-        )
+            CombinedPostUserComments(
+                    post1,
+                    user1, listOf(comment1, comment2)
+            )
 
     private val throwable = Throwable()
 
@@ -68,12 +68,12 @@ class PostDetailViewModelTest {
 
         verify(mockUseCase).getPostDetails(postId, userId)
         assertEquals(
-            Resource<PostDetail>(
-                ResourceStatus.SUCCESS,
-                mapper.mapFromDomain(combinedPostUserComments),
-                null
-            ),
-            detailViewModel.postDetailLiveData.value
+                Resource<PostDetail>(
+                        ResourceStatus.SUCCESS,
+                        mapper.mapFromDomain(combinedPostUserComments),
+                        null
+                ),
+                detailViewModel.postDetailLiveData.value
         )
     }
 
@@ -91,12 +91,12 @@ class PostDetailViewModelTest {
         verify(mockUseCase).getPostDetails(postId, userId)
 
         assertEquals(
-            Resource<PostDetail>(
-                ResourceStatus.ERROR,
-                null,
-                throwable.message
-            ),
-            detailViewModel.postDetailLiveData.value
+                Resource<PostDetail>(
+                        ResourceStatus.ERROR,
+                        null,
+                        throwable.message
+                ),
+                detailViewModel.postDetailLiveData.value
         )
     }
 

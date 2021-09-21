@@ -9,9 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-
 interface CleanApi {
-
 
     @GET("/posts")
     fun getAllPosts(): Single<List<PostEntity>>
@@ -24,5 +22,4 @@ interface CleanApi {
 
     @GET("/comments")
     fun getCommentsByPostId(@Query("postId") postId: Int): Single<List<CommentEntity>>
-
 }

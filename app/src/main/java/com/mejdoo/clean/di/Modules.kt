@@ -36,7 +36,6 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-
 val viewModelModule: Module = module {
     viewModel { PostListViewModel(get(), get()) }
     viewModel { PostDetailViewModel(get(), get()) }
@@ -50,20 +49,20 @@ val useCaseModule: Module = module {
 val repositoryModule: Module = module {
     single {
         PostRepositoryImpl(
-            get(),
-            get()
+                get(),
+                get()
         ) as PostRepository
     }
     single {
         UserRepositoryImpl(
-            get(),
-            get()
+                get(),
+                get()
         ) as UserRepository
     }
     single {
         CommentRepositoryImpl(
-            get(),
-            get()
+                get(),
+                get()
         ) as CommentRepository
     }
 }
@@ -71,38 +70,38 @@ val repositoryModule: Module = module {
 val dataSourceModule: Module = module {
     single {
         PostRemoteDataSourceImpl(
-            api = cleanApi,
-            mapper = get()
+                api = cleanApi,
+                mapper = get()
         ) as PostRemoteDataSource
     }
     single {
         UserRemoteDataSourceImpl(
-            api = cleanApi,
-            mapper = get()
+                api = cleanApi,
+                mapper = get()
         ) as UserRemoteDataSource
     }
     single {
         CommentRemoteDataSourceImpl(
-            api = cleanApi,
-            mapper = get()
+                api = cleanApi,
+                mapper = get()
         ) as CommentRemoteDataSource
     }
     single {
         PostLocalDataSourceImpl(
-            get(),
-            get()
+                get(),
+                get()
         ) as PostLocalDataSource
     }
     single {
         UserLocalDataSourceImpl(
-            get(),
-            get()
+                get(),
+                get()
         ) as UserLocalDataSource
     }
     single {
         CommentLocalDataSourceImpl(
-            get(),
-            get()
+                get(),
+                get()
         ) as CommentLocalDataSource
     }
 }

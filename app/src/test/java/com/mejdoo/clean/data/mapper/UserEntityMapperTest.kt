@@ -12,7 +12,6 @@ class UserEntityMapperTest {
     @Test
     fun test_MapToDomain() {
 
-
         val userMapper = UserEntityMapper()
 
         val user = userMapper.mapToDomain(userEntity1)
@@ -27,7 +26,6 @@ class UserEntityMapperTest {
     @Test
     fun test_MapListToDomain() {
 
-
         val userEntities = mutableListOf(userEntity1, userEntity2)
 
         val userMapper = UserEntityMapper()
@@ -38,21 +36,17 @@ class UserEntityMapperTest {
 
         for (i in 0 until users.size - 1) {
 
-
             assertTrue(users[i].id == userEntities[i].id)
             assertTrue(users[i].name == userEntities[i].name)
             assertTrue(users[i].email == userEntities[i].email)
             assertTrue(users[i].phone == userEntities[i].phone)
             assertTrue(users[i].website == userEntities[i].website)
-
-
         }
     }
 
 
     @Test
     fun test_MapFromDomain() {
-
 
         val userMapper = UserEntityMapper()
 

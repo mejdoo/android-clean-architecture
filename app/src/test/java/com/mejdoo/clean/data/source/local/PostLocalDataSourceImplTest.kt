@@ -16,7 +16,6 @@ import org.mockito.MockitoAnnotations
 
 class PostLocalDataSourceImplTest {
 
-
     @Mock
     private lateinit var mockDao: PostDao
 
@@ -84,6 +83,5 @@ class PostLocalDataSourceImplTest {
         verify(mockDao).getPostById(postId)
         test.assertError(throwable)
     }
-
 }
 

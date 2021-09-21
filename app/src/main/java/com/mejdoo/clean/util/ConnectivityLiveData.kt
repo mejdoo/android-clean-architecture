@@ -17,7 +17,6 @@ class ConnectivityLiveData constructor(context: Context) : LiveData<Boolean>() {
 
     private var connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network?) {
             postValue(true)

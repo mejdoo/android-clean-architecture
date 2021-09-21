@@ -20,5 +20,4 @@ interface PostDao {
     @Insert(onConflict = REPLACE)
     fun insertPost(post: PostEntity)
 
-
 }

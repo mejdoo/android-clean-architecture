@@ -8,21 +8,21 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "user")
 data class UserEntity(
 
-    @PrimaryKey
-    @SerializedName("id")
-    val id: Int,
+        @PrimaryKey
+        @SerializedName("id")
+        val id: Int,
 
-    @SerializedName("name")
-    val name: String,
+        @SerializedName("name")
+        val name: String,
 
-    @SerializedName("email")
-    val email: String,
+        @SerializedName("email")
+        val email: String,
 
 
-    @SerializedName("phone")
-    val phone: String,
+        @SerializedName("phone")
+        val phone: String,
 
-    @SerializedName("website")
-    val website: String
+        @SerializedName("website")
+        val website: String
 
 )

@@ -14,7 +14,6 @@ import org.mockito.MockitoAnnotations
 
 class PostRepositoryImplTest {
 
-
     private lateinit var repository: PostRepositoryImpl
 
     @Mock

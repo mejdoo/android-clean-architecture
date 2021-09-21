@@ -8,15 +8,14 @@ import com.mejdoo.clean.domain.repository.UserRepository
 import io.reactivex.Single
 
 class UserRepositoryImpl constructor(
-    private val remoteDataSource: UserRemoteDataSource,
-    private val localDataSource: UserLocalDataSource
+        private val remoteDataSource: UserRemoteDataSource,
+        private val localDataSource: UserLocalDataSource
 ) : UserRepository {
 
-
     override fun getUserById(userId: Int): Single<User> =
-        remoteDataSource.getUserById(userId)
-            .doOnSuccess { localDataSource.insertUser(it) }
-            .onErrorResumeNext { localDataSource.getUserById(userId) }
+            remoteDataSource.getUserById(userId)
+                    .doOnSuccess { localDataSource.insertUser(it) }
+                    .onErrorResumeNext { localDataSource.getUserById(userId) }
 
 }
 

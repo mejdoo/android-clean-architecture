@@ -12,13 +12,11 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class PostListActivityTest {
     @get:Rule
     var mActivityRule = ActivityTestRule<PostListActivity>(PostListActivity::class.java)
-
 
     @Test
     fun test() {
@@ -26,11 +24,8 @@ class PostListActivityTest {
         waitForDelay()
     }
 
-
     private fun waitForDelay() {
         SystemClock.sleep(5000)
-
     }
-
 
 }

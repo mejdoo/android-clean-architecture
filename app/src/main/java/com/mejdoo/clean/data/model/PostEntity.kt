@@ -8,18 +8,17 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "post")
 data class PostEntity(
 
-    @SerializedName("userId")
-    val userId: Int,
+        @SerializedName("userId")
+        val userId: Int,
 
-    @PrimaryKey
-    @SerializedName("id")
-    val id: Int,
+        @PrimaryKey
+        @SerializedName("id")
+        val id: Int,
 
-    @SerializedName("title")
-    val title: String,
+        @SerializedName("title")
+        val title: String,
 
-    @SerializedName("body")
-    val body: String
-
+        @SerializedName("body")
+        val body: String
 
 )

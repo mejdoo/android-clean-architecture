@@ -16,7 +16,6 @@ import org.mockito.MockitoAnnotations
 
 class CommentLocalDataSourceImplTest {
 
-
     @Mock
     private lateinit var mockDao: CommentDao
 
@@ -61,7 +60,6 @@ class CommentLocalDataSourceImplTest {
         verify(mockDao).getCommentsByPostId(userId)
         test.assertError(throwable)
     }
-
 
 }
 

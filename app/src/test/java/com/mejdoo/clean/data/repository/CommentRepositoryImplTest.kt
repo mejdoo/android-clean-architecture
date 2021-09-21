@@ -14,7 +14,6 @@ import org.mockito.MockitoAnnotations
 
 class CommentRepositoryImplTest {
 
-
     private lateinit var repository: CommentRepositoryImpl
 
     @Mock
@@ -73,7 +72,6 @@ class CommentRepositoryImplTest {
         `when`(mockLocalDataSource.getCommentsByPostId(postId)).thenReturn(Single.error(throwable))
 
         val test = repository.getCommentsByPostId(postId).test()
-
 
         verify(mockRemoteDataSource).getCommentsByPostId(postId)
         verify(mockLocalDataSource).getCommentsByPostId(postId)

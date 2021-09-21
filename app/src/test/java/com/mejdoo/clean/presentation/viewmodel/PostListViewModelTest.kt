@@ -26,7 +26,6 @@ class PostListViewModelTest {
     @Mock
     private lateinit var mockUseCase: PostListUseCase
 
-
     private val posts = listOf(post1, post2)
 
     private val throwable = Throwable()
@@ -57,12 +56,12 @@ class PostListViewModelTest {
 
         verify(mockUseCase).getPostList()
         assertEquals(
-            Resource<List<PostItem>>(
-                ResourceStatus.SUCCESS,
-                mapper.mapListFromDomain(posts),
-                null
-            ),
-            listViewModel.postItemsLiveData.value
+                Resource<List<PostItem>>(
+                        ResourceStatus.SUCCESS,
+                        mapper.mapListFromDomain(posts),
+                        null
+                ),
+                listViewModel.postItemsLiveData.value
         )
     }
 
@@ -75,12 +74,12 @@ class PostListViewModelTest {
 
         verify(mockUseCase).getPostList()
         assertEquals(
-            Resource<List<PostItem>>(
-                ResourceStatus.ERROR,
-                null,
-                throwable.message
-            ),
-            listViewModel.postItemsLiveData.value
+                Resource<List<PostItem>>(
+                        ResourceStatus.ERROR,
+                        null,
+                        throwable.message
+                ),
+                listViewModel.postItemsLiveData.value
         )
     }
 

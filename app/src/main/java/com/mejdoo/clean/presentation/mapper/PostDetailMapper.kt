@@ -9,27 +9,27 @@ import com.mejdoo.clean.presentation.model.PostDetail
  * this layer and the Domain layer
  */
 open class PostDetailMapper :
-    Mapper<CombinedPostUserComments, PostDetail> {
+        Mapper<CombinedPostUserComments, PostDetail> {
 
 
     /**
      * Map a [PostDetail] instance from a [CombinedPostUserComments] instance
      */
     override fun mapFromDomain(entity: CombinedPostUserComments) =
-        PostDetail(
-            entity.post.id,
-            entity.user.id,
-            entity.post.title,
-            entity.post.body,
-            entity.user.name,
-            entity.comments.size
-        )
+            PostDetail(
+                    entity.post.id,
+                    entity.user.id,
+                    entity.post.title,
+                    entity.post.body,
+                    entity.user.name,
+                    entity.comments.size
+            )
 
     /**
      * Map a list of [PostDetail] from a list of [CombinedPostUserComments]
      */
     override fun mapListFromDomain(list: List<CombinedPostUserComments>): List<PostDetail> =
-        list.map { mapFromDomain(it) }
+            list.map { mapFromDomain(it) }
 
 
 }

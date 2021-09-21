@@ -8,18 +8,15 @@ import io.reactivex.Single
 
 
 class CommentLocalDataSourceImpl constructor(
-    private val dao: CommentDao,
-    private val mapper: CommentEntityMapper
+        private val dao: CommentDao,
+        private val mapper: CommentEntityMapper
 ) : CommentLocalDataSource {
 
-
     override fun getCommentsByPostId(postId: Int): Single<List<Comment>> =
-        dao.getCommentsByPostId(postId)
-            .map { mapper.mapListToDomain(it) }
-
+            dao.getCommentsByPostId(postId)
+                    .map { mapper.mapListToDomain(it) }
 
     override fun insertComment(comment: Comment) {
         dao.insertComment(mapper.mapFromDomain(comment))
     }
-
 }

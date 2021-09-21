@@ -18,16 +18,16 @@ import org.junit.runners.model.Statement
 class RxSchedulersOverrideRule : TestRule {
 
     private val rxJavaImmediateScheduler =
-        Function<Scheduler, Scheduler> { Schedulers.trampoline() }
+            Function<Scheduler, Scheduler> { Schedulers.trampoline() }
 
     override fun apply(base: Statement, description: Description): Statement =
-        object : Statement() {
-            override fun evaluate() {
-                RxJavaPlugins.reset()
-                RxJavaPlugins.setIoSchedulerHandler(rxJavaImmediateScheduler)
-                RxJavaPlugins.setNewThreadSchedulerHandler(rxJavaImmediateScheduler)
-                base.evaluate()
-                RxJavaPlugins.reset()
+            object : Statement() {
+                override fun evaluate() {
+                    RxJavaPlugins.reset()
+                    RxJavaPlugins.setIoSchedulerHandler(rxJavaImmediateScheduler)
+                    RxJavaPlugins.setNewThreadSchedulerHandler(rxJavaImmediateScheduler)
+                    base.evaluate()
+                    RxJavaPlugins.reset()
+                }
             }
-        }
 }

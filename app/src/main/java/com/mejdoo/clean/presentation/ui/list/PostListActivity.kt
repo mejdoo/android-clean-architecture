@@ -13,7 +13,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class PostListActivity : BaseActivity() {
 
-
     private lateinit var binding: ActivityPostListBinding
 
     private val postListViewModel: PostListViewModel by viewModel()
@@ -32,6 +31,4 @@ class PostListActivity : BaseActivity() {
         postListViewModel.getPostList()
 
     }
-
-
 }

@@ -15,7 +15,6 @@ import org.mockito.MockitoAnnotations
 
 class UserRemoteDataSourceImplTest {
 
-
     @Mock
     private lateinit var mockApi: CleanApi
 
@@ -30,7 +29,6 @@ class UserRemoteDataSourceImplTest {
         MockitoAnnotations.initMocks(this)
         dataSource = UserRemoteDataSourceImpl(mockApi, mapper)
     }
-
 
     @Test
     fun test_GetUserById_Success() {

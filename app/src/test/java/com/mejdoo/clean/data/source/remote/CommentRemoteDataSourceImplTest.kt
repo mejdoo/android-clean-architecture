@@ -16,7 +16,6 @@ import org.mockito.MockitoAnnotations
 
 class CommentRemoteDataSourceImplTest {
 
-
     @Mock
     private lateinit var mockApi: CleanApi
 
@@ -61,7 +60,6 @@ class CommentRemoteDataSourceImplTest {
         verify(mockApi).getCommentsByPostId(userId)
         test.assertError(throwable)
     }
-
 
 }
 

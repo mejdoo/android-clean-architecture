@@ -15,7 +15,6 @@ import org.mockito.MockitoAnnotations
 
 class UserLocalDataSourceImplTest {
 
-
     @Mock
     private lateinit var mockDao: UserDao
 
@@ -30,7 +29,6 @@ class UserLocalDataSourceImplTest {
         MockitoAnnotations.initMocks(this)
         dataSource = UserLocalDataSourceImpl(mockDao, mapper)
     }
-
 
     @Test
     fun test_GetUserById_Success() {
@@ -58,6 +56,5 @@ class UserLocalDataSourceImplTest {
         verify(mockDao).getUserById(userId)
         test.assertError(throwable)
     }
-
 }
 

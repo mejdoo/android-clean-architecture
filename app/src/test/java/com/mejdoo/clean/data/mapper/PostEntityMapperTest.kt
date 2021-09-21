@@ -12,7 +12,6 @@ class PostEntityMapperTest {
     @Test
     fun test_MapToDomain() {
 
-
         val postMapper = PostEntityMapper()
 
         val post = postMapper.mapToDomain(postEntity1)
@@ -26,7 +25,6 @@ class PostEntityMapperTest {
     @Test
     fun test_MapListToDomain() {
 
-
         val postEntities = mutableListOf(postEntity1, postEntity2)
 
         val postMapper = PostEntityMapper()
@@ -36,7 +34,6 @@ class PostEntityMapperTest {
         assertTrue(posts.size == postEntities.size)
 
         for (i in 0 until posts.size - 1) {
-
 
             assertTrue(posts[i].userId == postEntities[i].userId)
             assertTrue(posts[i].id == postEntities[i].id)
@@ -49,7 +46,6 @@ class PostEntityMapperTest {
 
     @Test
     fun test_MapFromDomain() {
-
 
         val postMapper = PostEntityMapper()
 

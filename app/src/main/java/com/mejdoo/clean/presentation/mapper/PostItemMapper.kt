@@ -9,18 +9,18 @@ import com.mejdoo.clean.presentation.model.PostItem
  * this layer and the Domain layer
  */
 open class PostItemMapper :
-    Mapper<Post, PostItem> {
+        Mapper<Post, PostItem> {
 
 
     /**
      * Map a [PostItem] instance from a [Post] instance
      */
     override fun mapFromDomain(entity: Post) =
-        PostItem(
-            entity.id,
-            entity.userId,
-            entity.title
-        )
+            PostItem(
+                    entity.id,
+                    entity.userId,
+                    entity.title
+            )
 
 
     /**

@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.mejdoo.clean">
+    package="com.mejdoo.clean">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
     <application
-            android:name=".CleanApplication"
-            android:allowBackup="false"
-            android:icon="@mipmap/ic_clean"
-            android:label="@string/app_name"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-    >
-        <activity android:name=".presentation.ui.list.PostListActivity"
-                  android:configChanges="orientation|screenSize">
+        android:name=".CleanApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_clean"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".presentation.ui.list.PostListActivity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ui.detail.PostDetailActivity"
-                  android:theme="@style/AppTheme.NoActionBar"
-                  android:label=""
-                  android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".presentation.ui.detail.PostDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
-        <activity android:name=".presentation.ui.misc.BaseActivity"
-                  android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".presentation.ui.misc.BaseActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 

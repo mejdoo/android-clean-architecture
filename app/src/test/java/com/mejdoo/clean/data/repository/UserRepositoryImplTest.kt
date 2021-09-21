@@ -13,7 +13,6 @@ import org.mockito.MockitoAnnotations
 
 class UserRepositoryImplTest {
 
-
     private lateinit var repository: UserRepositoryImpl
 
     @Mock

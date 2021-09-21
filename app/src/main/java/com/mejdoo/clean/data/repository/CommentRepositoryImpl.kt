@@ -8,17 +8,15 @@ import com.mejdoo.clean.domain.repository.CommentRepository
 import io.reactivex.Single
 
 class CommentRepositoryImpl constructor(
-    private val remoteDataSource: CommentRemoteDataSource,
-    private val localDataSource: CommentLocalDataSource
+        private val remoteDataSource: CommentRemoteDataSource,
+        private val localDataSource: CommentLocalDataSource
 ) : CommentRepository {
-
 
     override fun getCommentsByPostId(postId: Int): Single<List<Comment>> =
 
-        remoteDataSource.getCommentsByPostId(postId)
-            .doOnSuccess { it.forEach { comment -> localDataSource.insertComment(comment) } }
-            .onErrorResumeNext { localDataSource.getCommentsByPostId(postId) }
-
+            remoteDataSource.getCommentsByPostId(postId)
+                    .doOnSuccess { it.forEach { comment -> localDataSource.insertComment(comment) } }
+                    .onErrorResumeNext { localDataSource.getCommentsByPostId(postId) }
 
 }
 

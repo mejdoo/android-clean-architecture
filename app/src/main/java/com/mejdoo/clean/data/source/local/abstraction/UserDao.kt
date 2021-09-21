@@ -7,7 +7,6 @@ import androidx.room.Query
 import com.mejdoo.clean.data.model.UserEntity
 import io.reactivex.Single
 
-
 @Dao
 interface UserDao {
 

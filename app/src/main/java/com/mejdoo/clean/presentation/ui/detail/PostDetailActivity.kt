@@ -38,8 +38,8 @@ class PostDetailActivity : BaseActivity() {
         postDetailViewModel.getPostDetail(postId, userId)
 
         postDetailViewModel.postDetailLiveData.observe(
-            this,
-            Observer<Resource<PostDetail>> { updateUi(it.data as PostDetail?) })
+                this,
+                Observer<Resource<PostDetail>> { updateUi(it.data as PostDetail?) })
 
     }
 
@@ -57,14 +57,14 @@ class PostDetailActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
-        when (item.itemId) {
-            android.R.id.home -> {
+            when (item.itemId) {
+                android.R.id.home -> {
 
-                finish()
-                true
+                    finish()
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
             }
-            else -> super.onOptionsItemSelected(item)
-        }
 
 
 }

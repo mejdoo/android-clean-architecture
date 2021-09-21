@@ -16,7 +16,6 @@ import org.mockito.MockitoAnnotations
 
 class PostRemoteDataSourceImplTest {
 
-
     @Mock
     private lateinit var mockApi: CleanApi
 
@@ -84,6 +83,5 @@ class PostRemoteDataSourceImplTest {
         verify(mockApi).getPostById(postId)
         test.assertError(throwable)
     }
-
 }
 

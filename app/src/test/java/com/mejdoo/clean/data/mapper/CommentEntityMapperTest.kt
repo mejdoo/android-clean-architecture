@@ -12,7 +12,6 @@ class CommentEntityMapperTest {
     @Test
     fun test_MapToDomain() {
 
-
         val commentMapper = CommentEntityMapper()
 
         val comment = commentMapper.mapToDomain(commentEntity1)
@@ -26,7 +25,6 @@ class CommentEntityMapperTest {
 
     @Test
     fun test_MapListToDomain() {
-
 
         val commentEntities = mutableListOf(commentEntity1, commentEntity2)
 
@@ -51,7 +49,6 @@ class CommentEntityMapperTest {
 
     @Test
     fun test_MapFromDomain() {
-
 
         val commentMapper = CommentEntityMapper()
 

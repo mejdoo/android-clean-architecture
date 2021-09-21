@@ -24,14 +24,14 @@ open class BaseActivity : AppCompatActivity() {
         connectivityLiveData = ConnectivityLiveData(applicationContext)
 
         snackbar = Snackbar.make(
-            frameContainer,
-            resources.getString(R.string.no_connection),
-            Snackbar.LENGTH_INDEFINITE
+                frameContainer,
+                resources.getString(R.string.no_connection),
+                Snackbar.LENGTH_INDEFINITE
         )
 
         connectivityLiveData.observe(
-            this,
-            Observer<Boolean> { updateSnackbar(it) })
+                this,
+                Observer<Boolean> { updateSnackbar(it) })
 
     }
 

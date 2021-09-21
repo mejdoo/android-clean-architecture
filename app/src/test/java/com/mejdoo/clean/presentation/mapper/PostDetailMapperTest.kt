@@ -14,18 +14,15 @@ class PostDetailMapperTest {
     @Test
     fun test_MapFromDomain() {
 
-
         val combinedPostUserComments =
-            CombinedPostUserComments(
-                post1,
-                user1, listOf(comment1, comment2)
-            )
+                CombinedPostUserComments(
+                        post1,
+                        user1, listOf(comment1, comment2)
+                )
 
         val postDetailMapper = PostDetailMapper()
 
         val postDetail = postDetailMapper.mapFromDomain(combinedPostUserComments)
-
-
 
         assertTrue(postDetail.postId == combinedPostUserComments.post.id)
         assertTrue(postDetail.userId == combinedPostUserComments.user.id)
@@ -39,10 +36,10 @@ class PostDetailMapperTest {
     fun test_MapListFromDomain() {
 
         val combinedPostUserComments =
-            CombinedPostUserComments(
-                post1,
-                user1, listOf(comment1, comment2)
-            )
+                CombinedPostUserComments(
+                        post1,
+                        user1, listOf(comment1, comment2)
+                )
 
         val listCombinedPostUserComments = listOf(combinedPostUserComments)
 
@@ -63,7 +60,6 @@ class PostDetailMapperTest {
             assertTrue(listOfPostDetail[i].nbComments == listCombinedPostUserComments[i].comments.size)
 
         }
-
 
     }
 }

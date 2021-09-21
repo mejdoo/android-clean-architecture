@@ -13,22 +13,19 @@ class CleanApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-
         // Initialization of Dependency Injection library
         startKoin {
             androidContext(this@CleanApplication)
 
             modules(
-                viewModelModule,
-                useCaseModule,
-                repositoryModule,
-                dataSourceModule,
-                networkModule,
-                cacheModule,
-                mapperModule
+                    viewModelModule,
+                    useCaseModule,
+                    repositoryModule,
+                    dataSourceModule,
+                    networkModule,
+                    cacheModule,
+                    mapperModule
             )
         }
-
     }
-
 }
