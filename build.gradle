@@ -4,10 +4,6 @@ buildscript {
 
     ext.gradle_version = '8.13.0'
     ext.kotlin_version = '2.2.21'
-    ext.arch_version = '2.0.0'
-    ext.retrofit_version = '2.4.0'
-    ext.koin_version = '2.0.0-rc-1'
-    ext.mockito_version = '2.25.1'
 
     repositories {
         google()
