@@ -8,11 +8,11 @@ apply plugin: 'kotlin-kapt'
 
 android {
     namespace = "com.mejdoo.clean"
-    compileSdkVersion 28
+    compileSdkVersion 36
     defaultConfig {
         applicationId "com.mejdoo.clean"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 36
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
