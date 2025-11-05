@@ -7,24 +7,24 @@ import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.mejdoo.clean.R
 import com.mejdoo.clean.util.ConnectivityLiveData
-import kotlinx.android.synthetic.main.activity_base.*
+import com.mejdoo.clean.databinding.ActivityBaseBinding
 
 
 open class BaseActivity : AppCompatActivity() {
 
-
+    private lateinit var binding: ActivityBaseBinding
     private lateinit var connectivityLiveData: ConnectivityLiveData
     private lateinit var snackbar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_base)
+        binding = ActivityBaseBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         connectivityLiveData = ConnectivityLiveData(applicationContext)
 
         snackbar = Snackbar.make(
-                frameContainer,
+                binding.frameContainer,
                 resources.getString(R.string.no_connection),
                 Snackbar.LENGTH_INDEFINITE
         )

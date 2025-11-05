@@ -12,13 +12,11 @@ import com.mejdoo.clean.util.AVATARS_URL
 import com.mejdoo.clean.util.POST_ID_EXTRA_KEY
 import com.mejdoo.clean.util.USER_ID_EXTRA_KEY
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_post_detail.*
+import com.mejdoo.clean.databinding.ActivityPostDetailBinding
 import org.koin.android.viewmodel.ext.android.viewModel
 
-
 class PostDetailActivity : BaseActivity() {
-
-
+    private lateinit var binding: ActivityPostDetailBinding
     private val postDetailViewModel: PostDetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,9 +24,10 @@ class PostDetailActivity : BaseActivity() {
 
         overridePendingTransition(R.anim.fadein, R.anim.fadeout)
 
-        setContentView(R.layout.activity_post_detail)
+        binding = ActivityPostDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        setSupportActionBar(detailToolbar)
+        setSupportActionBar(binding.detailToolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -47,11 +46,11 @@ class PostDetailActivity : BaseActivity() {
 
 
         if (postDetail != null) {
-            postTitle.text = postDetail.title
-            postBody.text = postDetail.body
-            postAuthor.text = postDetail.username
-            postComments.text = String.format(resources.getString(R.string.comments), postDetail.nbComments)
-            Picasso.get().load(AVATARS_URL + postDetail.userId).into(toolbarImage)
+            binding.postTitle.text = postDetail.title
+            binding.postBody.text = postDetail.body
+            binding.postAuthor.text = postDetail.username
+            binding.postComments.text = String.format(resources.getString(R.string.comments), postDetail.nbComments)
+            Picasso.get().load(AVATARS_URL + postDetail.userId).into(binding.toolbarImage)
         }
 
     }
