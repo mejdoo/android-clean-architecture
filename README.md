@@ -1,8 +1,9 @@
 ﻿# Android Clean Architecture
 
-This is a master-detail sample which demonstrates how to implement clean architecture with MVVM pattern for Android.
+This is a master-detail sample which demonstrates how to implement clean architecture with MVVM
+pattern for Android.
 
-## Tech Stack 
+## Tech Stack
 
 - Kotlin
 - Android X

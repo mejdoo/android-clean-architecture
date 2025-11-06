@@ -8,20 +8,20 @@ import com.mejdoo.clean.domain.model.User
  * this layer and the Domain layer
  */
 open class UserEntityMapper :
-        Mapper<UserEntity, User> {
+    Mapper<UserEntity, User> {
 
 
     /**
      * Map a [UserEntity] instance to a [User] instance
      */
     override fun mapToDomain(entity: UserEntity): User =
-            User(
-                    entity.id,
-                    entity.name,
-                    entity.email,
-                    entity.phone,
-                    entity.website
-            )
+        User(
+            entity.id,
+            entity.name,
+            entity.email,
+            entity.phone,
+            entity.website
+        )
 
     /**
      * Map a list of [UserEntity] to a  list of [User]
@@ -33,11 +33,11 @@ open class UserEntityMapper :
      * Map a [User] instance to a [UserEntity] instance
      */
     override fun mapFromDomain(model: User): UserEntity =
-            UserEntity(
-                    model.id,
-                    model.name,
-                    model.email,
-                    model.phone,
-                    model.website
-            )
+        UserEntity(
+            model.id,
+            model.name,
+            model.email,
+            model.phone,
+            model.website
+        )
 }

@@ -13,8 +13,8 @@ import io.reactivex.schedulers.Schedulers
 
 
 class PostListViewModel(
-        private val postListUseCase: PostListUseCase,
-        private val mapper: PostItemMapper
+    private val postListUseCase: PostListUseCase,
+    private val mapper: PostItemMapper
 ) : ViewModel() {
 
 
@@ -24,43 +24,44 @@ class PostListViewModel(
 
 
     fun getPostList() =
-            compositeDisposable.add(postListUseCase.getPostList()
-                    .doOnSubscribe {
+        compositeDisposable.add(
+            postListUseCase.getPostList()
+            .doOnSubscribe {
 
-                        postItemsLiveData.postValue(
-                                Resource(
-                                        status = ResourceStatus.LOADING,
-                                        data = null,
-                                        message = null
-                                )
-                        )
+                postItemsLiveData.postValue(
+                    Resource(
+                        status = ResourceStatus.LOADING,
+                        data = null,
+                        message = null
+                    )
+                )
 
-                    }
-                    .subscribeOn(Schedulers.io())
-                    .map { mapper.mapListFromDomain(it) }
-                    .subscribe({
+            }
+            .subscribeOn(Schedulers.io())
+            .map { mapper.mapListFromDomain(it) }
+            .subscribe({
 
 
-                        postItemsLiveData.postValue(
-                                Resource(
-                                        status = ResourceStatus.SUCCESS,
-                                        data = it,
-                                        message = null
-                                )
-                        )
+                postItemsLiveData.postValue(
+                    Resource(
+                        status = ResourceStatus.SUCCESS,
+                        data = it,
+                        message = null
+                    )
+                )
 
-                    }, {
+            }, {
 
-                        postItemsLiveData.postValue(
-                                Resource(
-                                        status = ResourceStatus.ERROR,
-                                        data = null,
-                                        message = it.message
-                                )
-                        )
+                postItemsLiveData.postValue(
+                    Resource(
+                        status = ResourceStatus.ERROR,
+                        data = null,
+                        message = it.message
+                    )
+                )
 
-                    })
-            )
+            })
+        )
 
     override fun onCleared() {
         compositeDisposable.dispose()

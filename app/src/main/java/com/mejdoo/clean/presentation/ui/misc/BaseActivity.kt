@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.mejdoo.clean.R
-import com.mejdoo.clean.util.ConnectivityLiveData
 import com.mejdoo.clean.databinding.ActivityBaseBinding
+import com.mejdoo.clean.util.ConnectivityLiveData
 
 
 open class BaseActivity : AppCompatActivity() {
@@ -24,14 +24,14 @@ open class BaseActivity : AppCompatActivity() {
         connectivityLiveData = ConnectivityLiveData(applicationContext)
 
         snackBar = Snackbar.make(
-                binding.frameContainer,
-                resources.getString(R.string.no_connection),
-                Snackbar.LENGTH_INDEFINITE
+            binding.frameContainer,
+            resources.getString(R.string.no_connection),
+            Snackbar.LENGTH_INDEFINITE
         )
 
         connectivityLiveData.observe(
-                this,
-                Observer<Boolean> { updateSnackBar(it) })
+            this,
+            Observer<Boolean> { updateSnackBar(it) })
 
     }
 

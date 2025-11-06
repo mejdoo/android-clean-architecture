@@ -15,8 +15,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 class PostListViewModelTest {
@@ -56,12 +56,12 @@ class PostListViewModelTest {
 
         verify(mockUseCase).getPostList()
         assertEquals(
-                Resource<List<PostItem>>(
-                        ResourceStatus.SUCCESS,
-                        mapper.mapListFromDomain(posts),
-                        null
-                ),
-                listViewModel.postItemsLiveData.value
+            Resource<List<PostItem>>(
+                ResourceStatus.SUCCESS,
+                mapper.mapListFromDomain(posts),
+                null
+            ),
+            listViewModel.postItemsLiveData.value
         )
     }
 
@@ -74,12 +74,12 @@ class PostListViewModelTest {
 
         verify(mockUseCase).getPostList()
         assertEquals(
-                Resource<List<PostItem>>(
-                        ResourceStatus.ERROR,
-                        null,
-                        throwable.message
-                ),
-                listViewModel.postItemsLiveData.value
+            Resource<List<PostItem>>(
+                ResourceStatus.ERROR,
+                null,
+                throwable.message
+            ),
+            listViewModel.postItemsLiveData.value
         )
     }
 

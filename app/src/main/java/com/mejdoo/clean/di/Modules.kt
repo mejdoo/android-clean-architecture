@@ -7,8 +7,8 @@ import com.mejdoo.clean.data.mapper.UserEntityMapper
 import com.mejdoo.clean.data.repository.CommentRepositoryImpl
 import com.mejdoo.clean.data.repository.PostRepositoryImpl
 import com.mejdoo.clean.data.repository.UserRepositoryImpl
-import com.mejdoo.clean.data.source.local.abstraction.CommentLocalDataSource
 import com.mejdoo.clean.data.source.local.abstraction.CleanDatabase
+import com.mejdoo.clean.data.source.local.abstraction.CommentLocalDataSource
 import com.mejdoo.clean.data.source.local.abstraction.PostLocalDataSource
 import com.mejdoo.clean.data.source.local.abstraction.UserLocalDataSource
 import com.mejdoo.clean.data.source.local.implementation.CommentLocalDataSourceImpl
@@ -49,20 +49,20 @@ val useCaseModule: Module = module {
 val repositoryModule: Module = module {
     single {
         PostRepositoryImpl(
-                get(),
-                get()
+            get(),
+            get()
         ) as PostRepository
     }
     single {
         UserRepositoryImpl(
-                get(),
-                get()
+            get(),
+            get()
         ) as UserRepository
     }
     single {
         CommentRepositoryImpl(
-                get(),
-                get()
+            get(),
+            get()
         ) as CommentRepository
     }
 }
@@ -70,38 +70,38 @@ val repositoryModule: Module = module {
 val dataSourceModule: Module = module {
     single {
         PostRemoteDataSourceImpl(
-                api = cleanApi,
-                mapper = get()
+            api = cleanApi,
+            mapper = get()
         ) as PostRemoteDataSource
     }
     single {
         UserRemoteDataSourceImpl(
-                api = cleanApi,
-                mapper = get()
+            api = cleanApi,
+            mapper = get()
         ) as UserRemoteDataSource
     }
     single {
         CommentRemoteDataSourceImpl(
-                api = cleanApi,
-                mapper = get()
+            api = cleanApi,
+            mapper = get()
         ) as CommentRemoteDataSource
     }
     single {
         PostLocalDataSourceImpl(
-                get(),
-                get()
+            get(),
+            get()
         ) as PostLocalDataSource
     }
     single {
         UserLocalDataSourceImpl(
-                get(),
-                get()
+            get(),
+            get()
         ) as UserLocalDataSource
     }
     single {
         CommentLocalDataSourceImpl(
-                get(),
-                get()
+            get(),
+            get()
         ) as CommentLocalDataSource
     }
 }
@@ -111,7 +111,9 @@ val networkModule: Module = module {
 }
 
 val cacheModule: Module = module {
-    single { Room.databaseBuilder(androidApplication(), CleanDatabase::class.java, DB_NAME).build() }
+    single {
+        Room.databaseBuilder(androidApplication(), CleanDatabase::class.java, DB_NAME).build()
+    }
     single { get<CleanDatabase>().postDao() }
     single { get<CleanDatabase>().userDao() }
     single { get<CleanDatabase>().commentDao() }

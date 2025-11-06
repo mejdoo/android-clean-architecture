@@ -1,7 +1,13 @@
 package com.mejdoo.clean
 
 import android.app.Application
-import com.mejdoo.clean.di.*
+import com.mejdoo.clean.di.cacheModule
+import com.mejdoo.clean.di.dataSourceModule
+import com.mejdoo.clean.di.mapperModule
+import com.mejdoo.clean.di.networkModule
+import com.mejdoo.clean.di.repositoryModule
+import com.mejdoo.clean.di.useCaseModule
+import com.mejdoo.clean.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -18,13 +24,13 @@ class CleanApplication : Application() {
             androidContext(this@CleanApplication)
 
             modules(
-                    viewModelModule,
-                    useCaseModule,
-                    repositoryModule,
-                    dataSourceModule,
-                    networkModule,
-                    cacheModule,
-                    mapperModule
+                viewModelModule,
+                useCaseModule,
+                repositoryModule,
+                dataSourceModule,
+                networkModule,
+                cacheModule,
+                mapperModule
             )
         }
     }

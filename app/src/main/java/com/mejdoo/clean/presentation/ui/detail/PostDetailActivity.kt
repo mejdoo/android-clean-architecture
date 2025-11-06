@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.mejdoo.clean.R
+import com.mejdoo.clean.databinding.ActivityPostDetailBinding
 import com.mejdoo.clean.presentation.model.PostDetail
 import com.mejdoo.clean.presentation.model.Resource
 import com.mejdoo.clean.presentation.ui.misc.BaseActivity
@@ -12,7 +13,6 @@ import com.mejdoo.clean.util.AVATARS_URL
 import com.mejdoo.clean.util.POST_ID_EXTRA_KEY
 import com.mejdoo.clean.util.USER_ID_EXTRA_KEY
 import com.squareup.picasso.Picasso
-import com.mejdoo.clean.databinding.ActivityPostDetailBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PostDetailActivity : BaseActivity() {
@@ -37,8 +37,8 @@ class PostDetailActivity : BaseActivity() {
         postDetailViewModel.getPostDetail(postId, userId)
 
         postDetailViewModel.postDetailLiveData.observe(
-                this,
-                Observer<Resource<PostDetail>> { updateUi(it.data as PostDetail?) })
+            this,
+            Observer<Resource<PostDetail>> { updateUi(it.data as PostDetail?) })
 
     }
 
@@ -49,21 +49,23 @@ class PostDetailActivity : BaseActivity() {
             binding.postTitle.text = postDetail.title
             binding.postBody.text = postDetail.body
             binding.postAuthor.text = postDetail.username
-            binding.postComments.text = String.format(resources.getString(R.string.comments), postDetail.nbComments)
+            binding.postComments.text =
+                String.format(resources.getString(R.string.comments), postDetail.nbComments)
             Picasso.get().load(AVATARS_URL + postDetail.userId).into(binding.toolbarImage)
         }
 
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
-            when (item.itemId) {
-                android.R.id.home -> {
+        when (item.itemId) {
+            android.R.id.home -> {
 
-                    finish()
-                    true
-                }
-                else -> super.onOptionsItemSelected(item)
+                finish()
+                true
             }
+
+            else -> super.onOptionsItemSelected(item)
+        }
 
 
 }

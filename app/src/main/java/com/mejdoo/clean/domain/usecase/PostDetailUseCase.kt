@@ -10,22 +10,23 @@ import io.reactivex.Single
 import io.reactivex.functions.Function3
 
 class PostDetailUseCase(
-        private val postRepository: PostRepository,
-        private val userRepository: UserRepository,
-        private val commentRepository: CommentRepository
+    private val postRepository: PostRepository,
+    private val userRepository: UserRepository,
+    private val commentRepository: CommentRepository
 ) {
 
     fun getPostDetails(postId: Int, userId: Int): Single<CombinedPostUserComments> =
-            Single.zip(postRepository.getPostById(postId),
-                    userRepository.getUserById(userId),
-                    commentRepository.getCommentsByPostId(postId),
-                    Function3 { post, user, comments ->
-                        CombinedPostUserComments(
-                                post,
-                                user,
-                                comments
-                        )
-                    })
+        Single.zip(
+            postRepository.getPostById(postId),
+            userRepository.getUserById(userId),
+            commentRepository.getCommentsByPostId(postId),
+            Function3 { post, user, comments ->
+                CombinedPostUserComments(
+                    post,
+                    user,
+                    comments
+                )
+            })
 
 }
 

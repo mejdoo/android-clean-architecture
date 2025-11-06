@@ -15,10 +15,10 @@ class PostDetailMapperTest {
     fun test_MapFromDomain() {
 
         val combinedPostUserComments =
-                CombinedPostUserComments(
-                        post1,
-                        user1, listOf(comment1, comment2)
-                )
+            CombinedPostUserComments(
+                post1,
+                user1, listOf(comment1, comment2)
+            )
 
         val postDetailMapper = PostDetailMapper()
 
@@ -36,10 +36,10 @@ class PostDetailMapperTest {
     fun test_MapListFromDomain() {
 
         val combinedPostUserComments =
-                CombinedPostUserComments(
-                        post1,
-                        user1, listOf(comment1, comment2)
-                )
+            CombinedPostUserComments(
+                post1,
+                user1, listOf(comment1, comment2)
+            )
 
         val listCombinedPostUserComments = listOf(combinedPostUserComments)
 
