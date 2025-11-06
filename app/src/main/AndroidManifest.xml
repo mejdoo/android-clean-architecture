@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:exported="true"
             android:name=".presentation.ui.list.PostListActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
