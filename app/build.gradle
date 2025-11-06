@@ -7,6 +7,10 @@ apply plugin: 'kotlin-kapt'
 android {
     namespace = "com.mejdoo.clean"
     compileSdkVersion 36
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
     defaultConfig {
         applicationId "com.mejdoo.clean"
         minSdkVersion 23

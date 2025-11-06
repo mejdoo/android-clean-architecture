@@ -13,7 +13,7 @@ import com.mejdoo.clean.util.POST_ID_EXTRA_KEY
 import com.mejdoo.clean.util.USER_ID_EXTRA_KEY
 import com.squareup.picasso.Picasso
 import com.mejdoo.clean.databinding.ActivityPostDetailBinding
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PostDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityPostDetailBinding

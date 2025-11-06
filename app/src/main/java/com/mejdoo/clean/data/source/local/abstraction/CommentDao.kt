@@ -2,7 +2,7 @@ package com.mejdoo.clean.data.source.local.abstraction
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import com.mejdoo.clean.data.model.CommentEntity
 import io.reactivex.Single

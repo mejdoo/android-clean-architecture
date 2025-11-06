@@ -32,8 +32,8 @@ import com.mejdoo.clean.presentation.viewmodel.PostDetailViewModel
 import com.mejdoo.clean.presentation.viewmodel.PostListViewModel
 import com.mejdoo.clean.util.DB_NAME
 import org.koin.android.ext.koin.androidApplication
-import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule: Module = module {

@@ -8,7 +8,7 @@ import com.mejdoo.clean.databinding.ActivityPostListBinding
 
 import com.mejdoo.clean.presentation.ui.misc.BaseActivity
 import com.mejdoo.clean.presentation.viewmodel.PostListViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PostListActivity : BaseActivity() {
