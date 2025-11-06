@@ -65,7 +65,6 @@ dependencies {
 
     // Koin (Dependency injection framework for Kotlin)
     implementation 'io.insert-koin:koin-android:4.1.1'
-    implementation 'io.insert-koin:koin-androidx-viewmodel:4.1.1'
 
     //Picasso for ImageLoading
     implementation 'com.squareup.picasso:picasso:2.71828'
