@@ -6,7 +6,7 @@ import com.mejdoo.clean.data.source.remote.abstraction.PostRemoteDataSource
 import com.mejdoo.clean.domain.model.Post
 import io.reactivex.Single
 
-class PostRemoteDataSourceImpl constructor(
+class PostRemoteDataSourceImpl(
         private val api: CleanApi,
         private val mapper: PostEntityMapper
 ) : PostRemoteDataSource {

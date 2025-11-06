@@ -7,7 +7,7 @@ import com.mejdoo.clean.domain.model.Post
 import com.mejdoo.clean.domain.repository.PostRepository
 import io.reactivex.Single
 
-class PostRepositoryImpl constructor(
+class PostRepositoryImpl(
         private val remoteDataSource: PostRemoteDataSource,
         private val localDataSource: PostLocalDataSource
 ) : PostRepository {

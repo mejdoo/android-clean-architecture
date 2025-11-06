@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val retrofit: Retrofit =
         createNetworkClient(BASE_URL)
-val cleanApi = retrofit.create(CleanApi::class.java)
+val cleanApi: CleanApi = retrofit.create(CleanApi::class.java)
 
 fun createNetworkClient(baseUrl: String): Retrofit {
     return Retrofit.Builder()

@@ -6,7 +6,7 @@ import com.mejdoo.clean.data.source.remote.abstraction.UserRemoteDataSource
 import com.mejdoo.clean.domain.model.User
 import io.reactivex.Single
 
-class UserRemoteDataSourceImpl constructor(
+class UserRemoteDataSourceImpl(
         private val api: CleanApi,
         private val mapper: UserEntityMapper
 ) : UserRemoteDataSource {

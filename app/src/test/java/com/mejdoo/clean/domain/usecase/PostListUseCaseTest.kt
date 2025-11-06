@@ -15,7 +15,7 @@ import org.mockito.MockitoAnnotations
 
 class PostListUseCaseTest {
 
-    private lateinit var usecase: PostListUseCase
+    private lateinit var useCase: PostListUseCase
 
     @Mock
     private lateinit var mockRepository: PostRepository
@@ -27,7 +27,7 @@ class PostListUseCaseTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        usecase = PostListUseCase(mockRepository)
+        useCase = PostListUseCase(mockRepository)
     }
 
     @Test
@@ -36,7 +36,7 @@ class PostListUseCaseTest {
 
         Mockito.`when`(mockRepository.getAllPosts()).thenReturn(Single.just(posts))
 
-        val test = usecase.getPostList().test()
+        val test = useCase.getPostList().test()
 
 
         verify(mockRepository).getAllPosts()
@@ -49,7 +49,7 @@ class PostListUseCaseTest {
 
         Mockito.`when`(mockRepository.getAllPosts()).thenReturn(Single.error(throwable))
 
-        val test = usecase.getPostList().test()
+        val test = useCase.getPostList().test()
 
         verify(mockRepository).getAllPosts()
 

@@ -29,9 +29,6 @@ val user1 = User(
         "1-770-736-8031 x56442",
         "hildegard.org"
 )
-val user2 =
-        User(2, "Ervin Howell", "Shanna@melissa.tv", "010-692-6593 x09125", "anastasia.net")
-
 val postEntity1 = PostEntity(
         1,
         1,

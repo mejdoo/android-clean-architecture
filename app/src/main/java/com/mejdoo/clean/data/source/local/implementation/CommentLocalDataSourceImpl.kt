@@ -7,7 +7,7 @@ import com.mejdoo.clean.domain.model.Comment
 import io.reactivex.Single
 
 
-class CommentLocalDataSourceImpl constructor(
+class CommentLocalDataSourceImpl (
         private val dao: CommentDao,
         private val mapper: CommentEntityMapper
 ) : CommentLocalDataSource {

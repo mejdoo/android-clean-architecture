@@ -7,7 +7,7 @@ import com.mejdoo.clean.domain.model.User
 import com.mejdoo.clean.domain.repository.UserRepository
 import io.reactivex.Single
 
-class UserRepositoryImpl constructor(
+class UserRepositoryImpl(
         private val remoteDataSource: UserRemoteDataSource,
         private val localDataSource: UserLocalDataSource
 ) : UserRepository {

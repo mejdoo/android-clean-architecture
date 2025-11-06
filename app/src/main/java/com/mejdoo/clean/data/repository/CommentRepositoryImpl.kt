@@ -7,7 +7,7 @@ import com.mejdoo.clean.domain.model.Comment
 import com.mejdoo.clean.domain.repository.CommentRepository
 import io.reactivex.Single
 
-class CommentRepositoryImpl constructor(
+class CommentRepositoryImpl(
         private val remoteDataSource: CommentRemoteDataSource,
         private val localDataSource: CommentLocalDataSource
 ) : CommentRepository {

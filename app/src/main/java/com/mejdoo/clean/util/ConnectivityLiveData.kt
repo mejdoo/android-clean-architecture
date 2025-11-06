@@ -13,7 +13,7 @@ import androidx.lifecycle.LiveData
  * Requires Permission: ACCESS_NETWORK_STATE
 
  */
-class ConnectivityLiveData constructor(context: Context) : LiveData<Boolean>() {
+class ConnectivityLiveData(context: Context) : LiveData<Boolean>() {
 
     private var connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 

@@ -18,19 +18,15 @@ import com.mejdoo.clean.util.USER_ID_EXTRA_KEY
 class PostListAdapter(private var postItems: MutableList<PostItem>) :
         RecyclerView.Adapter<PostViewHolder>() {
 
-    private val onClickListener: View.OnClickListener
+    private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
 
-    init {
-        onClickListener = View.OnClickListener { v ->
+        val item = postItems[v.tag as Int]
 
-            val item = postItems[v.tag as Int]
-
-            val intent = Intent(v.context, PostDetailActivity::class.java).apply {
-                putExtra(POST_ID_EXTRA_KEY, item.postId)
-                putExtra(USER_ID_EXTRA_KEY, item.userId)
-            }
-            v.context.startActivity(intent)
+        val intent = Intent(v.context, PostDetailActivity::class.java).apply {
+            putExtra(POST_ID_EXTRA_KEY, item.postId)
+            putExtra(USER_ID_EXTRA_KEY, item.userId)
         }
+        v.context.startActivity(intent)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {

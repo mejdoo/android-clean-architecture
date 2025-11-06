@@ -6,7 +6,7 @@ import com.mejdoo.clean.data.source.local.abstraction.PostLocalDataSource
 import com.mejdoo.clean.domain.model.Post
 import io.reactivex.Single
 
-class PostLocalDataSourceImpl constructor(
+class PostLocalDataSourceImpl(
         private val dao: PostDao,
         private val mapper: PostEntityMapper
 ) : PostLocalDataSource {

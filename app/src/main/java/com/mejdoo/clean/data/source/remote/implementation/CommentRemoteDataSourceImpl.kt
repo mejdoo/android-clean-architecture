@@ -6,7 +6,7 @@ import com.mejdoo.clean.data.source.remote.abstraction.CommentRemoteDataSource
 import com.mejdoo.clean.domain.model.Comment
 import io.reactivex.Single
 
-class CommentRemoteDataSourceImpl constructor(
+class CommentRemoteDataSourceImpl(
         private val api: CleanApi,
         private val mapper: CommentEntityMapper
 ) : CommentRemoteDataSource {

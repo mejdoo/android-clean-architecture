@@ -12,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 
-class PostListViewModel constructor(
+class PostListViewModel(
         private val postListUseCase: PostListUseCase,
         private val mapper: PostItemMapper
 ) : ViewModel() {

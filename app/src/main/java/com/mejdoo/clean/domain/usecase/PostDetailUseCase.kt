@@ -9,7 +9,7 @@ import com.mejdoo.clean.domain.repository.UserRepository
 import io.reactivex.Single
 import io.reactivex.functions.Function3
 
-class PostDetailUseCase constructor(
+class PostDetailUseCase(
         private val postRepository: PostRepository,
         private val userRepository: UserRepository,
         private val commentRepository: CommentRepository

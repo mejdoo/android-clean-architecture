@@ -6,7 +6,7 @@ import com.mejdoo.clean.data.source.local.abstraction.UserLocalDataSource
 import com.mejdoo.clean.domain.model.User
 import io.reactivex.Single
 
-class UserLocalDataSourceImpl constructor(
+class UserLocalDataSourceImpl(
         private val dao: UserDao,
         private val mapper: UserEntityMapper
 ) : UserLocalDataSource {

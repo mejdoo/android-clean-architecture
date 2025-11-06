@@ -14,7 +14,7 @@ open class BaseActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBaseBinding
     private lateinit var connectivityLiveData: ConnectivityLiveData
-    private lateinit var snackbar: Snackbar
+    private lateinit var snackBar: Snackbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ open class BaseActivity : AppCompatActivity() {
 
         connectivityLiveData = ConnectivityLiveData(applicationContext)
 
-        snackbar = Snackbar.make(
+        snackBar = Snackbar.make(
                 binding.frameContainer,
                 resources.getString(R.string.no_connection),
                 Snackbar.LENGTH_INDEFINITE
@@ -31,15 +31,15 @@ open class BaseActivity : AppCompatActivity() {
 
         connectivityLiveData.observe(
                 this,
-                Observer<Boolean> { updateSnackbar(it) })
+                Observer<Boolean> { updateSnackBar(it) })
 
     }
 
-    private fun updateSnackbar(networkStatus: Boolean) {
+    private fun updateSnackBar(networkStatus: Boolean) {
 
         when (networkStatus) {
-            false -> snackbar.show()
-            true -> snackbar.dismiss()
+            false -> snackBar.show()
+            true -> snackBar.dismiss()
         }
 
     }
