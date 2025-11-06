@@ -36,7 +36,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     //Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.0"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.21'
 
     //AndroidX
     implementation 'androidx.appcompat:appcompat:1.7.1'
