@@ -1,6 +1,6 @@
 package com.mejdoo.clean.data.source.remote
 
-import com.mejdoo.clean.data.mapper.UserEntityMapper
+import com.mejdoo.clean.data.mapper.toDomain
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.implementation.UserRemoteDataSourceImpl
 import com.mejdoo.clean.userEntity1
@@ -19,15 +19,12 @@ class UserRemoteDataSourceImplTest {
     private lateinit var mockApi: CleanApi
 
     private lateinit var dataSource: UserRemoteDataSourceImpl
-
-    private val mapper = UserEntityMapper()
-
     private val throwable = Throwable()
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        dataSource = UserRemoteDataSourceImpl(mockApi, mapper)
+        dataSource = UserRemoteDataSourceImpl(mockApi)
     }
 
     @Test
@@ -41,7 +38,7 @@ class UserRemoteDataSourceImplTest {
         val test = dataSource.getUserById(userId).test()
 
         verify(mockApi).getUserById(userId)
-        test.assertValue(mapper.mapToDomain(userEntity1))
+        test.assertValue(userEntity1.toDomain())
     }
 
     @Test

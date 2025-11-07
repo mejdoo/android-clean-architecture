@@ -1,6 +1,7 @@
 package com.mejdoo.clean.data.source.local
 
-import com.mejdoo.clean.data.mapper.PostEntityMapper
+import com.mejdoo.clean.data.mapper.toDomain
+import com.mejdoo.clean.data.mapper.toDomainList
 import com.mejdoo.clean.data.source.local.abstraction.PostDao
 import com.mejdoo.clean.data.source.local.implementation.PostLocalDataSourceImpl
 import com.mejdoo.clean.postEntity1
@@ -21,8 +22,6 @@ class PostLocalDataSourceImplTest {
 
     private lateinit var dataSource: PostLocalDataSourceImpl
 
-    private val mapper = PostEntityMapper()
-
     private val localList = listOf(postEntity1, postEntity2)
 
     private val throwable = Throwable()
@@ -30,7 +29,7 @@ class PostLocalDataSourceImplTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        dataSource = PostLocalDataSourceImpl(mockDao, mapper)
+        dataSource = PostLocalDataSourceImpl(mockDao)
     }
 
     @Test
@@ -42,7 +41,7 @@ class PostLocalDataSourceImplTest {
         val test = dataSource.getAllPosts().test()
 
         verify(mockDao).getAllPosts()
-        test.assertValue(mapper.mapListToDomain(localList))
+        test.assertValue(localList.toDomainList())
     }
 
     @Test
@@ -68,7 +67,7 @@ class PostLocalDataSourceImplTest {
         val test = dataSource.getPostById(postId).test()
 
         verify(mockDao).getPostById(postId)
-        test.assertValue(mapper.mapToDomain(postEntity1))
+        test.assertValue(postEntity1.toDomain())
     }
 
     @Test

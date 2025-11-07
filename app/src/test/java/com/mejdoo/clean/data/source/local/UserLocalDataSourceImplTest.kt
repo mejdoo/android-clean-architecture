@@ -1,6 +1,6 @@
 package com.mejdoo.clean.data.source.local
 
-import com.mejdoo.clean.data.mapper.UserEntityMapper
+import com.mejdoo.clean.data.mapper.toDomain
 import com.mejdoo.clean.data.source.local.abstraction.UserDao
 import com.mejdoo.clean.data.source.local.implementation.UserLocalDataSourceImpl
 import com.mejdoo.clean.userEntity1
@@ -20,14 +20,12 @@ class UserLocalDataSourceImplTest {
 
     private lateinit var dataSource: UserLocalDataSourceImpl
 
-    private val mapper = UserEntityMapper()
-
     private val throwable = Throwable()
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        dataSource = UserLocalDataSourceImpl(mockDao, mapper)
+        dataSource = UserLocalDataSourceImpl(mockDao)
     }
 
     @Test
@@ -41,7 +39,7 @@ class UserLocalDataSourceImplTest {
         val test = dataSource.getUserById(userId).test()
 
         verify(mockDao).getUserById(userId)
-        test.assertValue(mapper.mapToDomain(userEntity1))
+        test.assertValue(userEntity1.toDomain())
     }
 
     @Test

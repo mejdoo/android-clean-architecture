@@ -2,7 +2,7 @@ package com.mejdoo.clean.data.source.remote
 
 import com.mejdoo.clean.commentEntity1
 import com.mejdoo.clean.commentEntity2
-import com.mejdoo.clean.data.mapper.CommentEntityMapper
+import com.mejdoo.clean.data.mapper.toDomainList
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.implementation.CommentRemoteDataSourceImpl
 import io.reactivex.Single
@@ -21,8 +21,6 @@ class CommentRemoteDataSourceImplTest {
 
     private lateinit var dataSource: CommentRemoteDataSourceImpl
 
-    private val mapper = CommentEntityMapper()
-
     private val remoteList = listOf(commentEntity1, commentEntity2)
 
     private val throwable = Throwable()
@@ -30,7 +28,7 @@ class CommentRemoteDataSourceImplTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        dataSource = CommentRemoteDataSourceImpl(mockApi, mapper)
+        dataSource = CommentRemoteDataSourceImpl(mockApi)
     }
 
 
@@ -45,7 +43,7 @@ class CommentRemoteDataSourceImplTest {
         val test = dataSource.getCommentsByPostId(postId).test()
 
         verify(mockApi).getCommentsByPostId(postId)
-        test.assertValue(mapper.mapListToDomain(remoteList))
+        test.assertValue(remoteList.toDomainList())
     }
 
     @Test

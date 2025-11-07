@@ -2,7 +2,7 @@ package com.mejdoo.clean.data.source.local
 
 import com.mejdoo.clean.commentEntity1
 import com.mejdoo.clean.commentEntity2
-import com.mejdoo.clean.data.mapper.CommentEntityMapper
+import com.mejdoo.clean.data.mapper.toDomainList
 import com.mejdoo.clean.data.source.local.abstraction.CommentDao
 import com.mejdoo.clean.data.source.local.implementation.CommentLocalDataSourceImpl
 import io.reactivex.Single
@@ -21,8 +21,6 @@ class CommentLocalDataSourceImplTest {
 
     private lateinit var dataSource: CommentLocalDataSourceImpl
 
-    private val mapper = CommentEntityMapper()
-
     private val localList = listOf(commentEntity1, commentEntity2)
 
     private val throwable = Throwable()
@@ -30,7 +28,7 @@ class CommentLocalDataSourceImplTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        dataSource = CommentLocalDataSourceImpl(mockDao, mapper)
+        dataSource = CommentLocalDataSourceImpl(mockDao)
     }
 
 
@@ -45,7 +43,7 @@ class CommentLocalDataSourceImplTest {
         val test = dataSource.getCommentsByPostId(postId).test()
 
         verify(mockDao).getCommentsByPostId(postId)
-        test.assertValue(mapper.mapListToDomain(localList))
+        test.assertValue(localList.toDomainList())
     }
 
     @Test

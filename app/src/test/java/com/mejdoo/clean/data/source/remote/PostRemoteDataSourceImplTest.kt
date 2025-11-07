@@ -1,6 +1,7 @@
 package com.mejdoo.clean.data.source.remote
 
-import com.mejdoo.clean.data.mapper.PostEntityMapper
+import com.mejdoo.clean.data.mapper.toDomain
+import com.mejdoo.clean.data.mapper.toDomainList
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.implementation.PostRemoteDataSourceImpl
 import com.mejdoo.clean.postEntity1
@@ -21,8 +22,6 @@ class PostRemoteDataSourceImplTest {
 
     private lateinit var dataSource: PostRemoteDataSourceImpl
 
-    private val mapper = PostEntityMapper()
-
     private val remoteList = listOf(postEntity1, postEntity2)
 
     private val throwable = Throwable()
@@ -30,7 +29,7 @@ class PostRemoteDataSourceImplTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        dataSource = PostRemoteDataSourceImpl(mockApi, mapper)
+        dataSource = PostRemoteDataSourceImpl(mockApi)
     }
 
     @Test
@@ -42,7 +41,7 @@ class PostRemoteDataSourceImplTest {
         val test = dataSource.getAllPosts().test()
 
         verify(mockApi).getAllPosts()
-        test.assertValue(mapper.mapListToDomain(remoteList))
+        test.assertValue(remoteList.toDomainList())
     }
 
     @Test
@@ -68,7 +67,7 @@ class PostRemoteDataSourceImplTest {
         val test = dataSource.getPostById(postId).test()
 
         verify(mockApi).getPostById(postId)
-        test.assertValue(mapper.mapToDomain(postEntity1))
+        test.assertValue(postEntity1.toDomain())
     }
 
     @Test

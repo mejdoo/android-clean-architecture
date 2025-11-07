@@ -1,9 +1,9 @@
 package com.mejdoo.clean
 
 
-import com.mejdoo.clean.data.mapper.CommentEntityMapperTest
-import com.mejdoo.clean.data.mapper.PostEntityMapperTest
-import com.mejdoo.clean.data.mapper.UserEntityMapperTest
+import com.mejdoo.clean.data.mapper.CommentMappersTest
+import com.mejdoo.clean.data.mapper.PostMappersTest
+import com.mejdoo.clean.data.mapper.UserMappersTest
 import com.mejdoo.clean.data.repository.CommentRepositoryImplTest
 import com.mejdoo.clean.data.repository.PostRepositoryImplTest
 import com.mejdoo.clean.data.repository.UserRepositoryImplTest
@@ -24,9 +24,9 @@ import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    PostEntityMapperTest::class,
-    UserEntityMapperTest::class,
-    CommentEntityMapperTest::class,
+    PostMappersTest::class,
+    UserMappersTest::class,
+    CommentMappersTest::class,
     PostRemoteDataSourceImplTest::class,
     UserRemoteDataSourceImplTest::class,
     CommentRemoteDataSourceImplTest::class,
