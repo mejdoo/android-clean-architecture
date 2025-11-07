@@ -14,8 +14,8 @@ import com.mejdoo.clean.data.source.remote.CommentRemoteDataSourceImplTest
 import com.mejdoo.clean.data.source.remote.PostRemoteDataSourceImplTest
 import com.mejdoo.clean.data.source.remote.UserRemoteDataSourceImplTest
 import com.mejdoo.clean.domain.usecase.PostListUseCaseTest
-import com.mejdoo.clean.presentation.mapper.PostDetailMapperTest
-import com.mejdoo.clean.presentation.mapper.PostItemMapperTest
+import com.mejdoo.clean.presentation.mapper.PostDetailMappersTest
+import com.mejdoo.clean.presentation.mapper.PostItemMappersTest
 import com.mejdoo.clean.presentation.viewmodel.PostDetailViewModelTest
 import com.mejdoo.clean.presentation.viewmodel.PostListViewModelTest
 import org.junit.runner.RunWith
@@ -37,8 +37,8 @@ import org.junit.runners.Suite
     CommentRepositoryImplTest::class,
     UserRepositoryImplTest::class,
     PostListUseCaseTest::class,
-    PostItemMapperTest::class,
-    PostDetailMapperTest::class,
+    PostItemMappersTest::class,
+    PostDetailMappersTest::class,
     PostListViewModelTest::class,
     PostDetailViewModelTest::class
 )
