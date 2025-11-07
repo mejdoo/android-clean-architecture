@@ -11,9 +11,8 @@ class PostItemMapperTest {
     @Test
     fun test_MapFromDomain() {
 
-        val postItemMapper = PostItemMapper()
 
-        val postItem = postItemMapper.mapFromDomain(post1)
+        val postItem = post1.toPostItem()
 
         assertTrue(postItem.postId == post1.id)
         assertTrue(postItem.userId == post1.userId)
@@ -25,9 +24,7 @@ class PostItemMapperTest {
 
         val posts = mutableListOf(post1, post2)
 
-        val postItemMapper = PostItemMapper()
-
-        val postItems = postItemMapper.mapListFromDomain(posts)
+        val postItems = posts.toPostItemList()
 
         assertTrue(postItems.size == posts.size)
 

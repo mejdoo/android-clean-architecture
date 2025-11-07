@@ -4,7 +4,7 @@ package com.mejdoo.clean.presentation.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mejdoo.clean.domain.usecase.PostDetailUseCase
-import com.mejdoo.clean.presentation.mapper.PostDetailMapper
+import com.mejdoo.clean.presentation.mapper.toPostDetail
 import com.mejdoo.clean.presentation.model.PostDetail
 import com.mejdoo.clean.presentation.model.Resource
 import com.mejdoo.clean.presentation.model.ResourceStatus
@@ -13,8 +13,7 @@ import io.reactivex.schedulers.Schedulers
 
 
 class PostDetailViewModel(
-    private val postDetailUseCase: PostDetailUseCase,
-    private val mapper: PostDetailMapper
+    private val postDetailUseCase: PostDetailUseCase
 ) : ViewModel() {
 
 
@@ -38,7 +37,7 @@ class PostDetailViewModel(
 
             }
             .subscribeOn(Schedulers.io())
-            .map { mapper.mapFromDomain(it) }
+            .map {it.toPostDetail() }
             .subscribe({
 
 

@@ -7,7 +7,7 @@ import com.mejdoo.clean.comment2
 import com.mejdoo.clean.domain.usecase.CombinedPostUserComments
 import com.mejdoo.clean.domain.usecase.PostDetailUseCase
 import com.mejdoo.clean.post1
-import com.mejdoo.clean.presentation.mapper.PostDetailMapper
+import com.mejdoo.clean.presentation.mapper.toPostDetail
 import com.mejdoo.clean.presentation.model.PostDetail
 import com.mejdoo.clean.presentation.model.Resource
 import com.mejdoo.clean.presentation.model.ResourceStatus
@@ -38,8 +38,6 @@ class PostDetailViewModelTest {
 
     private val throwable = Throwable()
 
-    private val mapper = PostDetailMapper()
-
     @Rule
     @JvmField
     val rxSchedulersOverrideRule = RxSchedulersOverrideRule()
@@ -51,7 +49,7 @@ class PostDetailViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        detailViewModel = PostDetailViewModel(mockUseCase, mapper)
+        detailViewModel = PostDetailViewModel(mockUseCase)
     }
 
     @Test
@@ -74,7 +72,7 @@ class PostDetailViewModelTest {
         assertEquals(
             Resource<PostDetail>(
                 ResourceStatus.SUCCESS,
-                mapper.mapFromDomain(combinedPostUserComments),
+                combinedPostUserComments.toPostDetail(),
                 null
             ),
             detailViewModel.postDetailLiveData.value

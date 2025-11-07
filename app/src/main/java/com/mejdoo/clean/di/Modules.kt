@@ -23,8 +23,6 @@ import com.mejdoo.clean.domain.repository.PostRepository
 import com.mejdoo.clean.domain.repository.UserRepository
 import com.mejdoo.clean.domain.usecase.PostDetailUseCase
 import com.mejdoo.clean.domain.usecase.PostListUseCase
-import com.mejdoo.clean.presentation.mapper.PostDetailMapper
-import com.mejdoo.clean.presentation.mapper.PostItemMapper
 import com.mejdoo.clean.presentation.viewmodel.PostDetailViewModel
 import com.mejdoo.clean.presentation.viewmodel.PostListViewModel
 import com.mejdoo.clean.util.DB_NAME
@@ -34,8 +32,8 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule: Module = module {
-    viewModel { PostListViewModel(get(), get()) }
-    viewModel { PostDetailViewModel(get(), get()) }
+    viewModel { PostListViewModel(get()) }
+    viewModel { PostDetailViewModel(get()) }
 }
 
 val useCaseModule: Module = module {
@@ -108,9 +106,4 @@ val cacheModule: Module = module {
     single { get<CleanDatabase>().postDao() }
     single { get<CleanDatabase>().userDao() }
     single { get<CleanDatabase>().commentDao() }
-}
-
-val mapperModule: Module = module {
-    single { PostItemMapper() }
-    single { PostDetailMapper() }
 }

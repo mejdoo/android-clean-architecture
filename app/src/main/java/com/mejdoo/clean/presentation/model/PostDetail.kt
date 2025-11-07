@@ -11,7 +11,7 @@ data class PostDetail(
 
     val body: String,
 
-    val username: String,
+    val userName: String,
 
-    val nbComments: Int
+    val commentCount: Int
 )

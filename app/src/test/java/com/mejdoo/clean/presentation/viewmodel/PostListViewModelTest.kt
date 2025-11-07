@@ -5,7 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.mejdoo.clean.domain.usecase.PostListUseCase
 import com.mejdoo.clean.post1
 import com.mejdoo.clean.post2
-import com.mejdoo.clean.presentation.mapper.PostItemMapper
+import com.mejdoo.clean.presentation.mapper.toPostItemList
 import com.mejdoo.clean.presentation.model.PostItem
 import com.mejdoo.clean.presentation.model.Resource
 import com.mejdoo.clean.presentation.model.ResourceStatus
@@ -30,8 +30,6 @@ class PostListViewModelTest {
 
     private val throwable = Throwable()
 
-    private val mapper = PostItemMapper()
-
     @Rule
     @JvmField
     val rxSchedulersOverrideRule = RxSchedulersOverrideRule()
@@ -43,7 +41,7 @@ class PostListViewModelTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        listViewModel = PostListViewModel(mockUseCase, mapper)
+        listViewModel = PostListViewModel(mockUseCase)
     }
 
     @Test
@@ -58,7 +56,7 @@ class PostListViewModelTest {
         assertEquals(
             Resource<List<PostItem>>(
                 ResourceStatus.SUCCESS,
-                mapper.mapListFromDomain(posts),
+                posts.toPostItemList(),
                 null
             ),
             listViewModel.postItemsLiveData.value

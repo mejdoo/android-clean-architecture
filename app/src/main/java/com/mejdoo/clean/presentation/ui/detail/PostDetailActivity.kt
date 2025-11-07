@@ -48,9 +48,9 @@ class PostDetailActivity : BaseActivity() {
         if (postDetail != null) {
             binding.postTitle.text = postDetail.title
             binding.postBody.text = postDetail.body
-            binding.postAuthor.text = postDetail.username
+            binding.postAuthor.text = postDetail.userName
             binding.postComments.text =
-                String.format(resources.getString(R.string.comments), postDetail.nbComments)
+                String.format(resources.getString(R.string.comments), postDetail.commentCount)
             Picasso.get().load(AVATARS_URL + postDetail.userId).into(binding.toolbarImage)
         }
 

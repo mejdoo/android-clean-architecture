@@ -3,7 +3,6 @@ package com.mejdoo.clean
 import android.app.Application
 import com.mejdoo.clean.di.cacheModule
 import com.mejdoo.clean.di.dataSourceModule
-import com.mejdoo.clean.di.mapperModule
 import com.mejdoo.clean.di.networkModule
 import com.mejdoo.clean.di.repositoryModule
 import com.mejdoo.clean.di.useCaseModule
@@ -29,8 +28,7 @@ class CleanApplication : Application() {
                 repositoryModule,
                 dataSourceModule,
                 networkModule,
-                cacheModule,
-                mapperModule
+                cacheModule
             )
         }
     }

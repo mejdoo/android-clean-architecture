@@ -20,16 +20,14 @@ class PostDetailMapperTest {
                 user1, listOf(comment1, comment2)
             )
 
-        val postDetailMapper = PostDetailMapper()
-
-        val postDetail = postDetailMapper.mapFromDomain(combinedPostUserComments)
+        val postDetail = combinedPostUserComments.toPostDetail()
 
         assertTrue(postDetail.postId == combinedPostUserComments.post.id)
         assertTrue(postDetail.userId == combinedPostUserComments.user.id)
         assertTrue(postDetail.title == combinedPostUserComments.post.title)
         assertTrue(postDetail.body == combinedPostUserComments.post.body)
-        assertTrue(postDetail.username == combinedPostUserComments.user.name)
-        assertTrue(postDetail.nbComments == combinedPostUserComments.comments.size)
+        assertTrue(postDetail.userName == combinedPostUserComments.user.name)
+        assertTrue(postDetail.commentCount == combinedPostUserComments.comments.size)
     }
 
     @Test
@@ -43,9 +41,7 @@ class PostDetailMapperTest {
 
         val listCombinedPostUserComments = listOf(combinedPostUserComments)
 
-        val postDetailMapper = PostDetailMapper()
-
-        val listOfPostDetail = postDetailMapper.mapListFromDomain(listCombinedPostUserComments)
+        val listOfPostDetail = listCombinedPostUserComments.toPostDetailList()
 
 
         assertTrue(listOfPostDetail.size == listCombinedPostUserComments.size)
@@ -56,8 +52,8 @@ class PostDetailMapperTest {
             assertTrue(listOfPostDetail[i].userId == listCombinedPostUserComments[i].user.id)
             assertTrue(listOfPostDetail[i].title == listCombinedPostUserComments[i].post.title)
             assertTrue(listOfPostDetail[i].body == listCombinedPostUserComments[i].post.body)
-            assertTrue(listOfPostDetail[i].username == listCombinedPostUserComments[i].user.name)
-            assertTrue(listOfPostDetail[i].nbComments == listCombinedPostUserComments[i].comments.size)
+            assertTrue(listOfPostDetail[i].userName == listCombinedPostUserComments[i].user.name)
+            assertTrue(listOfPostDetail[i].commentCount == listCombinedPostUserComments[i].comments.size)
 
         }
 
