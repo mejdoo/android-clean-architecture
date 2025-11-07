@@ -1,25 +1,26 @@
 package com.mejdoo.clean.data.source.local.implementation
 
-import com.mejdoo.clean.data.mapper.PostEntityMapper
+import com.mejdoo.clean.data.mapper.toData
+import com.mejdoo.clean.data.mapper.toDomain
+import com.mejdoo.clean.data.mapper.toDomainList
 import com.mejdoo.clean.data.source.local.abstraction.PostDao
 import com.mejdoo.clean.data.source.local.abstraction.PostLocalDataSource
 import com.mejdoo.clean.domain.model.Post
 import io.reactivex.Single
 
 class PostLocalDataSourceImpl(
-    private val dao: PostDao,
-    private val mapper: PostEntityMapper
+    private val dao: PostDao
 ) : PostLocalDataSource {
 
     override fun getAllPosts(): Single<List<Post>> =
         dao.getAllPosts()
-            .map { mapper.mapListToDomain(it) }
+            .map { it.toDomainList() }
 
     override fun getPostById(postId: Int): Single<Post> =
         dao.getPostById(postId)
-            .map { mapper.mapToDomain(it) }
+            .map { it.toDomain() }
 
     override fun insertPost(post: Post) {
-        dao.insertPost(mapper.mapFromDomain(post))
+        dao.insertPost(post.toData())
     }
 }

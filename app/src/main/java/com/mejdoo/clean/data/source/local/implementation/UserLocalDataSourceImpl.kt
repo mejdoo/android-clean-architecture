@@ -1,21 +1,21 @@
 package com.mejdoo.clean.data.source.local.implementation
 
-import com.mejdoo.clean.data.mapper.UserEntityMapper
+import com.mejdoo.clean.data.mapper.toData
+import com.mejdoo.clean.data.mapper.toDomain
 import com.mejdoo.clean.data.source.local.abstraction.UserDao
 import com.mejdoo.clean.data.source.local.abstraction.UserLocalDataSource
 import com.mejdoo.clean.domain.model.User
 import io.reactivex.Single
 
 class UserLocalDataSourceImpl(
-    private val dao: UserDao,
-    private val mapper: UserEntityMapper
+    private val dao: UserDao
 ) : UserLocalDataSource {
 
     override fun getUserById(userId: Int): Single<User> =
         dao.getUserById(userId)
-            .map { mapper.mapToDomain(it) }
+            .map { it.toDomain() }
 
     override fun insertUser(user: User) {
-        dao.insertUser(mapper.mapFromDomain(user))
+        dao.insertUser(user.toData())
     }
 }

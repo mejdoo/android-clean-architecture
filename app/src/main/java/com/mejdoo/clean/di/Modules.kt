@@ -1,9 +1,6 @@
 package com.mejdoo.clean.di
 
 import androidx.room.Room
-import com.mejdoo.clean.data.mapper.CommentEntityMapper
-import com.mejdoo.clean.data.mapper.PostEntityMapper
-import com.mejdoo.clean.data.mapper.UserEntityMapper
 import com.mejdoo.clean.data.repository.CommentRepositoryImpl
 import com.mejdoo.clean.data.repository.PostRepositoryImpl
 import com.mejdoo.clean.data.repository.UserRepositoryImpl
@@ -71,37 +68,31 @@ val dataSourceModule: Module = module {
     single {
         PostRemoteDataSourceImpl(
             api = cleanApi,
-            mapper = get()
         ) as PostRemoteDataSource
     }
     single {
         UserRemoteDataSourceImpl(
             api = cleanApi,
-            mapper = get()
         ) as UserRemoteDataSource
     }
     single {
         CommentRemoteDataSourceImpl(
             api = cleanApi,
-            mapper = get()
         ) as CommentRemoteDataSource
     }
     single {
         PostLocalDataSourceImpl(
             get(),
-            get()
         ) as PostLocalDataSource
     }
     single {
         UserLocalDataSourceImpl(
             get(),
-            get()
         ) as UserLocalDataSource
     }
     single {
         CommentLocalDataSourceImpl(
             get(),
-            get()
         ) as CommentLocalDataSource
     }
 }
@@ -120,9 +111,6 @@ val cacheModule: Module = module {
 }
 
 val mapperModule: Module = module {
-    single { PostEntityMapper() }
-    single { UserEntityMapper() }
-    single { CommentEntityMapper() }
     single { PostItemMapper() }
     single { PostDetailMapper() }
 }
