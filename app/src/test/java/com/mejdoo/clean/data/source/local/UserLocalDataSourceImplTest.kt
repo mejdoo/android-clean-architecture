@@ -29,29 +29,29 @@ class UserLocalDataSourceImplTest {
     }
 
     @Test
-    fun test_GetUserById_Success() {
+    fun test_UserById_Success() {
 
         val userId = 1
 
-        `when`(mockDao.getUserById(userId)).thenReturn(Single.just(userEntity1))
+        `when`(mockDao.userById(userId)).thenReturn(Single.just(userEntity1))
 
 
-        val test = dataSource.getUserById(userId).test()
+        val test = dataSource.userById(userId).test()
 
-        verify(mockDao).getUserById(userId)
+        verify(mockDao).userById(userId)
         test.assertValue(userEntity1.toDomain())
     }
 
     @Test
-    fun test_GetUserById_Failure() {
+    fun test_UserById_Failure() {
 
         val userId = 1
 
-        `when`(mockDao.getUserById(userId)).thenReturn(Single.error(throwable))
+        `when`(mockDao.userById(userId)).thenReturn(Single.error(throwable))
 
-        val test = dataSource.getUserById(userId).test()
+        val test = dataSource.userById(userId).test()
 
-        verify(mockDao).getUserById(userId)
+        verify(mockDao).userById(userId)
         test.assertError(throwable)
     }
 }

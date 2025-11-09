@@ -24,7 +24,7 @@ class PostListViewModel(
 
     fun getPostList() =
         compositeDisposable.add(
-            postListUseCase.getPostList()
+            postListUseCase.postList()
             .doOnSubscribe {
 
                 postItemsLiveData.postValue(

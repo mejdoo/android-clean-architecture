@@ -24,7 +24,7 @@ class PostDetailViewModel(
 
     fun getPostDetail(postId: Int, userId: Int) =
         compositeDisposable.add(
-            postDetailUseCase.getPostDetails(postId, userId)
+            postDetailUseCase.postDetails(postId, userId)
             .doOnSubscribe {
 
                 postDetailLiveData.postValue(

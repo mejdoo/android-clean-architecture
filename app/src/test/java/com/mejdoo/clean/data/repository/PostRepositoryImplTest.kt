@@ -33,93 +33,93 @@ class PostRepositoryImplTest {
     }
 
     @Test
-    fun test_GetPostById_RemoteDataSource_Success() {
+    fun test_PostById_RemoteDataSource_Success() {
 
         val postId = 1
 
-        `when`(mockRemoteDataSource.getPostById(postId)).thenReturn(Single.just(post1))
+        `when`(mockRemoteDataSource.postById(postId)).thenReturn(Single.just(post1))
 
 
-        val test = repository.getPostById(postId).test()
+        val test = repository.postById(postId).test()
 
-        verify(mockRemoteDataSource).getPostById(postId)
+        verify(mockRemoteDataSource).postById(postId)
         test.assertValue(post1)
     }
 
     @Test
-    fun test_GetPostById_RemoteDataSource_Failure_LocalDataSource_Success() {
+    fun test_PostById_RemoteDataSource_Failure_LocalDataSource_Success() {
 
         val postId = 1
 
-        `when`(mockRemoteDataSource.getPostById(postId)).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.getPostById(postId)).thenReturn(Single.just(post1))
+        `when`(mockRemoteDataSource.postById(postId)).thenReturn(Single.error(throwable))
+        `when`(mockLocalDataSource.postById(postId)).thenReturn(Single.just(post1))
 
-        val test = repository.getPostById(postId).test()
+        val test = repository.postById(postId).test()
 
 
-        verify(mockRemoteDataSource).getPostById(postId)
-        verify(mockLocalDataSource).getPostById(postId)
+        verify(mockRemoteDataSource).postById(postId)
+        verify(mockLocalDataSource).postById(postId)
 
         test.assertValue(post1)
     }
 
     @Test
-    fun test_GetPostById_RemoteDataSource_Failure_LocalDataSource_Failure() {
+    fun test_PostById_RemoteDataSource_Failure_LocalDataSource_Failure() {
 
         val postId = 1
 
-        `when`(mockRemoteDataSource.getPostById(postId)).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.getPostById(postId)).thenReturn(Single.error(throwable))
+        `when`(mockRemoteDataSource.postById(postId)).thenReturn(Single.error(throwable))
+        `when`(mockLocalDataSource.postById(postId)).thenReturn(Single.error(throwable))
 
-        val test = repository.getPostById(postId).test()
+        val test = repository.postById(postId).test()
 
 
-        verify(mockRemoteDataSource).getPostById(postId)
-        verify(mockLocalDataSource).getPostById(postId)
+        verify(mockRemoteDataSource).postById(postId)
+        verify(mockLocalDataSource).postById(postId)
 
         test.assertError(throwable)
     }
 
 
     @Test
-    fun test_GetAllPosts_RemoteDataSource_Success() {
+    fun test_AllPosts_RemoteDataSource_Success() {
 
 
-        `when`(mockRemoteDataSource.getAllPosts()).thenReturn(Single.just(posts))
+        `when`(mockRemoteDataSource.allPosts()).thenReturn(Single.just(posts))
 
 
-        val test = repository.getAllPosts().test()
+        val test = repository.allPosts().test()
 
-        verify(mockRemoteDataSource).getAllPosts()
+        verify(mockRemoteDataSource).allPosts()
         test.assertValue(posts)
     }
 
     @Test
-    fun test_GetAllPosts_RemoteDataSource_Failure_LocalDataSource_Success() {
+    fun test_AllPosts_RemoteDataSource_Failure_LocalDataSource_Success() {
 
-        `when`(mockRemoteDataSource.getAllPosts()).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.getAllPosts()).thenReturn(Single.just(posts))
+        `when`(mockRemoteDataSource.allPosts()).thenReturn(Single.error(throwable))
+        `when`(mockLocalDataSource.allPosts()).thenReturn(Single.just(posts))
 
-        val test = repository.getAllPosts().test()
+        val test = repository.allPosts().test()
 
 
-        verify(mockRemoteDataSource).getAllPosts()
-        verify(mockLocalDataSource).getAllPosts()
+        verify(mockRemoteDataSource).allPosts()
+        verify(mockLocalDataSource).allPosts()
 
         test.assertValue(posts)
     }
 
     @Test
-    fun test_GetAllPosts_RemoteDataSource_Failure_LocalDataSource_Failure() {
+    fun test_AllPosts_RemoteDataSource_Failure_LocalDataSource_Failure() {
 
-        `when`(mockRemoteDataSource.getAllPosts()).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.getAllPosts()).thenReturn(Single.error(throwable))
+        `when`(mockRemoteDataSource.allPosts()).thenReturn(Single.error(throwable))
+        `when`(mockLocalDataSource.allPosts()).thenReturn(Single.error(throwable))
 
-        val test = repository.getAllPosts().test()
+        val test = repository.allPosts().test()
 
 
-        verify(mockRemoteDataSource).getAllPosts()
-        verify(mockLocalDataSource).getAllPosts()
+        verify(mockRemoteDataSource).allPosts()
+        verify(mockLocalDataSource).allPosts()
 
         test.assertError(throwable)
     }

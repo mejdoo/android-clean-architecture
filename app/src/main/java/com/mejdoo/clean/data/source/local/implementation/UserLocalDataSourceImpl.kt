@@ -11,8 +11,8 @@ class UserLocalDataSourceImpl(
     private val dao: UserDao
 ) : UserLocalDataSource {
 
-    override fun getUserById(userId: Int): Single<User> =
-        dao.getUserById(userId)
+    override fun userById(userId: Int): Single<User> =
+        dao.userById(userId)
             .map { it.toDomain() }
 
     override fun insertUser(user: User) {

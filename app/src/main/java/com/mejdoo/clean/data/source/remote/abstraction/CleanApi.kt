@@ -12,14 +12,14 @@ import retrofit2.http.Query
 interface CleanApi {
 
     @GET("/posts")
-    fun getAllPosts(): Single<List<PostEntity>>
+    fun allPosts(): Single<List<PostEntity>>
 
     @GET("/posts/{id}")
-    fun getPostById(@Path("id") postId: Int): Single<PostEntity>
+    fun postById(@Path("id") postId: Int): Single<PostEntity>
 
     @GET("/users/{id}")
-    fun getUserById(@Path("id") userId: Int): Single<UserEntity>
+    fun userById(@Path("id") userId: Int): Single<UserEntity>
 
     @GET("/comments")
-    fun getCommentsByPostId(@Query("postId") postId: Int): Single<List<CommentEntity>>
+    fun commentsForPost(@Query("postId") postId: Int): Single<List<CommentEntity>>
 }

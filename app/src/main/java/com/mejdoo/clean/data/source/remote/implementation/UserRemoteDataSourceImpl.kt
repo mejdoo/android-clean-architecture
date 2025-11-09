@@ -10,8 +10,8 @@ class UserRemoteDataSourceImpl(
     private val api: CleanApi
 ) : UserRemoteDataSource {
 
-    override fun getUserById(userId: Int): Single<User> =
-        api.getUserById(userId)
+    override fun userById(userId: Int): Single<User> =
+        api.userById(userId)
             .map { it.toDomain() }
 
 }

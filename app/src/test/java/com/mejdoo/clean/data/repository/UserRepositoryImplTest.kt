@@ -31,49 +31,49 @@ class UserRepositoryImplTest {
     }
 
     @Test
-    fun test_GetUserById_RemoteDataSource_Success() {
+    fun test_UserById_RemoteDataSource_Success() {
 
         val userId = 1
 
-        `when`(mockRemoteDataSource.getUserById(userId)).thenReturn(Single.just(user1))
+        `when`(mockRemoteDataSource.userById(userId)).thenReturn(Single.just(user1))
 
 
-        val test = repository.getUserById(userId).test()
+        val test = repository.userById(userId).test()
 
-        verify(mockRemoteDataSource).getUserById(userId)
+        verify(mockRemoteDataSource).userById(userId)
         test.assertValue(user1)
     }
 
     @Test
-    fun test_GetUserById_RemoteDataSource_Failure_LocalDataSource_Success() {
+    fun test_UserById_RemoteDataSource_Failure_LocalDataSource_Success() {
 
         val userId = 1
 
-        `when`(mockRemoteDataSource.getUserById(userId)).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.getUserById(userId)).thenReturn(Single.just(user1))
+        `when`(mockRemoteDataSource.userById(userId)).thenReturn(Single.error(throwable))
+        `when`(mockLocalDataSource.userById(userId)).thenReturn(Single.just(user1))
 
-        val test = repository.getUserById(userId).test()
+        val test = repository.userById(userId).test()
 
 
-        verify(mockRemoteDataSource).getUserById(userId)
-        verify(mockLocalDataSource).getUserById(userId)
+        verify(mockRemoteDataSource).userById(userId)
+        verify(mockLocalDataSource).userById(userId)
 
         test.assertValue(user1)
     }
 
     @Test
-    fun test_GetUserById_RemoteDataSource_Failure_LocalDataSource_Failure() {
+    fun test_UserById_RemoteDataSource_Failure_LocalDataSource_Failure() {
 
         val userId = 1
 
-        `when`(mockRemoteDataSource.getUserById(userId)).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.getUserById(userId)).thenReturn(Single.error(throwable))
+        `when`(mockRemoteDataSource.userById(userId)).thenReturn(Single.error(throwable))
+        `when`(mockLocalDataSource.userById(userId)).thenReturn(Single.error(throwable))
 
-        val test = repository.getUserById(userId).test()
+        val test = repository.userById(userId).test()
 
 
-        verify(mockRemoteDataSource).getUserById(userId)
-        verify(mockLocalDataSource).getUserById(userId)
+        verify(mockRemoteDataSource).userById(userId)
+        verify(mockLocalDataSource).userById(userId)
 
         test.assertError(throwable)
     }

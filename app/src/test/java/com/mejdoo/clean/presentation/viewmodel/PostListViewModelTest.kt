@@ -45,14 +45,14 @@ class PostListViewModelTest {
     }
 
     @Test
-    fun test_GetPostList_Success() {
+    fun test_PostList_Success() {
 
-        `when`(mockUseCase.getPostList()).thenReturn(Single.just(posts))
+        `when`(mockUseCase.postList()).thenReturn(Single.just(posts))
 
         listViewModel.getPostList()
 
 
-        verify(mockUseCase).getPostList()
+        verify(mockUseCase).postList()
         assertEquals(
             Resource<List<PostItem>>(
                 ResourceStatus.SUCCESS,
@@ -64,13 +64,13 @@ class PostListViewModelTest {
     }
 
     @Test
-    fun test_GetPostList_Failure() {
+    fun test_PostList_Failure() {
 
-        `when`(mockUseCase.getPostList()).thenReturn(Single.error(throwable))
+        `when`(mockUseCase.postList()).thenReturn(Single.error(throwable))
 
         listViewModel.getPostList()
 
-        verify(mockUseCase).getPostList()
+        verify(mockUseCase).postList()
         assertEquals(
             Resource<List<PostItem>>(
                 ResourceStatus.ERROR,

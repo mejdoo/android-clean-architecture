@@ -5,5 +5,5 @@ import io.reactivex.Single
 
 
 interface UserRepository {
-    fun getUserById(userId: Int): Single<User>
+    fun userById(userId: Int): Single<User>
 }

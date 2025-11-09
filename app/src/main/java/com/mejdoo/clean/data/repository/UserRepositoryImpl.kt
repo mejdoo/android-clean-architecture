@@ -12,10 +12,10 @@ class UserRepositoryImpl(
     private val localDataSource: UserLocalDataSource
 ) : UserRepository {
 
-    override fun getUserById(userId: Int): Single<User> =
-        remoteDataSource.getUserById(userId)
+    override fun userById(userId: Int): Single<User> =
+        remoteDataSource.userById(userId)
             .doOnSuccess { localDataSource.insertUser(it) }
-            .onErrorResumeNext { localDataSource.getUserById(userId) }
+            .onErrorResumeNext { localDataSource.userById(userId) }
 
 }
 

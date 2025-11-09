@@ -12,11 +12,11 @@ class CommentRepositoryImpl(
     private val localDataSource: CommentLocalDataSource
 ) : CommentRepository {
 
-    override fun getCommentsByPostId(postId: Int): Single<List<Comment>> =
+    override fun commentsForPost(postId: Int): Single<List<Comment>> =
 
-        remoteDataSource.getCommentsByPostId(postId)
+        remoteDataSource.commentsForPost(postId)
             .doOnSuccess { it.forEach { comment -> localDataSource.insertComment(comment) } }
-            .onErrorResumeNext { localDataSource.getCommentsByPostId(postId) }
+            .onErrorResumeNext { localDataSource.commentsForPost(postId) }
 
 }
 

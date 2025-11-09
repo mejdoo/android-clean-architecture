@@ -33,53 +33,53 @@ class PostRemoteDataSourceImplTest {
     }
 
     @Test
-    fun test_GetAllPosts_Success() {
+    fun test_AllPosts_Success() {
 
-        `when`(mockApi.getAllPosts()).thenReturn(Single.just(remoteList))
+        `when`(mockApi.allPosts()).thenReturn(Single.just(remoteList))
 
 
-        val test = dataSource.getAllPosts().test()
+        val test = dataSource.allPosts().test()
 
-        verify(mockApi).getAllPosts()
+        verify(mockApi).allPosts()
         test.assertValue(remoteList.toDomainList())
     }
 
     @Test
-    fun test_GetAllPosts_Failure() {
+    fun test_AllPosts_Failure() {
 
-        `when`(mockApi.getAllPosts()).thenReturn(Single.error(throwable))
+        `when`(mockApi.allPosts()).thenReturn(Single.error(throwable))
 
-        val test = dataSource.getAllPosts().test()
+        val test = dataSource.allPosts().test()
 
-        verify(mockApi).getAllPosts()
+        verify(mockApi).allPosts()
         test.assertError(throwable)
     }
 
 
     @Test
-    fun test_GetPostById_Success() {
+    fun test_PostById_Success() {
 
         val postId = 1
 
-        `when`(mockApi.getPostById(postId)).thenReturn(Single.just(postEntity1))
+        `when`(mockApi.postById(postId)).thenReturn(Single.just(postEntity1))
 
 
-        val test = dataSource.getPostById(postId).test()
+        val test = dataSource.postById(postId).test()
 
-        verify(mockApi).getPostById(postId)
+        verify(mockApi).postById(postId)
         test.assertValue(postEntity1.toDomain())
     }
 
     @Test
-    fun test_GetPostById_Failure() {
+    fun test_PostById_Failure() {
 
         val postId = 1
 
-        `when`(mockApi.getPostById(postId)).thenReturn(Single.error(throwable))
+        `when`(mockApi.postById(postId)).thenReturn(Single.error(throwable))
 
-        val test = dataSource.getPostById(postId).test()
+        val test = dataSource.postById(postId).test()
 
-        verify(mockApi).getPostById(postId)
+        verify(mockApi).postById(postId)
         test.assertError(throwable)
     }
 }

@@ -28,29 +28,29 @@ class UserRemoteDataSourceImplTest {
     }
 
     @Test
-    fun test_GetUserById_Success() {
+    fun test_UserById_Success() {
 
         val userId = 1
 
-        `when`(mockApi.getUserById(userId)).thenReturn(Single.just(userEntity1))
+        `when`(mockApi.userById(userId)).thenReturn(Single.just(userEntity1))
 
 
-        val test = dataSource.getUserById(userId).test()
+        val test = dataSource.userById(userId).test()
 
-        verify(mockApi).getUserById(userId)
+        verify(mockApi).userById(userId)
         test.assertValue(userEntity1.toDomain())
     }
 
     @Test
-    fun test_GetUserById_Failure() {
+    fun test_UserById_Failure() {
 
         val userId = 1
 
-        `when`(mockApi.getUserById(userId)).thenReturn(Single.error(throwable))
+        `when`(mockApi.userById(userId)).thenReturn(Single.error(throwable))
 
-        val test = dataSource.getUserById(userId).test()
+        val test = dataSource.userById(userId).test()
 
-        verify(mockApi).getUserById(userId)
+        verify(mockApi).userById(userId)
         test.assertError(throwable)
     }
 

@@ -33,29 +33,29 @@ class CommentLocalDataSourceImplTest {
 
 
     @Test
-    fun test_GetCommentsByPostId_Success() {
+    fun test_CommentsForPost_Success() {
 
         val postId = 1
 
-        `when`(mockDao.getCommentsByPostId(postId)).thenReturn(Single.just(localList))
+        `when`(mockDao.commentsForPost(postId)).thenReturn(Single.just(localList))
 
 
-        val test = dataSource.getCommentsByPostId(postId).test()
+        val test = dataSource.commentsForPost(postId).test()
 
-        verify(mockDao).getCommentsByPostId(postId)
+        verify(mockDao).commentsForPost(postId)
         test.assertValue(localList.toDomainList())
     }
 
     @Test
-    fun test_GetCommentsByPostId_Failure() {
+    fun test_CommentsForPost_Failure() {
 
         val userId = 1
 
-        `when`(mockDao.getCommentsByPostId(userId)).thenReturn(Single.error(throwable))
+        `when`(mockDao.commentsForPost(userId)).thenReturn(Single.error(throwable))
 
-        val test = dataSource.getCommentsByPostId(userId).test()
+        val test = dataSource.commentsForPost(userId).test()
 
-        verify(mockDao).getCommentsByPostId(userId)
+        verify(mockDao).commentsForPost(userId)
         test.assertError(throwable)
     }
 

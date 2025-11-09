@@ -11,12 +11,12 @@ class PostRemoteDataSourceImpl(
     private val api: CleanApi
 ) : PostRemoteDataSource {
 
-    override fun getAllPosts(): Single<List<Post>> =
-        api.getAllPosts()
+    override fun allPosts(): Single<List<Post>> =
+        api.allPosts()
             .map { it.toDomainList() }
 
-    override fun getPostById(postId: Int): Single<Post> =
-        api.getPostById(postId)
+    override fun postById(postId: Int): Single<Post> =
+        api.postById(postId)
             .map { it.toDomain() }
 
 }

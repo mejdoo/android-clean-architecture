@@ -11,7 +11,7 @@ import io.reactivex.Single
 interface UserDao {
 
     @Query("SELECT * from user WHERE id = :userId")
-    fun getUserById(userId: Int): Single<UserEntity>
+    fun userById(userId: Int): Single<UserEntity>
 
     @Insert(onConflict = REPLACE)
     fun insertUser(user: UserEntity)

@@ -33,29 +33,29 @@ class CommentRemoteDataSourceImplTest {
 
 
     @Test
-    fun test_GetCommentsByPostId_Success() {
+    fun test_CommentsForPost_Success() {
 
         val postId = 1
 
-        `when`(mockApi.getCommentsByPostId(postId)).thenReturn(Single.just(remoteList))
+        `when`(mockApi.commentsForPost(postId)).thenReturn(Single.just(remoteList))
 
 
-        val test = dataSource.getCommentsByPostId(postId).test()
+        val test = dataSource.commentsForPost(postId).test()
 
-        verify(mockApi).getCommentsByPostId(postId)
+        verify(mockApi).commentsForPost(postId)
         test.assertValue(remoteList.toDomainList())
     }
 
     @Test
-    fun test_GetCommentsByPostId_Failure() {
+    fun test_CommentsForPost_Failure() {
 
         val userId = 1
 
-        `when`(mockApi.getCommentsByPostId(userId)).thenReturn(Single.error(throwable))
+        `when`(mockApi.commentsForPost(userId)).thenReturn(Single.error(throwable))
 
-        val test = dataSource.getCommentsByPostId(userId).test()
+        val test = dataSource.commentsForPost(userId).test()
 
-        verify(mockApi).getCommentsByPostId(userId)
+        verify(mockApi).commentsForPost(userId)
         test.assertError(throwable)
     }
 

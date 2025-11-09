@@ -4,6 +4,6 @@ import com.mejdoo.clean.domain.model.Post
 import io.reactivex.Single
 
 interface PostRemoteDataSource {
-    fun getAllPosts(): Single<List<Post>>
-    fun getPostById(postId: Int): Single<Post>
+    fun allPosts(): Single<List<Post>>
+    fun postById(postId: Int): Single<Post>
 }

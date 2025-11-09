@@ -15,11 +15,11 @@ class PostDetailUseCase(
     private val commentRepository: CommentRepository
 ) {
 
-    fun getPostDetails(postId: Int, userId: Int): Single<CombinedPostUserComments> =
+    fun postDetails(postId: Int, userId: Int): Single<CombinedPostUserComments> =
         Single.zip(
-            postRepository.getPostById(postId),
-            userRepository.getUserById(userId),
-            commentRepository.getCommentsByPostId(postId),
+            postRepository.postById(postId),
+            userRepository.userById(userId),
+            commentRepository.commentsForPost(postId),
             Function3 { post, user, comments ->
                 CombinedPostUserComments(
                     post,

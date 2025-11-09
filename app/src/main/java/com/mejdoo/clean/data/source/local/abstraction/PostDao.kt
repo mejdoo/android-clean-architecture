@@ -12,10 +12,10 @@ import io.reactivex.Single
 interface PostDao {
 
     @Query("SELECT * from post")
-    fun getAllPosts(): Single<List<PostEntity>>
+    fun allPosts(): Single<List<PostEntity>>
 
     @Query("SELECT * from post WHERE id = :postId")
-    fun getPostById(postId: Int): Single<PostEntity>
+    fun postById(postId: Int): Single<PostEntity>
 
     @Insert(onConflict = REPLACE)
     fun insertPost(post: PostEntity)

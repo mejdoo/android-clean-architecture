@@ -4,5 +4,5 @@ import com.mejdoo.clean.domain.model.Comment
 import io.reactivex.Single
 
 interface CommentRepository {
-    fun getCommentsByPostId(postId: Int): Single<List<Comment>>
+    fun commentsForPost(postId: Int): Single<List<Comment>>
 }

@@ -5,6 +5,6 @@ import com.mejdoo.clean.domain.repository.PostRepository
 import io.reactivex.Single
 
 class PostListUseCase(private val postRepository: PostRepository) {
-    fun getPostList(): Single<List<Post>> = postRepository.getAllPosts()
+    fun postList(): Single<List<Post>> = postRepository.allPosts()
 }
 

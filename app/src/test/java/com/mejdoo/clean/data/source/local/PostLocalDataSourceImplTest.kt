@@ -33,53 +33,53 @@ class PostLocalDataSourceImplTest {
     }
 
     @Test
-    fun test_GetAllPosts_Success() {
+    fun test_AllPosts_Success() {
 
-        `when`(mockDao.getAllPosts()).thenReturn(Single.just(localList))
+        `when`(mockDao.allPosts()).thenReturn(Single.just(localList))
 
 
-        val test = dataSource.getAllPosts().test()
+        val test = dataSource.allPosts().test()
 
-        verify(mockDao).getAllPosts()
+        verify(mockDao).allPosts()
         test.assertValue(localList.toDomainList())
     }
 
     @Test
-    fun test_GetAllPosts_Failure() {
+    fun test_AllPosts_Failure() {
 
-        `when`(mockDao.getAllPosts()).thenReturn(Single.error(throwable))
+        `when`(mockDao.allPosts()).thenReturn(Single.error(throwable))
 
-        val test = dataSource.getAllPosts().test()
+        val test = dataSource.allPosts().test()
 
-        verify(mockDao).getAllPosts()
+        verify(mockDao).allPosts()
         test.assertError(throwable)
     }
 
 
     @Test
-    fun test_GetPostById_Success() {
+    fun test_PostById_Success() {
 
         val postId = 1
 
-        `when`(mockDao.getPostById(postId)).thenReturn(Single.just(postEntity1))
+        `when`(mockDao.postById(postId)).thenReturn(Single.just(postEntity1))
 
 
-        val test = dataSource.getPostById(postId).test()
+        val test = dataSource.postById(postId).test()
 
-        verify(mockDao).getPostById(postId)
+        verify(mockDao).postById(postId)
         test.assertValue(postEntity1.toDomain())
     }
 
     @Test
-    fun test_GetPostById_Failure() {
+    fun test_PostById_Failure() {
 
         val postId = 1
 
-        `when`(mockDao.getPostById(postId)).thenReturn(Single.error(throwable))
+        `when`(mockDao.postById(postId)).thenReturn(Single.error(throwable))
 
-        val test = dataSource.getPostById(postId).test()
+        val test = dataSource.postById(postId).test()
 
-        verify(mockDao).getPostById(postId)
+        verify(mockDao).postById(postId)
         test.assertError(throwable)
     }
 }

@@ -12,12 +12,12 @@ class PostLocalDataSourceImpl(
     private val dao: PostDao
 ) : PostLocalDataSource {
 
-    override fun getAllPosts(): Single<List<Post>> =
-        dao.getAllPosts()
+    override fun allPosts(): Single<List<Post>> =
+        dao.allPosts()
             .map { it.toDomainList() }
 
-    override fun getPostById(postId: Int): Single<Post> =
-        dao.getPostById(postId)
+    override fun postById(postId: Int): Single<Post> =
+        dao.postById(postId)
             .map { it.toDomain() }
 
     override fun insertPost(post: Post) {

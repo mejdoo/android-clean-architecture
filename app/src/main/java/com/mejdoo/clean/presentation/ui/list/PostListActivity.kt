@@ -22,11 +22,9 @@ class PostListActivity : BaseActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_post_list)
 
-
         binding.lifecycleOwner = this
 
         binding.viewModel = postListViewModel
-
 
         postListViewModel.getPostList()
 

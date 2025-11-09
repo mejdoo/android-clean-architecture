@@ -13,16 +13,16 @@ class PostRepositoryImpl(
 ) : PostRepository {
 
 
-    override fun getAllPosts(): Single<List<Post>> =
-        remoteDataSource.getAllPosts()
+    override fun allPosts(): Single<List<Post>> =
+        remoteDataSource.allPosts()
             .doOnSuccess { it.forEach { post -> localDataSource.insertPost(post) } }
-            .onErrorResumeNext { localDataSource.getAllPosts() }
+            .onErrorResumeNext { localDataSource.allPosts() }
 
 
-    override fun getPostById(postId: Int): Single<Post> =
-        remoteDataSource.getPostById(postId)
+    override fun postById(postId: Int): Single<Post> =
+        remoteDataSource.postById(postId)
             .doOnSuccess { localDataSource.insertPost(it) }
-            .onErrorResumeNext { localDataSource.getPostById(postId) }
+            .onErrorResumeNext { localDataSource.postById(postId) }
 
 
 }

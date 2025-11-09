@@ -33,48 +33,48 @@ class CommentRepositoryImplTest {
     }
 
     @Test
-    fun test_GetCommentsByPostId_RemoteDataSource_Success() {
+    fun test_CommentsForPost_RemoteDataSource_Success() {
 
         val postId = 1
 
-        `when`(mockRemoteDataSource.getCommentsByPostId(postId)).thenReturn(Single.just(comments))
+        `when`(mockRemoteDataSource.commentsForPost(postId)).thenReturn(Single.just(comments))
 
 
-        val test = repository.getCommentsByPostId(postId).test()
+        val test = repository.commentsForPost(postId).test()
 
-        verify(mockRemoteDataSource).getCommentsByPostId(postId)
+        verify(mockRemoteDataSource).commentsForPost(postId)
         test.assertValue(comments)
     }
 
     @Test
-    fun test_GetCommentsByPostId_RemoteDataSource_Failure_LocalDataSource_Success() {
+    fun test_CommentsForPost_RemoteDataSource_Failure_LocalDataSource_Success() {
 
         val postId = 1
 
-        `when`(mockRemoteDataSource.getCommentsByPostId(postId)).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.getCommentsByPostId(postId)).thenReturn(Single.just(comments))
+        `when`(mockRemoteDataSource.commentsForPost(postId)).thenReturn(Single.error(throwable))
+        `when`(mockLocalDataSource.commentsForPost(postId)).thenReturn(Single.just(comments))
 
-        val test = repository.getCommentsByPostId(postId).test()
+        val test = repository.commentsForPost(postId).test()
 
 
-        verify(mockRemoteDataSource).getCommentsByPostId(postId)
-        verify(mockLocalDataSource).getCommentsByPostId(postId)
+        verify(mockRemoteDataSource).commentsForPost(postId)
+        verify(mockLocalDataSource).commentsForPost(postId)
 
         test.assertValue(comments)
     }
 
     @Test
-    fun test_GetCommentsByPostId_RemoteDataSource_Failure_LocalDataSource_Failure() {
+    fun test_CommentsForPost_RemoteDataSource_Failure_LocalDataSource_Failure() {
 
         val postId = 1
 
-        `when`(mockRemoteDataSource.getCommentsByPostId(postId)).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.getCommentsByPostId(postId)).thenReturn(Single.error(throwable))
+        `when`(mockRemoteDataSource.commentsForPost(postId)).thenReturn(Single.error(throwable))
+        `when`(mockLocalDataSource.commentsForPost(postId)).thenReturn(Single.error(throwable))
 
-        val test = repository.getCommentsByPostId(postId).test()
+        val test = repository.commentsForPost(postId).test()
 
-        verify(mockRemoteDataSource).getCommentsByPostId(postId)
-        verify(mockLocalDataSource).getCommentsByPostId(postId)
+        verify(mockRemoteDataSource).commentsForPost(postId)
+        verify(mockLocalDataSource).commentsForPost(postId)
 
         test.assertError(throwable)
     }

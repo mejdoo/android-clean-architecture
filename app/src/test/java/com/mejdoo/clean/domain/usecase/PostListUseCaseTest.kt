@@ -31,27 +31,27 @@ class PostListUseCaseTest {
     }
 
     @Test
-    fun test_GetPostList_Success() {
+    fun test_PostList_Success() {
 
 
-        Mockito.`when`(mockRepository.getAllPosts()).thenReturn(Single.just(posts))
+        Mockito.`when`(mockRepository.allPosts()).thenReturn(Single.just(posts))
 
-        val test = useCase.getPostList().test()
+        val test = useCase.postList().test()
 
 
-        verify(mockRepository).getAllPosts()
+        verify(mockRepository).allPosts()
 
         test.assertValue(posts)
     }
 
     @Test
-    fun test_GetPostList_Failure() {
+    fun test_PostList_Failure() {
 
-        Mockito.`when`(mockRepository.getAllPosts()).thenReturn(Single.error(throwable))
+        Mockito.`when`(mockRepository.allPosts()).thenReturn(Single.error(throwable))
 
-        val test = useCase.getPostList().test()
+        val test = useCase.postList().test()
 
-        verify(mockRepository).getAllPosts()
+        verify(mockRepository).allPosts()
 
         test.assertError(throwable)
     }

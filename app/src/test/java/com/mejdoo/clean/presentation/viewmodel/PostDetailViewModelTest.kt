@@ -53,13 +53,13 @@ class PostDetailViewModelTest {
     }
 
     @Test
-    fun test_GetPostDetails_Success() {
+    fun test_PostDetails_Success() {
 
         val postId = 1
 
         val userId = 1
 
-        `when`(mockUseCase.getPostDetails(postId, userId)).thenReturn(
+        `when`(mockUseCase.postDetails(postId, userId)).thenReturn(
             Single.just(
                 combinedPostUserComments
             )
@@ -68,7 +68,7 @@ class PostDetailViewModelTest {
         detailViewModel.getPostDetail(postId, userId)
 
 
-        verify(mockUseCase).getPostDetails(postId, userId)
+        verify(mockUseCase).postDetails(postId, userId)
         assertEquals(
             Resource<PostDetail>(
                 ResourceStatus.SUCCESS,
@@ -80,17 +80,17 @@ class PostDetailViewModelTest {
     }
 
     @Test
-    fun test_GetPostDetails_Failure() {
+    fun test_PostDetails_Failure() {
 
         val postId = 1
 
         val userId = 1
 
-        `when`(mockUseCase.getPostDetails(postId, userId)).thenReturn(Single.error(throwable))
+        `when`(mockUseCase.postDetails(postId, userId)).thenReturn(Single.error(throwable))
 
         detailViewModel.getPostDetail(postId, userId)
 
-        verify(mockUseCase).getPostDetails(postId, userId)
+        verify(mockUseCase).postDetails(postId, userId)
 
         assertEquals(
             Resource<PostDetail>(
