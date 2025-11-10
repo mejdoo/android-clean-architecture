@@ -9,7 +9,7 @@ import org.junit.Test
 class UserMappersTest {
 
     @Test
-    fun `toDomain should map UserEntity to User correctly`() {
+    fun `toUser should map UserEntity to User correctly`() {
         // Arrange
         val entity = UserEntity(
             id = 1,
@@ -20,7 +20,7 @@ class UserMappersTest {
         )
 
         // Act
-        val domain = entity.toDomain()
+        val domain = entity.toUser()
 
         // Assert
         assertEquals(entity.id, domain.id)
@@ -31,7 +31,7 @@ class UserMappersTest {
     }
 
     @Test
-    fun `toData should map User to UserEntity correctly`() {
+    fun `toUserEntity should map User to UserEntity correctly`() {
         // Arrange
         val user = User(
             id = 1,
@@ -42,7 +42,7 @@ class UserMappersTest {
         )
 
         // Act
-        val entity = user.toData()
+        val entity = user.toUserEntity()
 
         // Assert
         assertEquals(user.id, entity.id)
@@ -53,7 +53,7 @@ class UserMappersTest {
     }
 
     @Test
-    fun `toDomainList should map list of UserEntity to list of User correctly`() {
+    fun `toUserList should map list of UserEntity to list of User correctly`() {
         // Arrange
         val entities = listOf(
             UserEntity(1, "Alice", "alice@mail.com", "123-456", "alice.com"),
@@ -61,7 +61,7 @@ class UserMappersTest {
         )
 
         // Act
-        val domainList = entities.toDomainList()
+        val domainList = entities.toUserList()
 
         // Assert
         assertEquals(entities.size, domainList.size)
@@ -75,7 +75,7 @@ class UserMappersTest {
     }
 
     @Test
-    fun `toDataList should map list of User to list of UserEntity correctly`() {
+    fun `toUserEntityList should map list of User to list of UserEntity correctly`() {
         // Arrange
         val users = listOf(
             User(1, "Alice", "alice@mail.com", "123-456", "alice.com"),
@@ -83,7 +83,7 @@ class UserMappersTest {
         )
 
         // Act
-        val entityList = users.toDataList()
+        val entityList = users.toUserEntityList()
 
         // Assert
         assertEquals(users.size, entityList.size)

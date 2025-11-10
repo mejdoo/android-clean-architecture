@@ -1,6 +1,6 @@
 package com.mejdoo.clean.data.source.remote
 
-import com.mejdoo.clean.data.mapper.toDomain
+import com.mejdoo.clean.data.mapper.toUser
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.implementation.UserRemoteDataSourceImpl
 import com.mejdoo.clean.userEntity1
@@ -38,7 +38,7 @@ class UserRemoteDataSourceImplTest {
         val test = dataSource.userById(userId).test()
 
         verify(mockApi).userById(userId)
-        test.assertValue(userEntity1.toDomain())
+        test.assertValue(userEntity1.toUser())
     }
 
     @Test

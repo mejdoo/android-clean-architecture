@@ -1,6 +1,6 @@
 package com.mejdoo.clean.data.source.remote.implementation
 
-import com.mejdoo.clean.data.mapper.toDomain
+import com.mejdoo.clean.data.mapper.toUser
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.abstraction.UserRemoteDataSource
 import com.mejdoo.clean.domain.model.User
@@ -12,6 +12,6 @@ class UserRemoteDataSourceImpl(
 
     override fun userById(userId: Int): Single<User> =
         api.userById(userId)
-            .map { it.toDomain() }
+            .map { it.toUser() }
 
 }

@@ -5,7 +5,7 @@ import com.mejdoo.clean.domain.model.Comment
 
 // CommentMappers.kt
 
-fun CommentEntity.toDomain() = Comment(
+fun CommentEntity.toComment() = Comment(
     postId = postId,
     id = id,
     name = name,
@@ -13,7 +13,7 @@ fun CommentEntity.toDomain() = Comment(
     body = body
 )
 
-fun Comment.toData() = CommentEntity(
+fun Comment.toCommentEntity() = CommentEntity(
     postId = postId,
     id = id,
     name = name,
@@ -21,5 +21,5 @@ fun Comment.toData() = CommentEntity(
     body = body
 )
 
-fun List<CommentEntity>.toDomainList() = map { it.toDomain() }
-fun List<Comment>.toDataList() = map { it.toData() }
+fun List<CommentEntity>.toCommentList() = map { it.toComment() }
+fun List<Comment>.toCommentEntityList() = map { it.toCommentEntity() }

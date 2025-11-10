@@ -5,7 +5,7 @@ import com.mejdoo.clean.domain.model.User
 
 // UserMappers.kt
 
-fun UserEntity.toDomain() = User(
+fun UserEntity.toUser() = User(
     id = id,
     name = name,
     email = email,
@@ -13,7 +13,7 @@ fun UserEntity.toDomain() = User(
     website = website
 )
 
-fun User.toData() = UserEntity(
+fun User.toUserEntity() = UserEntity(
     id = id,
     name = name,
     email = email,
@@ -21,5 +21,5 @@ fun User.toData() = UserEntity(
     website = website
 )
 
-fun List<UserEntity>.toDomainList() = map { it.toDomain() }
-fun List<User>.toDataList() = map { it.toData() }
+fun List<UserEntity>.toUserList() = map { it.toUser() }
+fun List<User>.toUserEntityList() = map { it.toUserEntity() }

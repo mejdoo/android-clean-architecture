@@ -1,8 +1,8 @@
 package com.mejdoo.clean.data.source.local.implementation
 
-import com.mejdoo.clean.data.mapper.toData
-import com.mejdoo.clean.data.mapper.toDomain
-import com.mejdoo.clean.data.mapper.toDomainList
+import com.mejdoo.clean.data.mapper.toPost
+import com.mejdoo.clean.data.mapper.toPostEntity
+import com.mejdoo.clean.data.mapper.toPostList
 import com.mejdoo.clean.data.source.local.abstraction.PostDao
 import com.mejdoo.clean.data.source.local.abstraction.PostLocalDataSource
 import com.mejdoo.clean.domain.model.Post
@@ -14,13 +14,13 @@ class PostLocalDataSourceImpl(
 
     override fun allPosts(): Single<List<Post>> =
         dao.allPosts()
-            .map { it.toDomainList() }
+            .map { it.toPostList() }
 
     override fun postById(postId: Int): Single<Post> =
         dao.postById(postId)
-            .map { it.toDomain() }
+            .map { it.toPost() }
 
     override fun insertPost(post: Post) {
-        dao.insertPost(post.toData())
+        dao.insertPost(post.toPostEntity())
     }
 }

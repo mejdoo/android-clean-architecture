@@ -2,7 +2,7 @@ package com.mejdoo.clean.data.source.remote
 
 import com.mejdoo.clean.commentEntity1
 import com.mejdoo.clean.commentEntity2
-import com.mejdoo.clean.data.mapper.toDomainList
+import com.mejdoo.clean.data.mapper.toCommentList
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.implementation.CommentRemoteDataSourceImpl
 import io.reactivex.Single
@@ -43,7 +43,7 @@ class CommentRemoteDataSourceImplTest {
         val test = dataSource.commentsForPost(postId).test()
 
         verify(mockApi).commentsForPost(postId)
-        test.assertValue(remoteList.toDomainList())
+        test.assertValue(remoteList.toCommentList())
     }
 
     @Test

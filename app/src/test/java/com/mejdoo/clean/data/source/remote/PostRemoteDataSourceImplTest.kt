@@ -1,7 +1,7 @@
 package com.mejdoo.clean.data.source.remote
 
-import com.mejdoo.clean.data.mapper.toDomain
-import com.mejdoo.clean.data.mapper.toDomainList
+import com.mejdoo.clean.data.mapper.toPost
+import com.mejdoo.clean.data.mapper.toPostList
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.implementation.PostRemoteDataSourceImpl
 import com.mejdoo.clean.postEntity1
@@ -41,7 +41,7 @@ class PostRemoteDataSourceImplTest {
         val test = dataSource.allPosts().test()
 
         verify(mockApi).allPosts()
-        test.assertValue(remoteList.toDomainList())
+        test.assertValue(remoteList.toPostList())
     }
 
     @Test
@@ -67,7 +67,7 @@ class PostRemoteDataSourceImplTest {
         val test = dataSource.postById(postId).test()
 
         verify(mockApi).postById(postId)
-        test.assertValue(postEntity1.toDomain())
+        test.assertValue(postEntity1.toPost())
     }
 
     @Test

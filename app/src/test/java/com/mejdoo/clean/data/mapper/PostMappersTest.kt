@@ -9,7 +9,7 @@ import org.junit.Test
 class PostMappersTest {
 
     @Test
-    fun `toDomain should map PostEntity to Post correctly`() {
+    fun `toPost should map PostEntity to Post correctly`() {
         // Arrange
         val entity = PostEntity(
             userId = 10,
@@ -19,7 +19,7 @@ class PostMappersTest {
         )
 
         // Act
-        val domain = entity.toDomain()
+        val domain = entity.toPost()
 
         // Assert
         assertEquals(entity.userId, domain.userId)
@@ -29,7 +29,7 @@ class PostMappersTest {
     }
 
     @Test
-    fun `toData should map Post to PostEntity correctly`() {
+    fun `toPostEntity should map Post to PostEntity correctly`() {
         // Arrange
         val post = Post(
             userId = 10,
@@ -39,7 +39,7 @@ class PostMappersTest {
         )
 
         // Act
-        val entity = post.toData()
+        val entity = post.toPostEntity()
 
         // Assert
         assertEquals(post.userId, entity.userId)
@@ -49,7 +49,7 @@ class PostMappersTest {
     }
 
     @Test
-    fun `toDomainList should map list of PostEntity to list of Post correctly`() {
+    fun `toPostList should map list of PostEntity to list of Post correctly`() {
         // Arrange
         val entities = listOf(
             PostEntity(1, 101, "Title 1", "Body 1"),
@@ -57,7 +57,7 @@ class PostMappersTest {
         )
 
         // Act
-        val domainList = entities.toDomainList()
+        val domainList = entities.toPostList()
 
         // Assert
         assertEquals(entities.size, domainList.size)
@@ -70,7 +70,7 @@ class PostMappersTest {
     }
 
     @Test
-    fun `toDataList should map list of Post to list of PostEntity correctly`() {
+    fun `toPostEntityList should map list of Post to list of PostEntity correctly`() {
         // Arrange
         val posts = listOf(
             Post(1, 101, "Title 1", "Body 1"),
@@ -78,7 +78,7 @@ class PostMappersTest {
         )
 
         // Act
-        val entityList = posts.toDataList()
+        val entityList = posts.toPostEntityList()
 
         // Assert
         assertEquals(posts.size, entityList.size)

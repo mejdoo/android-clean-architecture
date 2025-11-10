@@ -1,6 +1,6 @@
 package com.mejdoo.clean.data.source.local
 
-import com.mejdoo.clean.data.mapper.toDomain
+import com.mejdoo.clean.data.mapper.toUser
 import com.mejdoo.clean.data.source.local.abstraction.UserDao
 import com.mejdoo.clean.data.source.local.implementation.UserLocalDataSourceImpl
 import com.mejdoo.clean.userEntity1
@@ -39,7 +39,7 @@ class UserLocalDataSourceImplTest {
         val test = dataSource.userById(userId).test()
 
         verify(mockDao).userById(userId)
-        test.assertValue(userEntity1.toDomain())
+        test.assertValue(userEntity1.toUser())
     }
 
     @Test

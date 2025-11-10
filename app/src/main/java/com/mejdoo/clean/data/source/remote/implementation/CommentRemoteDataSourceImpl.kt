@@ -1,6 +1,6 @@
 package com.mejdoo.clean.data.source.remote.implementation
 
-import com.mejdoo.clean.data.mapper.toDomainList
+import com.mejdoo.clean.data.mapper.toCommentList
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.abstraction.CommentRemoteDataSource
 import com.mejdoo.clean.domain.model.Comment
@@ -12,6 +12,6 @@ class CommentRemoteDataSourceImpl(
 
     override fun commentsForPost(postId: Int): Single<List<Comment>> =
         api.commentsForPost(postId)
-            .map { it.toDomainList() }
+            .map { it.toCommentList() }
 
 }

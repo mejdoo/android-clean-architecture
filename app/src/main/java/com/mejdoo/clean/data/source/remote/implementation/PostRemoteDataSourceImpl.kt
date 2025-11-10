@@ -1,7 +1,7 @@
 package com.mejdoo.clean.data.source.remote.implementation
 
-import com.mejdoo.clean.data.mapper.toDomain
-import com.mejdoo.clean.data.mapper.toDomainList
+import com.mejdoo.clean.data.mapper.toPost
+import com.mejdoo.clean.data.mapper.toPostList
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.abstraction.PostRemoteDataSource
 import com.mejdoo.clean.domain.model.Post
@@ -13,10 +13,10 @@ class PostRemoteDataSourceImpl(
 
     override fun allPosts(): Single<List<Post>> =
         api.allPosts()
-            .map { it.toDomainList() }
+            .map { it.toPostList() }
 
     override fun postById(postId: Int): Single<Post> =
         api.postById(postId)
-            .map { it.toDomain() }
+            .map { it.toPost() }
 
 }

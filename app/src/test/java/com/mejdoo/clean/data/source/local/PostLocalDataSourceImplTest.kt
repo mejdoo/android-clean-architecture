@@ -1,7 +1,7 @@
 package com.mejdoo.clean.data.source.local
 
-import com.mejdoo.clean.data.mapper.toDomain
-import com.mejdoo.clean.data.mapper.toDomainList
+import com.mejdoo.clean.data.mapper.toPost
+import com.mejdoo.clean.data.mapper.toPostList
 import com.mejdoo.clean.data.source.local.abstraction.PostDao
 import com.mejdoo.clean.data.source.local.implementation.PostLocalDataSourceImpl
 import com.mejdoo.clean.postEntity1
@@ -41,7 +41,7 @@ class PostLocalDataSourceImplTest {
         val test = dataSource.allPosts().test()
 
         verify(mockDao).allPosts()
-        test.assertValue(localList.toDomainList())
+        test.assertValue(localList.toPostList())
     }
 
     @Test
@@ -67,7 +67,7 @@ class PostLocalDataSourceImplTest {
         val test = dataSource.postById(postId).test()
 
         verify(mockDao).postById(postId)
-        test.assertValue(postEntity1.toDomain())
+        test.assertValue(postEntity1.toPost())
     }
 
     @Test

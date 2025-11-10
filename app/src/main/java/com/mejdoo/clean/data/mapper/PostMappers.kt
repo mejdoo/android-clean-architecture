@@ -5,19 +5,19 @@ import com.mejdoo.clean.domain.model.Post
 
 // PostMappers.kt
 
-fun PostEntity.toDomain() = Post(
+fun PostEntity.toPost() = Post(
     userId = userId,
     id = id,
     title = title,
     body = body
 )
 
-fun Post.toData() = PostEntity(
+fun Post.toPostEntity() = PostEntity(
     userId = userId,
     id = id,
     title = title,
     body = body
 )
 
-fun List<PostEntity>.toDomainList() = map { it.toDomain() }
-fun List<Post>.toDataList() = map { it.toData() }
+fun List<PostEntity>.toPostList() = map { it.toPost() }
+fun List<Post>.toPostEntityList() = map { it.toPostEntity() }

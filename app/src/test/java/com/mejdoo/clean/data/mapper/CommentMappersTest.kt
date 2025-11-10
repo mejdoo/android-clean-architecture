@@ -10,7 +10,7 @@ class CommentMappersTest {
 
 
     @Test
-    fun `toDomain should map CommentEntity to Comment correctly`() {
+    fun `toComment should map CommentEntity to Comment correctly`() {
         // Arrange
         val entity = CommentEntity(
             postId = 1,
@@ -21,7 +21,7 @@ class CommentMappersTest {
         )
 
         // Act
-        val domain = entity.toDomain()
+        val domain = entity.toComment()
 
         // Assert
         assertEquals(entity.postId, domain.postId)
@@ -32,7 +32,7 @@ class CommentMappersTest {
     }
 
     @Test
-    fun `toData should map Comment to CommentEntity correctly`() {
+    fun `toCommentEntity should map Comment to CommentEntity correctly`() {
         // Arrange
         val comment = Comment(
             postId = 1,
@@ -43,7 +43,7 @@ class CommentMappersTest {
         )
 
         // Act
-        val entity = comment.toData()
+        val entity = comment.toCommentEntity()
 
         // Assert
         assertEquals(comment.postId, entity.postId)
@@ -54,7 +54,7 @@ class CommentMappersTest {
     }
 
     @Test
-    fun `toDomainList should map list of CommentEntity to list of Comment correctly`() {
+    fun `toCommentList should map list of CommentEntity to list of Comment correctly`() {
         // Arrange
         val entities = listOf(
             CommentEntity(1, 1, "Alice", "alice@mail.com", "First body"),
@@ -62,7 +62,7 @@ class CommentMappersTest {
         )
 
         // Act
-        val domainList = entities.toDomainList()
+        val domainList = entities.toCommentList()
 
         // Assert
         assertEquals(entities.size, domainList.size)
@@ -76,7 +76,7 @@ class CommentMappersTest {
     }
 
     @Test
-    fun `toDataList should map list of Comment to list of CommentEntity correctly`() {
+    fun `toCommentEntityList should map list of Comment to list of CommentEntity correctly`() {
         // Arrange
         val comments = listOf(
             Comment(1, 1, "Alice", "alice@mail.com", "First body"),
@@ -84,7 +84,7 @@ class CommentMappersTest {
         )
 
         // Act
-        val entityList = comments.toDataList()
+        val entityList = comments.toCommentEntityList()
 
         // Assert
         assertEquals(comments.size, entityList.size)

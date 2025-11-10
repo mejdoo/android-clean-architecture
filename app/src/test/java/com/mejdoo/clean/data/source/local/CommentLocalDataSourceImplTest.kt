@@ -2,7 +2,7 @@ package com.mejdoo.clean.data.source.local
 
 import com.mejdoo.clean.commentEntity1
 import com.mejdoo.clean.commentEntity2
-import com.mejdoo.clean.data.mapper.toDomainList
+import com.mejdoo.clean.data.mapper.toCommentList
 import com.mejdoo.clean.data.source.local.abstraction.CommentDao
 import com.mejdoo.clean.data.source.local.implementation.CommentLocalDataSourceImpl
 import io.reactivex.Single
@@ -43,7 +43,7 @@ class CommentLocalDataSourceImplTest {
         val test = dataSource.commentsForPost(postId).test()
 
         verify(mockDao).commentsForPost(postId)
-        test.assertValue(localList.toDomainList())
+        test.assertValue(localList.toCommentList())
     }
 
     @Test
