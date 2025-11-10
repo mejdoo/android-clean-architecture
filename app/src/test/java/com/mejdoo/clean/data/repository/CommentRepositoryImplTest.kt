@@ -5,6 +5,7 @@ import com.mejdoo.clean.comment2
 import com.mejdoo.clean.data.source.local.abstraction.CommentLocalDataSource
 import com.mejdoo.clean.data.source.remote.abstraction.CommentRemoteDataSource
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -13,6 +14,8 @@ import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 class CommentRepositoryImplTest {
+
+    private lateinit var closeable: AutoCloseable
 
     private lateinit var repository: CommentRepositoryImpl
 
@@ -28,8 +31,13 @@ class CommentRepositoryImplTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        closeable = MockitoAnnotations.openMocks(this)
         repository = CommentRepositoryImpl(mockRemoteDataSource, mockLocalDataSource)
+    }
+
+    @After
+    fun tearDown() {
+        closeable.close()
     }
 
     @Test

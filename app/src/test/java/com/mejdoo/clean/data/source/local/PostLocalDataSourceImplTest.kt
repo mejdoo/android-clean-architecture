@@ -7,6 +7,7 @@ import com.mejdoo.clean.data.source.local.implementation.PostLocalDataSourceImpl
 import com.mejdoo.clean.postEntity1
 import com.mejdoo.clean.postEntity2
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -16,6 +17,8 @@ import org.mockito.MockitoAnnotations
 
 
 class PostLocalDataSourceImplTest {
+
+    private lateinit var closeable: AutoCloseable
 
     @Mock
     private lateinit var mockDao: PostDao
@@ -28,8 +31,13 @@ class PostLocalDataSourceImplTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        closeable = MockitoAnnotations.openMocks(this)
         dataSource = PostLocalDataSourceImpl(mockDao)
+    }
+
+    @After
+    fun tearDown() {
+        closeable.close()
     }
 
     @Test

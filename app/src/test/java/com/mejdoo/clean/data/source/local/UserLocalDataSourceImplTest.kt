@@ -5,6 +5,7 @@ import com.mejdoo.clean.data.source.local.abstraction.UserDao
 import com.mejdoo.clean.data.source.local.implementation.UserLocalDataSourceImpl
 import com.mejdoo.clean.userEntity1
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -15,6 +16,8 @@ import org.mockito.MockitoAnnotations
 
 class UserLocalDataSourceImplTest {
 
+    private lateinit var closeable: AutoCloseable
+
     @Mock
     private lateinit var mockDao: UserDao
 
@@ -24,8 +27,13 @@ class UserLocalDataSourceImplTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        closeable = MockitoAnnotations.openMocks(this)
         dataSource = UserLocalDataSourceImpl(mockDao)
+    }
+
+    @After
+    fun tearDown() {
+        closeable.close()
     }
 
     @Test

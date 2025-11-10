@@ -5,6 +5,7 @@ import com.mejdoo.clean.domain.repository.PostRepository
 import com.mejdoo.clean.post1
 import com.mejdoo.clean.post2
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -14,6 +15,8 @@ import org.mockito.MockitoAnnotations
 
 
 class PostListUseCaseTest {
+
+    private lateinit var closeable: AutoCloseable
 
     private lateinit var useCase: PostListUseCase
 
@@ -26,8 +29,13 @@ class PostListUseCaseTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        closeable = MockitoAnnotations.openMocks(this)
         useCase = PostListUseCase(mockRepository)
+    }
+
+    @After
+    fun tearDown() {
+        closeable.close()
     }
 
     @Test

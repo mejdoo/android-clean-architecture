@@ -10,6 +10,7 @@ import com.mejdoo.clean.presentation.model.PostItem
 import com.mejdoo.clean.presentation.model.Resource
 import com.mejdoo.clean.presentation.model.ResourceStatus
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -21,6 +22,7 @@ import org.mockito.MockitoAnnotations
 
 class PostListViewModelTest {
 
+    private lateinit var closeable: AutoCloseable
     private lateinit var listViewModel: PostListViewModel
 
     @Mock
@@ -40,8 +42,13 @@ class PostListViewModelTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        closeable = MockitoAnnotations.openMocks(this)
         listViewModel = PostListViewModel(mockUseCase)
+    }
+
+    @After
+    fun tearDown() {
+        closeable.close()
     }
 
     @Test

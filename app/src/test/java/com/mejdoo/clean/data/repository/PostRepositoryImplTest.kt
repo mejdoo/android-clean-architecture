@@ -5,6 +5,7 @@ import com.mejdoo.clean.data.source.remote.abstraction.PostRemoteDataSource
 import com.mejdoo.clean.post1
 import com.mejdoo.clean.post2
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -13,6 +14,8 @@ import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 class PostRepositoryImplTest {
+
+    private lateinit var closeable: AutoCloseable
 
     private lateinit var repository: PostRepositoryImpl
 
@@ -28,8 +31,13 @@ class PostRepositoryImplTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        closeable = MockitoAnnotations.openMocks(this)
         repository = PostRepositoryImpl(mockRemoteDataSource, mockLocalDataSource)
+    }
+
+    @After
+    fun tearDown() {
+        closeable.close()
     }
 
     @Test

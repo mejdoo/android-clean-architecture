@@ -5,6 +5,7 @@ import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.implementation.UserRemoteDataSourceImpl
 import com.mejdoo.clean.userEntity1
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -15,6 +16,8 @@ import org.mockito.MockitoAnnotations
 
 class UserRemoteDataSourceImplTest {
 
+    private lateinit var closeable: AutoCloseable
+
     @Mock
     private lateinit var mockApi: CleanApi
 
@@ -23,8 +26,13 @@ class UserRemoteDataSourceImplTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        closeable = MockitoAnnotations.openMocks(this)
         dataSource = UserRemoteDataSourceImpl(mockApi)
+    }
+
+    @After
+    fun tearDown() {
+        closeable.close()
     }
 
     @Test

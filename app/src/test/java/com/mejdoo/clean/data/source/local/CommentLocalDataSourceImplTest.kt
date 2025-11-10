@@ -6,6 +6,7 @@ import com.mejdoo.clean.data.mapper.toCommentList
 import com.mejdoo.clean.data.source.local.abstraction.CommentDao
 import com.mejdoo.clean.data.source.local.implementation.CommentLocalDataSourceImpl
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -15,6 +16,8 @@ import org.mockito.MockitoAnnotations
 
 
 class CommentLocalDataSourceImplTest {
+
+    private lateinit var closeable: AutoCloseable
 
     @Mock
     private lateinit var mockDao: CommentDao
@@ -27,10 +30,14 @@ class CommentLocalDataSourceImplTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        closeable = MockitoAnnotations.openMocks(this)
         dataSource = CommentLocalDataSourceImpl(mockDao)
     }
 
+    @After
+    fun tearDown() {
+        closeable.close()
+    }
 
     @Test
     fun test_CommentsForPost_Success() {

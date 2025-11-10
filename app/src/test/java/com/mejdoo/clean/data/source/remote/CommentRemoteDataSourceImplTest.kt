@@ -6,6 +6,7 @@ import com.mejdoo.clean.data.mapper.toCommentList
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.implementation.CommentRemoteDataSourceImpl
 import io.reactivex.Single
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -15,6 +16,8 @@ import org.mockito.MockitoAnnotations
 
 
 class CommentRemoteDataSourceImplTest {
+
+    private lateinit var closeable: AutoCloseable
 
     @Mock
     private lateinit var mockApi: CleanApi
@@ -27,10 +30,14 @@ class CommentRemoteDataSourceImplTest {
 
     @Before
     fun setUp() {
-        MockitoAnnotations.initMocks(this)
+        closeable = MockitoAnnotations.openMocks(this)
         dataSource = CommentRemoteDataSourceImpl(mockApi)
     }
 
+    @After
+    fun tearDown() {
+        closeable.close()
+    }
 
     @Test
     fun test_CommentsForPost_Success() {
