@@ -16,15 +16,6 @@ val userEntity1 =
         "hildegard.org",
     )
 
-val userEntity2 =
-    UserEntity(
-        2,
-        "Ervin Howell",
-        "Shanna@melissa.tv",
-        "010-692-6593 x09125",
-        "anastasia.net",
-    )
-
 val user1 =
     User(
         1,
