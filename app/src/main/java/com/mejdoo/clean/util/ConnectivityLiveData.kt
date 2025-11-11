@@ -3,7 +3,7 @@ package com.mejdoo.clean.util
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
-import android.net.NetworkInfo
+import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Build
 import androidx.lifecycle.LiveData
@@ -11,12 +11,11 @@ import androidx.lifecycle.LiveData
 /**
  * A LiveData class which wraps the network connection status
  * Requires Permission: ACCESS_NETWORK_STATE
-
  */
 class ConnectivityLiveData(
     context: Context,
 ) : LiveData<Boolean>() {
-    private var connectivityManager =
+    private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     private val networkCallback =
@@ -25,11 +24,11 @@ class ConnectivityLiveData(
                 postValue(true)
             }
 
-            override fun onUnavailable() {
+            override fun onLost(network: Network) {
                 postValue(false)
             }
 
-            override fun onLost(network: Network) {
+            override fun onUnavailable() {
                 postValue(false)
             }
         }
@@ -37,8 +36,21 @@ class ConnectivityLiveData(
     override fun onActive() {
         super.onActive()
 
-        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        postValue(activeNetwork?.isConnected == true)
+        // Initial value: check current network state using NetworkCapabilities
+        val activeNetwork = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
+        val isConnected =
+            capabilities?.let {
+                it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                    (
+                        it.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                            it.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                            it.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ||
+                            it.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH)
+                    )
+            } == true
+
+        postValue(isConnected)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connectivityManager.registerDefaultNetworkCallback(networkCallback)
@@ -50,6 +62,10 @@ class ConnectivityLiveData(
 
     override fun onInactive() {
         super.onInactive()
-        connectivityManager.unregisterNetworkCallback(networkCallback)
+        try {
+            connectivityManager.unregisterNetworkCallback(networkCallback)
+        } catch (_: Exception) {
+            // ignore if already unregistered
+        }
     }
 }
