@@ -9,9 +9,8 @@ import com.mejdoo.clean.domain.model.Post
 import io.reactivex.Single
 
 class PostLocalDataSourceImpl(
-    private val dao: PostDao
+    private val dao: PostDao,
 ) : PostLocalDataSource {
-
     override fun allPosts(): Single<List<Post>> =
         dao.allPosts()
             .map { it.toPostList() }

@@ -31,79 +31,85 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val viewModelModule: Module = module {
-    viewModel { PostListViewModel(get()) }
-    viewModel { PostDetailViewModel(get()) }
-}
+val viewModelModule: Module =
+    module {
+        viewModel { PostListViewModel(get()) }
+        viewModel { PostDetailViewModel(get()) }
+    }
 
-val useCaseModule: Module = module {
-    factory { PostListUseCase(get()) }
-    factory { PostDetailUseCase(get(), get(), get()) }
-}
+val useCaseModule: Module =
+    module {
+        factory { PostListUseCase(get()) }
+        factory { PostDetailUseCase(get(), get(), get()) }
+    }
 
-val repositoryModule: Module = module {
-    single {
-        PostRepositoryImpl(
-            get(),
-            get()
-        ) as PostRepository
+val repositoryModule: Module =
+    module {
+        single {
+            PostRepositoryImpl(
+                get(),
+                get()
+            ) as PostRepository
+        }
+        single {
+            UserRepositoryImpl(
+                get(),
+                get(),
+            ) as UserRepository
+        }
+        single {
+            CommentRepositoryImpl(
+                get(),
+                get(),
+            ) as CommentRepository
+        }
     }
-    single {
-        UserRepositoryImpl(
-            get(),
-            get()
-        ) as UserRepository
-    }
-    single {
-        CommentRepositoryImpl(
-            get(),
-            get()
-        ) as CommentRepository
-    }
-}
 
-val dataSourceModule: Module = module {
-    single {
-        PostRemoteDataSourceImpl(
-            api = cleanApi,
-        ) as PostRemoteDataSource
+val dataSourceModule: Module =
+    module {
+        single {
+            PostRemoteDataSourceImpl(
+                api = cleanApi,
+            ) as PostRemoteDataSource
+        }
+        single {
+            UserRemoteDataSourceImpl(
+                api = cleanApi,
+            ) as UserRemoteDataSource
+        }
+        single {
+            CommentRemoteDataSourceImpl(
+                api = cleanApi,
+            ) as CommentRemoteDataSource
+        }
+        single {
+            PostLocalDataSourceImpl(
+                get(),
+            ) as PostLocalDataSource
+        }
+        single {
+            UserLocalDataSourceImpl(
+                get(),
+            ) as UserLocalDataSource
+        }
+        single {
+            CommentLocalDataSourceImpl(
+                get(),
+            ) as CommentLocalDataSource
+        }
     }
-    single {
-        UserRemoteDataSourceImpl(
-            api = cleanApi,
-        ) as UserRemoteDataSource
-    }
-    single {
-        CommentRemoteDataSourceImpl(
-            api = cleanApi,
-        ) as CommentRemoteDataSource
-    }
-    single {
-        PostLocalDataSourceImpl(
-            get(),
-        ) as PostLocalDataSource
-    }
-    single {
-        UserLocalDataSourceImpl(
-            get(),
-        ) as UserLocalDataSource
-    }
-    single {
-        CommentLocalDataSourceImpl(
-            get(),
-        ) as CommentLocalDataSource
-    }
-}
 
-val networkModule: Module = module {
-    single { cleanApi }
-}
-
-val cacheModule: Module = module {
-    single {
-        Room.databaseBuilder(androidApplication(), CleanDatabase::class.java, DB_NAME).build()
+val networkModule: Module =
+    module {
+        single { cleanApi }
     }
-    single { get<CleanDatabase>().postDao() }
-    single { get<CleanDatabase>().userDao() }
-    single { get<CleanDatabase>().commentDao() }
-}
+
+val cacheModule: Module =
+    module {
+        single {
+            Room.databaseBuilder(androidApplication(), CleanDatabase::class.java, DB_NAME).build()
+        }
+        single { get<CleanDatabase>().postDao() }
+        single { get<CleanDatabase>().userDao() }
+        single { get<CleanDatabase>().commentDao() }
+    }

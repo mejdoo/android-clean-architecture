@@ -1,24 +1,22 @@
 package com.mejdoo.clean.data.mapper
 
-
 import com.mejdoo.clean.data.model.CommentEntity
 import com.mejdoo.clean.domain.model.Comment
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class CommentMappersTest {
-
-
     @Test
     fun `toComment should map CommentEntity to Comment correctly`() {
         // Arrange
-        val entity = CommentEntity(
-            postId = 1,
-            id = 100,
-            name = "John Doe",
-            email = "john@example.com",
-            body = "This is a comment."
-        )
+        val entity =
+            CommentEntity(
+                postId = 1,
+                id = 100,
+                name = "John Doe",
+                email = "john@example.com",
+                body = "This is a comment.",
+            )
 
         // Act
         val domain = entity.toComment()
@@ -34,13 +32,14 @@ class CommentMappersTest {
     @Test
     fun `toCommentEntity should map Comment to CommentEntity correctly`() {
         // Arrange
-        val comment = Comment(
-            postId = 1,
-            id = 100,
-            name = "John Doe",
-            email = "john@example.com",
-            body = "This is a comment."
-        )
+        val comment =
+            Comment(
+                postId = 1,
+                id = 100,
+                name = "John Doe",
+                email = "john@example.com",
+                body = "This is a comment.",
+            )
 
         // Act
         val entity = comment.toCommentEntity()
@@ -56,10 +55,11 @@ class CommentMappersTest {
     @Test
     fun `toCommentList should map list of CommentEntity to list of Comment correctly`() {
         // Arrange
-        val entities = listOf(
-            CommentEntity(1, 1, "Alice", "alice@mail.com", "First body"),
-            CommentEntity(2, 2, "Bob", "bob@mail.com", "Second body")
-        )
+        val entities =
+            listOf(
+                CommentEntity(1, 1, "Alice", "alice@mail.com", "First body"),
+                CommentEntity(2, 2, "Bob", "bob@mail.com", "Second body"),
+            )
 
         // Act
         val domainList = entities.toCommentList()
@@ -78,10 +78,11 @@ class CommentMappersTest {
     @Test
     fun `toCommentEntityList should map list of Comment to list of CommentEntity correctly`() {
         // Arrange
-        val comments = listOf(
-            Comment(1, 1, "Alice", "alice@mail.com", "First body"),
-            Comment(2, 2, "Bob", "bob@mail.com", "Second body")
-        )
+        val comments =
+            listOf(
+                Comment(1, 1, "Alice", "alice@mail.com", "First body"),
+                Comment(2, 2, "Bob", "bob@mail.com", "Second body"),
+            )
 
         // Act
         val entityList = comments.toCommentEntityList()

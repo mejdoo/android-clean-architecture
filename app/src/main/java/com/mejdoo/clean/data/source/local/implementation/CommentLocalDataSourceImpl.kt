@@ -7,11 +7,9 @@ import com.mejdoo.clean.data.source.local.abstraction.CommentLocalDataSource
 import com.mejdoo.clean.domain.model.Comment
 import io.reactivex.Single
 
-
 class CommentLocalDataSourceImpl(
     private val dao: CommentDao,
 ) : CommentLocalDataSource {
-
     override fun commentsForPost(postId: Int): Single<List<Comment>> =
         dao.commentsForPost(postId)
             .map { it.toCommentList() }

@@ -1,6 +1,5 @@
 package com.mejdoo.clean.presentation.ui.list
 
-
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -14,23 +13,27 @@ import com.mejdoo.clean.presentation.ui.detail.PostDetailActivity
 import com.mejdoo.clean.util.POST_ID_EXTRA_KEY
 import com.mejdoo.clean.util.USER_ID_EXTRA_KEY
 
-
-class PostListAdapter(private var postItems: MutableList<PostItem>) :
+class PostListAdapter(
+    private var postItems: MutableList<PostItem>,
+) :
     RecyclerView.Adapter<PostViewHolder>() {
+    private val onClickListener: View.OnClickListener =
+        View.OnClickListener { v ->
 
-    private val onClickListener: View.OnClickListener = View.OnClickListener { v ->
+            val item = postItems[v.tag as Int]
 
-        val item = postItems[v.tag as Int]
-
-        val intent = Intent(v.context, PostDetailActivity::class.java).apply {
-            putExtra(POST_ID_EXTRA_KEY, item.postId)
-            putExtra(USER_ID_EXTRA_KEY, item.userId)
+            val intent =
+                Intent(v.context, PostDetailActivity::class.java).apply {
+                    putExtra(POST_ID_EXTRA_KEY, item.postId)
+                    putExtra(USER_ID_EXTRA_KEY, item.userId)
+                }
+            v.context.startActivity(intent)
         }
-        v.context.startActivity(intent)
-    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): PostViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
 
         val binding =
@@ -38,14 +41,15 @@ class PostListAdapter(private var postItems: MutableList<PostItem>) :
                 layoutInflater,
                 R.layout.item_post_list,
                 parent,
-                false
+                false,
             )
 
         return PostViewHolder(binding)
     }
 
-
-    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: PostViewHolder, position: Int
+    ) {
         holder.binding.postItem = postItems[position]
         holder.binding.executePendingBindings()
 
@@ -55,9 +59,5 @@ class PostListAdapter(private var postItems: MutableList<PostItem>) :
         }
     }
 
-    override fun getItemCount(): Int {
-        return postItems.size
-    }
-
-
+    override fun getItemCount(): Int = postItems.size
 }

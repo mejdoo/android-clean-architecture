@@ -1,6 +1,5 @@
 package com.mejdoo.clean.presentation.ui.misc
 
-
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -9,9 +8,7 @@ import com.mejdoo.clean.R
 import com.mejdoo.clean.databinding.ActivityBaseBinding
 import com.mejdoo.clean.util.ConnectivityLiveData
 
-
 open class BaseActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityBaseBinding
     private lateinit var connectivityLiveData: ConnectivityLiveData
     private lateinit var snackBar: Snackbar
@@ -23,26 +20,23 @@ open class BaseActivity : AppCompatActivity() {
 
         connectivityLiveData = ConnectivityLiveData(applicationContext)
 
-        snackBar = Snackbar.make(
-            binding.frameContainer,
-            resources.getString(R.string.no_connection),
-            Snackbar.LENGTH_INDEFINITE
-        )
+        snackBar =
+            Snackbar.make(
+                binding.frameContainer,
+                resources.getString(R.string.no_connection),
+                Snackbar.LENGTH_INDEFINITE,
+            )
 
         connectivityLiveData.observe(
             this,
-            Observer<Boolean> { updateSnackBar(it) })
-
+            Observer<Boolean> { updateSnackBar(it) },
+        )
     }
 
     private fun updateSnackBar(networkStatus: Boolean) {
-
         when (networkStatus) {
             false -> snackBar.show()
             true -> snackBar.dismiss()
         }
-
     }
-
-
 }

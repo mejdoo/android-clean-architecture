@@ -14,7 +14,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 class CommentRepositoryImplTest {
-
     private lateinit var closeable: AutoCloseable
 
     private lateinit var repository: CommentRepositoryImpl
@@ -42,11 +41,9 @@ class CommentRepositoryImplTest {
 
     @Test
     fun test_CommentsForPost_RemoteDataSource_Success() {
-
         val postId = 1
 
         `when`(mockRemoteDataSource.commentsForPost(postId)).thenReturn(Single.just(comments))
-
 
         val test = repository.commentsForPost(postId).test()
 
@@ -56,14 +53,12 @@ class CommentRepositoryImplTest {
 
     @Test
     fun test_CommentsForPost_RemoteDataSource_Failure_LocalDataSource_Success() {
-
         val postId = 1
 
         `when`(mockRemoteDataSource.commentsForPost(postId)).thenReturn(Single.error(throwable))
         `when`(mockLocalDataSource.commentsForPost(postId)).thenReturn(Single.just(comments))
 
         val test = repository.commentsForPost(postId).test()
-
 
         verify(mockRemoteDataSource).commentsForPost(postId)
         verify(mockLocalDataSource).commentsForPost(postId)
@@ -73,7 +68,6 @@ class CommentRepositoryImplTest {
 
     @Test
     fun test_CommentsForPost_RemoteDataSource_Failure_LocalDataSource_Failure() {
-
         val postId = 1
 
         `when`(mockRemoteDataSource.commentsForPost(postId)).thenReturn(Single.error(throwable))
@@ -86,6 +80,4 @@ class CommentRepositoryImplTest {
 
         test.assertError(throwable)
     }
-
-
 }

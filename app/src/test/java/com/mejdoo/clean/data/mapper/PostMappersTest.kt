@@ -1,22 +1,21 @@
 package com.mejdoo.clean.data.mapper
 
-
 import com.mejdoo.clean.data.model.PostEntity
 import com.mejdoo.clean.domain.model.Post
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class PostMappersTest {
-
     @Test
     fun `toPost should map PostEntity to Post correctly`() {
         // Arrange
-        val entity = PostEntity(
-            userId = 10,
-            id = 100,
-            title = "Post Title",
-            body = "Post body content"
-        )
+        val entity =
+            PostEntity(
+                userId = 10,
+                id = 100,
+                title = "Post Title",
+                body = "Post body content",
+            )
 
         // Act
         val domain = entity.toPost()
@@ -31,12 +30,13 @@ class PostMappersTest {
     @Test
     fun `toPostEntity should map Post to PostEntity correctly`() {
         // Arrange
-        val post = Post(
-            userId = 10,
-            id = 100,
-            title = "Post Title",
-            body = "Post body content"
-        )
+        val post =
+            Post(
+                userId = 10,
+                id = 100,
+                title = "Post Title",
+                body = "Post body content",
+            )
 
         // Act
         val entity = post.toPostEntity()
@@ -51,10 +51,11 @@ class PostMappersTest {
     @Test
     fun `toPostList should map list of PostEntity to list of Post correctly`() {
         // Arrange
-        val entities = listOf(
-            PostEntity(1, 101, "Title 1", "Body 1"),
-            PostEntity(2, 102, "Title 2", "Body 2")
-        )
+        val entities =
+            listOf(
+                PostEntity(1, 101, "Title 1", "Body 1"),
+                PostEntity(2, 102, "Title 2", "Body 2"),
+            )
 
         // Act
         val domainList = entities.toPostList()
@@ -72,10 +73,11 @@ class PostMappersTest {
     @Test
     fun `toPostEntityList should map list of Post to list of PostEntity correctly`() {
         // Arrange
-        val posts = listOf(
-            Post(1, 101, "Title 1", "Body 1"),
-            Post(2, 102, "Title 2", "Body 2")
-        )
+        val posts =
+            listOf(
+                Post(1, 101, "Title 1", "Body 1"),
+                Post(2, 102, "Title 2", "Body 2"),
+            )
 
         // Act
         val entityList = posts.toPostEntityList()

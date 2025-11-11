@@ -14,7 +14,6 @@ import org.koin.core.context.startKoin
  * This is the application class
  */
 class CleanApplication : Application() {
-
     override fun onCreate() {
         super.onCreate()
 

@@ -1,6 +1,5 @@
 package com.mejdoo.clean.domain.usecase
 
-
 import com.mejdoo.clean.domain.repository.PostRepository
 import com.mejdoo.clean.post1
 import com.mejdoo.clean.post2
@@ -13,9 +12,7 @@ import org.mockito.Mockito
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 
-
 class PostListUseCaseTest {
-
     private lateinit var closeable: AutoCloseable
 
     private lateinit var useCase: PostListUseCase
@@ -40,12 +37,9 @@ class PostListUseCaseTest {
 
     @Test
     fun test_PostList_Success() {
-
-
         Mockito.`when`(mockRepository.allPosts()).thenReturn(Single.just(posts))
 
         val test = useCase.postList().test()
-
 
         verify(mockRepository).allPosts()
 
@@ -54,7 +48,6 @@ class PostListUseCaseTest {
 
     @Test
     fun test_PostList_Failure() {
-
         Mockito.`when`(mockRepository.allPosts()).thenReturn(Single.error(throwable))
 
         val test = useCase.postList().test()

@@ -13,7 +13,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 class UserRepositoryImplTest {
-
     private lateinit var closeable: AutoCloseable
 
     private lateinit var repository: UserRepositoryImpl
@@ -23,7 +22,6 @@ class UserRepositoryImplTest {
 
     @Mock
     private lateinit var mockLocalDataSource: UserLocalDataSource
-
 
     private val throwable = Throwable()
 
@@ -40,11 +38,9 @@ class UserRepositoryImplTest {
 
     @Test
     fun test_UserById_RemoteDataSource_Success() {
-
         val userId = 1
 
         `when`(mockRemoteDataSource.userById(userId)).thenReturn(Single.just(user1))
-
 
         val test = repository.userById(userId).test()
 
@@ -54,14 +50,12 @@ class UserRepositoryImplTest {
 
     @Test
     fun test_UserById_RemoteDataSource_Failure_LocalDataSource_Success() {
-
         val userId = 1
 
         `when`(mockRemoteDataSource.userById(userId)).thenReturn(Single.error(throwable))
         `when`(mockLocalDataSource.userById(userId)).thenReturn(Single.just(user1))
 
         val test = repository.userById(userId).test()
-
 
         verify(mockRemoteDataSource).userById(userId)
         verify(mockLocalDataSource).userById(userId)
@@ -71,7 +65,6 @@ class UserRepositoryImplTest {
 
     @Test
     fun test_UserById_RemoteDataSource_Failure_LocalDataSource_Failure() {
-
         val userId = 1
 
         `when`(mockRemoteDataSource.userById(userId)).thenReturn(Single.error(throwable))
@@ -79,12 +72,9 @@ class UserRepositoryImplTest {
 
         val test = repository.userById(userId).test()
 
-
         verify(mockRemoteDataSource).userById(userId)
         verify(mockLocalDataSource).userById(userId)
 
         test.assertError(throwable)
     }
-
-
 }

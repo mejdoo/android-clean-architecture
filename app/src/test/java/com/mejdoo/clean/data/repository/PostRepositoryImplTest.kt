@@ -14,7 +14,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 class PostRepositoryImplTest {
-
     private lateinit var closeable: AutoCloseable
 
     private lateinit var repository: PostRepositoryImpl
@@ -42,11 +41,9 @@ class PostRepositoryImplTest {
 
     @Test
     fun test_PostById_RemoteDataSource_Success() {
-
         val postId = 1
 
         `when`(mockRemoteDataSource.postById(postId)).thenReturn(Single.just(post1))
-
 
         val test = repository.postById(postId).test()
 
@@ -56,14 +53,12 @@ class PostRepositoryImplTest {
 
     @Test
     fun test_PostById_RemoteDataSource_Failure_LocalDataSource_Success() {
-
         val postId = 1
 
         `when`(mockRemoteDataSource.postById(postId)).thenReturn(Single.error(throwable))
         `when`(mockLocalDataSource.postById(postId)).thenReturn(Single.just(post1))
 
         val test = repository.postById(postId).test()
-
 
         verify(mockRemoteDataSource).postById(postId)
         verify(mockLocalDataSource).postById(postId)
@@ -73,7 +68,6 @@ class PostRepositoryImplTest {
 
     @Test
     fun test_PostById_RemoteDataSource_Failure_LocalDataSource_Failure() {
-
         val postId = 1
 
         `when`(mockRemoteDataSource.postById(postId)).thenReturn(Single.error(throwable))
@@ -81,20 +75,15 @@ class PostRepositoryImplTest {
 
         val test = repository.postById(postId).test()
 
-
         verify(mockRemoteDataSource).postById(postId)
         verify(mockLocalDataSource).postById(postId)
 
         test.assertError(throwable)
     }
 
-
     @Test
     fun test_AllPosts_RemoteDataSource_Success() {
-
-
         `when`(mockRemoteDataSource.allPosts()).thenReturn(Single.just(posts))
-
 
         val test = repository.allPosts().test()
 
@@ -104,12 +93,10 @@ class PostRepositoryImplTest {
 
     @Test
     fun test_AllPosts_RemoteDataSource_Failure_LocalDataSource_Success() {
-
         `when`(mockRemoteDataSource.allPosts()).thenReturn(Single.error(throwable))
         `when`(mockLocalDataSource.allPosts()).thenReturn(Single.just(posts))
 
         val test = repository.allPosts().test()
-
 
         verify(mockRemoteDataSource).allPosts()
         verify(mockLocalDataSource).allPosts()
@@ -119,17 +106,14 @@ class PostRepositoryImplTest {
 
     @Test
     fun test_AllPosts_RemoteDataSource_Failure_LocalDataSource_Failure() {
-
         `when`(mockRemoteDataSource.allPosts()).thenReturn(Single.error(throwable))
         `when`(mockLocalDataSource.allPosts()).thenReturn(Single.error(throwable))
 
         val test = repository.allPosts().test()
-
 
         verify(mockRemoteDataSource).allPosts()
         verify(mockLocalDataSource).allPosts()
 
         test.assertError(throwable)
     }
-
 }

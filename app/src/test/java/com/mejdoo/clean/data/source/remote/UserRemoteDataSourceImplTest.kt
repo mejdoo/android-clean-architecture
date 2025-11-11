@@ -13,9 +13,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
-
 class UserRemoteDataSourceImplTest {
-
     private lateinit var closeable: AutoCloseable
 
     @Mock
@@ -37,11 +35,9 @@ class UserRemoteDataSourceImplTest {
 
     @Test
     fun test_UserById_Success() {
-
         val userId = 1
 
         `when`(mockApi.userById(userId)).thenReturn(Single.just(userEntity1))
-
 
         val test = dataSource.userById(userId).test()
 
@@ -51,7 +47,6 @@ class UserRemoteDataSourceImplTest {
 
     @Test
     fun test_UserById_Failure() {
-
         val userId = 1
 
         `when`(mockApi.userById(userId)).thenReturn(Single.error(throwable))
@@ -61,6 +56,4 @@ class UserRemoteDataSourceImplTest {
         verify(mockApi).userById(userId)
         test.assertError(throwable)
     }
-
 }
-

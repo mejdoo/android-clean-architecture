@@ -1,6 +1,5 @@
 package com.mejdoo.clean.presentation.viewmodel
 
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.mejdoo.clean.comment1
 import com.mejdoo.clean.comment2
@@ -24,18 +23,17 @@ import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 class PostDetailViewModelTest {
-
     private lateinit var closeable: AutoCloseable
     private lateinit var detailViewModel: PostDetailViewModel
 
     @Mock
     private lateinit var mockUseCase: PostDetailUseCase
 
-
     private val combinedPostUserComments =
         CombinedPostUserComments(
             post1,
-            user1, listOf(comment1, comment2)
+            user1,
+            listOf(comment1, comment2),
         )
 
     private val throwable = Throwable()
@@ -61,34 +59,31 @@ class PostDetailViewModelTest {
 
     @Test
     fun test_PostDetails_Success() {
-
         val postId = 1
 
         val userId = 1
 
         `when`(mockUseCase.postDetails(postId, userId)).thenReturn(
             Single.just(
-                combinedPostUserComments
-            )
+                combinedPostUserComments,
+            ),
         )
 
         detailViewModel.getPostDetail(postId, userId)
-
 
         verify(mockUseCase).postDetails(postId, userId)
         assertEquals(
             Resource<PostDetail>(
                 ResourceStatus.SUCCESS,
                 combinedPostUserComments.toPostDetail(),
-                null
+                null,
             ),
-            detailViewModel.postDetailLiveData.value
+            detailViewModel.postDetailLiveData.value,
         )
     }
 
     @Test
     fun test_PostDetails_Failure() {
-
         val postId = 1
 
         val userId = 1
@@ -103,10 +98,9 @@ class PostDetailViewModelTest {
             Resource<PostDetail>(
                 ResourceStatus.ERROR,
                 null,
-                throwable.message
+                throwable.message,
             ),
-            detailViewModel.postDetailLiveData.value
+            detailViewModel.postDetailLiveData.value,
         )
     }
-
 }

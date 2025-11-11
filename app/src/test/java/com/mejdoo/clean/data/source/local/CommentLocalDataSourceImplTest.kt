@@ -14,9 +14,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
-
 class CommentLocalDataSourceImplTest {
-
     private lateinit var closeable: AutoCloseable
 
     @Mock
@@ -41,11 +39,9 @@ class CommentLocalDataSourceImplTest {
 
     @Test
     fun test_CommentsForPost_Success() {
-
         val postId = 1
 
         `when`(mockDao.commentsForPost(postId)).thenReturn(Single.just(localList))
-
 
         val test = dataSource.commentsForPost(postId).test()
 
@@ -55,7 +51,6 @@ class CommentLocalDataSourceImplTest {
 
     @Test
     fun test_CommentsForPost_Failure() {
-
         val userId = 1
 
         `when`(mockDao.commentsForPost(userId)).thenReturn(Single.error(throwable))
@@ -65,6 +60,4 @@ class CommentLocalDataSourceImplTest {
         verify(mockDao).commentsForPost(userId)
         test.assertError(throwable)
     }
-
 }
-

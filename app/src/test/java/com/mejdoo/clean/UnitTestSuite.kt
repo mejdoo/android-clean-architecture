@@ -1,6 +1,5 @@
 package com.mejdoo.clean
 
-
 import com.mejdoo.clean.data.mapper.CommentMappersTest
 import com.mejdoo.clean.data.mapper.PostMappersTest
 import com.mejdoo.clean.data.mapper.UserMappersTest
@@ -21,7 +20,6 @@ import com.mejdoo.clean.presentation.viewmodel.PostListViewModelTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
-
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
     PostMappersTest::class,
@@ -40,6 +38,6 @@ import org.junit.runners.Suite
     PostItemMappersTest::class,
     PostDetailMappersTest::class,
     PostListViewModelTest::class,
-    PostDetailViewModelTest::class
+    PostDetailViewModelTest::class,
 )
 class UnitTestSuite

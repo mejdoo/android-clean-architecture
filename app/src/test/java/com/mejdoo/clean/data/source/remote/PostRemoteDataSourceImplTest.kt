@@ -15,9 +15,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
-
 class PostRemoteDataSourceImplTest {
-
     private lateinit var closeable: AutoCloseable
 
     @Mock
@@ -42,9 +40,7 @@ class PostRemoteDataSourceImplTest {
 
     @Test
     fun test_AllPosts_Success() {
-
         `when`(mockApi.allPosts()).thenReturn(Single.just(remoteList))
-
 
         val test = dataSource.allPosts().test()
 
@@ -54,7 +50,6 @@ class PostRemoteDataSourceImplTest {
 
     @Test
     fun test_AllPosts_Failure() {
-
         `when`(mockApi.allPosts()).thenReturn(Single.error(throwable))
 
         val test = dataSource.allPosts().test()
@@ -63,14 +58,11 @@ class PostRemoteDataSourceImplTest {
         test.assertError(throwable)
     }
 
-
     @Test
     fun test_PostById_Success() {
-
         val postId = 1
 
         `when`(mockApi.postById(postId)).thenReturn(Single.just(postEntity1))
-
 
         val test = dataSource.postById(postId).test()
 
@@ -80,7 +72,6 @@ class PostRemoteDataSourceImplTest {
 
     @Test
     fun test_PostById_Failure() {
-
         val postId = 1
 
         `when`(mockApi.postById(postId)).thenReturn(Single.error(throwable))
@@ -91,4 +82,3 @@ class PostRemoteDataSourceImplTest {
         test.assertError(throwable)
     }
 }
-

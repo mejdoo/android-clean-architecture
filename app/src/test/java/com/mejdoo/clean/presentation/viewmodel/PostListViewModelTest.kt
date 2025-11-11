@@ -1,6 +1,5 @@
 package com.mejdoo.clean.presentation.viewmodel
 
-
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.mejdoo.clean.domain.usecase.PostListUseCase
 import com.mejdoo.clean.post1
@@ -21,7 +20,6 @@ import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 class PostListViewModelTest {
-
     private lateinit var closeable: AutoCloseable
     private lateinit var listViewModel: PostListViewModel
 
@@ -53,26 +51,23 @@ class PostListViewModelTest {
 
     @Test
     fun test_PostList_Success() {
-
         `when`(mockUseCase.postList()).thenReturn(Single.just(posts))
 
         listViewModel.getPostList()
-
 
         verify(mockUseCase).postList()
         assertEquals(
             Resource<List<PostItem>>(
                 ResourceStatus.SUCCESS,
                 posts.toPostItemList(),
-                null
+                null,
             ),
-            listViewModel.postItemsLiveData.value
+            listViewModel.postItemsLiveData.value,
         )
     }
 
     @Test
     fun test_PostList_Failure() {
-
         `when`(mockUseCase.postList()).thenReturn(Single.error(throwable))
 
         listViewModel.getPostList()
@@ -82,10 +77,9 @@ class PostListViewModelTest {
             Resource<List<PostItem>>(
                 ResourceStatus.ERROR,
                 null,
-                throwable.message
+                throwable.message,
             ),
-            listViewModel.postItemsLiveData.value
+            listViewModel.postItemsLiveData.value,
         )
     }
-
 }

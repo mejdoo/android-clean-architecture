@@ -18,7 +18,7 @@ fun User.toUserEntity() = UserEntity(
     name = name,
     email = email,
     phone = phone,
-    website = website
+    website = website,
 )
 
 fun List<UserEntity>.toUserList() = map { it.toUser() }

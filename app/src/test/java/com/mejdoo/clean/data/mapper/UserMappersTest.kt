@@ -1,23 +1,22 @@
 package com.mejdoo.clean.data.mapper
 
-
 import com.mejdoo.clean.data.model.UserEntity
 import com.mejdoo.clean.domain.model.User
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class UserMappersTest {
-
     @Test
     fun `toUser should map UserEntity to User correctly`() {
         // Arrange
-        val entity = UserEntity(
-            id = 1,
-            name = "Alice",
-            email = "alice@mail.com",
-            phone = "123-456-7890",
-            website = "alice.com"
-        )
+        val entity =
+            UserEntity(
+                id = 1,
+                name = "Alice",
+                email = "alice@mail.com",
+                phone = "123-456-7890",
+                website = "alice.com",
+            )
 
         // Act
         val domain = entity.toUser()
@@ -33,13 +32,14 @@ class UserMappersTest {
     @Test
     fun `toUserEntity should map User to UserEntity correctly`() {
         // Arrange
-        val user = User(
-            id = 1,
-            name = "Alice",
-            email = "alice@mail.com",
-            phone = "123-456-7890",
-            website = "alice.com"
-        )
+        val user =
+            User(
+                id = 1,
+                name = "Alice",
+                email = "alice@mail.com",
+                phone = "123-456-7890",
+                website = "alice.com",
+            )
 
         // Act
         val entity = user.toUserEntity()
@@ -55,10 +55,11 @@ class UserMappersTest {
     @Test
     fun `toUserList should map list of UserEntity to list of User correctly`() {
         // Arrange
-        val entities = listOf(
-            UserEntity(1, "Alice", "alice@mail.com", "123-456", "alice.com"),
-            UserEntity(2, "Bob", "bob@mail.com", "987-654", "bob.com")
-        )
+        val entities =
+            listOf(
+                UserEntity(1, "Alice", "alice@mail.com", "123-456", "alice.com"),
+                UserEntity(2, "Bob", "bob@mail.com", "987-654", "bob.com"),
+            )
 
         // Act
         val domainList = entities.toUserList()
@@ -77,10 +78,11 @@ class UserMappersTest {
     @Test
     fun `toUserEntityList should map list of User to list of UserEntity correctly`() {
         // Arrange
-        val users = listOf(
-            User(1, "Alice", "alice@mail.com", "123-456", "alice.com"),
-            User(2, "Bob", "bob@mail.com", "987-654", "bob.com")
-        )
+        val users =
+            listOf(
+                User(1, "Alice", "alice@mail.com", "123-456", "alice.com"),
+                User(2, "Bob", "bob@mail.com", "987-654", "bob.com"),
+            )
 
         // Act
         val entityList = users.toUserEntityList()

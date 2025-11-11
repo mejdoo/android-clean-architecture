@@ -1,6 +1,5 @@
 package com.mejdoo.clean.presentation.viewmodel
 
-
 import io.reactivex.Scheduler
 import io.reactivex.functions.Function
 import io.reactivex.plugins.RxJavaPlugins
@@ -16,11 +15,13 @@ import org.junit.runners.model.Statement
  * if the application code uses RxJava plugins this may affect the behaviour of the testing method.
  */
 class RxSchedulersOverrideRule : TestRule {
-
     private val rxJavaImmediateScheduler =
         Function<Scheduler, Scheduler> { Schedulers.trampoline() }
 
-    override fun apply(base: Statement, description: Description): Statement =
+    override fun apply(
+        base: Statement,
+        description: Description,
+    ): Statement =
         object : Statement() {
             override fun evaluate() {
                 RxJavaPlugins.reset()

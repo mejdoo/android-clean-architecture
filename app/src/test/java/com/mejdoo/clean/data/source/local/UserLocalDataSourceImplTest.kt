@@ -13,9 +13,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
-
 class UserLocalDataSourceImplTest {
-
     private lateinit var closeable: AutoCloseable
 
     @Mock
@@ -38,11 +36,9 @@ class UserLocalDataSourceImplTest {
 
     @Test
     fun test_UserById_Success() {
-
         val userId = 1
 
         `when`(mockDao.userById(userId)).thenReturn(Single.just(userEntity1))
-
 
         val test = dataSource.userById(userId).test()
 
@@ -52,7 +48,6 @@ class UserLocalDataSourceImplTest {
 
     @Test
     fun test_UserById_Failure() {
-
         val userId = 1
 
         `when`(mockDao.userById(userId)).thenReturn(Single.error(throwable))
@@ -63,4 +58,3 @@ class UserLocalDataSourceImplTest {
         test.assertError(throwable)
     }
 }
-

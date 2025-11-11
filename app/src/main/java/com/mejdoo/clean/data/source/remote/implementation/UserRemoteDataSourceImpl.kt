@@ -7,11 +7,9 @@ import com.mejdoo.clean.domain.model.User
 import io.reactivex.Single
 
 class UserRemoteDataSourceImpl(
-    private val api: CleanApi
+    private val api: CleanApi,
 ) : UserRemoteDataSource {
-
     override fun userById(userId: Int): Single<User> =
         api.userById(userId)
             .map { it.toUser() }
-
 }

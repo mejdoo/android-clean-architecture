@@ -12,10 +12,13 @@ import io.reactivex.functions.Function3
 class PostDetailUseCase(
     private val postRepository: PostRepository,
     private val userRepository: UserRepository,
-    private val commentRepository: CommentRepository
+    private val commentRepository: CommentRepository,
 ) {
 
-    fun postDetails(postId: Int, userId: Int): Single<CombinedPostUserComments> =
+    fun postDetails(
+        postId: Int,
+        userId: Int,
+    ): Single<CombinedPostUserComments> =
         Single.zip(
             postRepository.postById(postId),
             userRepository.userById(userId),
@@ -24,11 +27,13 @@ class PostDetailUseCase(
                 CombinedPostUserComments(
                     post,
                     user,
-                    comments
+                    comments,
                 )
-            })
+            },
+        )
 
 }
 
-
-data class CombinedPostUserComments(val post: Post, val user: User, val comments: List<Comment>)
+data class CombinedPostUserComments(
+    val post: Post, val user: User, val comments: List<Comment>
+)

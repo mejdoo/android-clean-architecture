@@ -1,6 +1,5 @@
 package com.mejdoo.clean.util
 
-
 /**
  * All the constants are declared here
  */
@@ -12,5 +11,3 @@ const val POST_ID_EXTRA_KEY = "post_id"
 const val USER_ID_EXTRA_KEY = "user_id"
 
 const val DB_NAME = "clean"
-
-

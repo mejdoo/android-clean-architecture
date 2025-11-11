@@ -9,7 +9,7 @@ import io.reactivex.Single
 
 class CommentRepositoryImpl(
     private val remoteDataSource: CommentRemoteDataSource,
-    private val localDataSource: CommentLocalDataSource
+    private val localDataSource: CommentLocalDataSource,
 ) : CommentRepository {
 
     override fun commentsForPost(postId: Int): Single<List<Comment>> =

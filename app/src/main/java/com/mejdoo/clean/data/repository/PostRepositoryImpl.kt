@@ -12,19 +12,15 @@ class PostRepositoryImpl(
     private val localDataSource: PostLocalDataSource
 ) : PostRepository {
 
-
     override fun allPosts(): Single<List<Post>> =
         remoteDataSource.allPosts()
             .doOnSuccess { it.forEach { post -> localDataSource.insertPost(post) } }
             .onErrorResumeNext { localDataSource.allPosts() }
 
-
     override fun postById(postId: Int): Single<Post> =
         remoteDataSource.postById(postId)
             .doOnSuccess { localDataSource.insertPost(it) }
             .onErrorResumeNext { localDataSource.postById(postId) }
-
-
 }
 
 

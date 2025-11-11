@@ -7,11 +7,9 @@ import com.mejdoo.clean.domain.model.Comment
 import io.reactivex.Single
 
 class CommentRemoteDataSourceImpl(
-    private val api: CleanApi
+    private val api: CleanApi,
 ) : CommentRemoteDataSource {
-
     override fun commentsForPost(postId: Int): Single<List<Comment>> =
         api.commentsForPost(postId)
             .map { it.toCommentList() }
-
 }

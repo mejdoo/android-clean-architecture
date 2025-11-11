@@ -11,11 +11,12 @@ import com.mejdoo.clean.presentation.ui.list.PostListAdapter
  */
 
 @BindingAdapter("data")
-fun setRecyclerViewData(recyclerView: RecyclerView, data: MutableList<PostItem>?) {
-
+fun setRecyclerViewData(
+    recyclerView: RecyclerView,
+    data: MutableList<PostItem>?,
+) {
     if (data != null) {
         recyclerView.adapter = PostListAdapter(data)
         recyclerView.adapter?.notifyDataSetChanged()
     }
-
 }

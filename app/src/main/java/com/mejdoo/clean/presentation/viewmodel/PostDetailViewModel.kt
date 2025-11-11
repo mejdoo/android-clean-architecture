@@ -1,6 +1,5 @@
 package com.mejdoo.clean.presentation.viewmodel
 
-
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mejdoo.clean.domain.usecase.PostDetailUseCase
@@ -11,61 +10,48 @@ import com.mejdoo.clean.presentation.model.ResourceStatus
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-
 class PostDetailViewModel(
-    private val postDetailUseCase: PostDetailUseCase
+    private val postDetailUseCase: PostDetailUseCase,
 ) : ViewModel() {
-
-
     val postDetailLiveData = MutableLiveData<Resource<PostDetail>>()
-
     private val compositeDisposable = CompositeDisposable()
 
-
-    fun getPostDetail(postId: Int, userId: Int) =
-        compositeDisposable.add(
-            postDetailUseCase.postDetails(postId, userId)
+    fun getPostDetail(
+        postId: Int, userId: Int,
+    ) = compositeDisposable.add(
+        postDetailUseCase
+            .postDetails(postId, userId)
             .doOnSubscribe {
-
                 postDetailLiveData.postValue(
                     Resource(
                         status = ResourceStatus.LOADING,
                         data = null,
-                        message = null
-                    )
+                        message = null,
+                    ),
                 )
-
-            }
-            .subscribeOn(Schedulers.io())
-            .map {it.toPostDetail() }
+            }.subscribeOn(Schedulers.io())
+            .map { it.toPostDetail() }
             .subscribe({
-
-
                 postDetailLiveData.postValue(
                     Resource(
                         status = ResourceStatus.SUCCESS,
                         data = it,
-                        message = null
-                    )
+                        message = null,
+                    ),
                 )
-
             }, {
-
                 postDetailLiveData.postValue(
                     Resource(
                         status = ResourceStatus.ERROR,
                         data = null,
-                        message = it.message
-                    )
+                        message = it.message,
+                    ),
                 )
-
-            })
-        )
+            }),
+    )
 
     override fun onCleared() {
         compositeDisposable.dispose()
         super.onCleared()
     }
-
-
 }

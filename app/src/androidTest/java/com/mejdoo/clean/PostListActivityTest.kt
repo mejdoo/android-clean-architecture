@@ -1,12 +1,9 @@
 package com.mejdoo.clean
 
-
 import android.os.SystemClock
-
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
-
 import com.mejdoo.clean.presentation.ui.list.PostListActivity
 import org.junit.Rule
 import org.junit.Test
@@ -20,12 +17,10 @@ class PostListActivityTest {
 
     @Test
     fun test() {
-
         waitForDelay()
     }
 
     private fun waitForDelay() {
         SystemClock.sleep(5000)
     }
-
 }

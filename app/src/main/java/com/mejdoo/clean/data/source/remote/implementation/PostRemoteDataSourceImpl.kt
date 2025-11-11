@@ -18,5 +18,4 @@ class PostRemoteDataSourceImpl(
     override fun postById(postId: Int): Single<Post> =
         api.postById(postId)
             .map { it.toPost() }
-
 }

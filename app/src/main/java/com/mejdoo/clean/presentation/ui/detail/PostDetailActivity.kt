@@ -38,13 +38,11 @@ class PostDetailActivity : BaseActivity() {
 
         postDetailViewModel.postDetailLiveData.observe(
             this,
-            Observer<Resource<PostDetail>> { updateUi(it.data as PostDetail?) })
-
+            Observer<Resource<PostDetail>> { updateUi(it.data as PostDetail?) },
+        )
     }
 
     private fun updateUi(postDetail: PostDetail?) {
-
-
         if (postDetail != null) {
             binding.postTitle.text = postDetail.title
             binding.postBody.text = postDetail.body
@@ -53,19 +51,15 @@ class PostDetailActivity : BaseActivity() {
                 String.format(resources.getString(R.string.comments), postDetail.commentCount)
             Picasso.get().load(AVATARS_URL + postDetail.userId).into(binding.toolbarImage)
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
             android.R.id.home -> {
-
                 finish()
                 true
             }
 
             else -> super.onOptionsItemSelected(item)
         }
-
-
 }

@@ -13,24 +13,26 @@ import androidx.lifecycle.LiveData
  * Requires Permission: ACCESS_NETWORK_STATE
 
  */
-class ConnectivityLiveData(context: Context) : LiveData<Boolean>() {
-
+class ConnectivityLiveData(
+    context: Context,
+) : LiveData<Boolean>() {
     private var connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
-        override fun onAvailable(network: Network) {
-            postValue(true)
-        }
+    private val networkCallback =
+        object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                postValue(true)
+            }
 
-        override fun onUnavailable() {
-            postValue(false)
-        }
+            override fun onUnavailable() {
+                postValue(false)
+            }
 
-        override fun onLost(network: Network) {
-            postValue(false)
+            override fun onLost(network: Network) {
+                postValue(false)
+            }
         }
-    }
 
     override fun onActive() {
         super.onActive()
