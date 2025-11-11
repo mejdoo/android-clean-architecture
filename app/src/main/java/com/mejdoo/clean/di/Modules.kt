@@ -48,7 +48,7 @@ val repositoryModule: Module =
         single {
             PostRepositoryImpl(
                 get(),
-                get()
+                get(),
             ) as PostRepository
         }
         single {

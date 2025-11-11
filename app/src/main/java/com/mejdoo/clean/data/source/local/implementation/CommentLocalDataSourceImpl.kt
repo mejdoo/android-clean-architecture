@@ -11,7 +11,8 @@ class CommentLocalDataSourceImpl(
     private val dao: CommentDao,
 ) : CommentLocalDataSource {
     override fun commentsForPost(postId: Int): Single<List<Comment>> =
-        dao.commentsForPost(postId)
+        dao
+            .commentsForPost(postId)
             .map { it.toCommentList() }
 
     override fun insertComment(comment: Comment) {

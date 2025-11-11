@@ -5,5 +5,6 @@ import io.reactivex.Single
 
 interface PostRemoteDataSource {
     fun allPosts(): Single<List<Post>>
+
     fun postById(postId: Int): Single<Post>
 }

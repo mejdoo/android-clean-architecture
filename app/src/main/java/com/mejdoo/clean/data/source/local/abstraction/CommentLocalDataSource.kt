@@ -5,5 +5,6 @@ import io.reactivex.Single
 
 interface CommentLocalDataSource {
     fun commentsForPost(postId: Int): Single<List<Comment>>
+
     fun insertComment(comment: Comment)
 }

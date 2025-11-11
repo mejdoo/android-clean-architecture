@@ -14,7 +14,6 @@ class PostDetailUseCase(
     private val userRepository: UserRepository,
     private val commentRepository: CommentRepository,
 ) {
-
     fun postDetails(
         postId: Int,
         userId: Int,
@@ -31,9 +30,10 @@ class PostDetailUseCase(
                 )
             },
         )
-
 }
 
 data class CombinedPostUserComments(
-    val post: Post, val user: User, val comments: List<Comment>
+    val post: Post,
+    val user: User,
+    val comments: List<Comment>,
 )

@@ -8,14 +8,15 @@ import com.mejdoo.clean.domain.model.Post
 import io.reactivex.Single
 
 class PostRemoteDataSourceImpl(
-    private val api: CleanApi
+    private val api: CleanApi,
 ) : PostRemoteDataSource {
-
     override fun allPosts(): Single<List<Post>> =
-        api.allPosts()
+        api
+            .allPosts()
             .map { it.toPostList() }
 
     override fun postById(postId: Int): Single<Post> =
-        api.postById(postId)
+        api
+            .postById(postId)
             .map { it.toPost() }
 }

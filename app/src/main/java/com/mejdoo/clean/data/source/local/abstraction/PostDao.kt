@@ -7,10 +7,8 @@ import androidx.room.Query
 import com.mejdoo.clean.data.model.PostEntity
 import io.reactivex.Single
 
-
 @Dao
 interface PostDao {
-
     @Query("SELECT * from post")
     fun allPosts(): Single<List<PostEntity>>
 
@@ -19,5 +17,4 @@ interface PostDao {
 
     @Insert(onConflict = REPLACE)
     fun insertPost(post: PostEntity)
-
 }

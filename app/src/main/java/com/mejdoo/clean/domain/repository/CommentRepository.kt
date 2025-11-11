@@ -1,4 +1,4 @@
-package  com.mejdoo.clean.domain.repository
+package com.mejdoo.clean.domain.repository
 
 import com.mejdoo.clean.domain.model.Comment
 import io.reactivex.Single

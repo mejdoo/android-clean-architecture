@@ -1,5 +1,4 @@
-package  com.mejdoo.clean.data.repository
-
+package com.mejdoo.clean.data.repository
 
 import com.mejdoo.clean.data.source.local.abstraction.UserLocalDataSource
 import com.mejdoo.clean.data.source.remote.abstraction.UserRemoteDataSource
@@ -9,14 +8,11 @@ import io.reactivex.Single
 
 class UserRepositoryImpl(
     private val remoteDataSource: UserRemoteDataSource,
-    private val localDataSource: UserLocalDataSource
+    private val localDataSource: UserLocalDataSource,
 ) : UserRepository {
-
     override fun userById(userId: Int): Single<User> =
-        remoteDataSource.userById(userId)
+        remoteDataSource
+            .userById(userId)
             .doOnSuccess { localDataSource.insertUser(it) }
             .onErrorResumeNext { localDataSource.userById(userId) }
-
 }
-
-

@@ -5,6 +5,6 @@ import io.reactivex.Single
 
 interface UserLocalDataSource {
     fun userById(userId: Int): Single<User>
-    fun insertUser(user: User)
 
+    fun insertUser(user: User)
 }

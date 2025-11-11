@@ -10,6 +10,7 @@ class CommentRemoteDataSourceImpl(
     private val api: CleanApi,
 ) : CommentRemoteDataSource {
     override fun commentsForPost(postId: Int): Single<List<Comment>> =
-        api.commentsForPost(postId)
+        api
+            .commentsForPost(postId)
             .map { it.toCommentList() }
 }

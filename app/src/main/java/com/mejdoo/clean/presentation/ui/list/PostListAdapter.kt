@@ -15,8 +15,7 @@ import com.mejdoo.clean.util.USER_ID_EXTRA_KEY
 
 class PostListAdapter(
     private var postItems: MutableList<PostItem>,
-) :
-    RecyclerView.Adapter<PostViewHolder>() {
+) : RecyclerView.Adapter<PostViewHolder>() {
     private val onClickListener: View.OnClickListener =
         View.OnClickListener { v ->
 
@@ -48,7 +47,8 @@ class PostListAdapter(
     }
 
     override fun onBindViewHolder(
-        holder: PostViewHolder, position: Int
+        holder: PostViewHolder,
+        position: Int,
     ) {
         holder.binding.postItem = postItems[position]
         holder.binding.executePendingBindings()

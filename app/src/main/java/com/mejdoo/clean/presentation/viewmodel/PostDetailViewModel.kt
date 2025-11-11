@@ -17,7 +17,8 @@ class PostDetailViewModel(
     private val compositeDisposable = CompositeDisposable()
 
     fun getPostDetail(
-        postId: Int, userId: Int,
+        postId: Int,
+        userId: Int,
     ) = compositeDisposable.add(
         postDetailUseCase
             .postDetails(postId, userId)

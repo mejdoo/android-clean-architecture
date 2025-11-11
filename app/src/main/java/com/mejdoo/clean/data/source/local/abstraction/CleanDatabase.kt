@@ -9,10 +9,12 @@ import com.mejdoo.clean.data.model.UserEntity
 @Database(
     entities = [PostEntity::class, UserEntity::class, CommentEntity::class],
     version = 1,
-    exportSchema = false
+    exportSchema = false,
 )
 abstract class CleanDatabase : RoomDatabase() {
     abstract fun postDao(): PostDao
+
     abstract fun userDao(): UserDao
+
     abstract fun commentDao(): CommentDao
 }

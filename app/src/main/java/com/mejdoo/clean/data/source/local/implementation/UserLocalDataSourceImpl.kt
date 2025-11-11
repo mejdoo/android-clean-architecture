@@ -8,11 +8,11 @@ import com.mejdoo.clean.domain.model.User
 import io.reactivex.Single
 
 class UserLocalDataSourceImpl(
-    private val dao: UserDao
+    private val dao: UserDao,
 ) : UserLocalDataSource {
-
     override fun userById(userId: Int): Single<User> =
-        dao.userById(userId)
+        dao
+            .userById(userId)
             .map { it.toUser() }
 
     override fun insertUser(user: User) {

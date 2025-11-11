@@ -15,6 +15,7 @@ val userEntity1 =
         "1-770-736-8031 x56442",
         "hildegard.org",
     )
+
 val userEntity2 =
     UserEntity(
         2,
@@ -23,6 +24,7 @@ val userEntity2 =
         "010-692-6593 x09125",
         "anastasia.net",
     )
+
 val user1 =
     User(
         1,
@@ -31,36 +33,46 @@ val user1 =
         "1-770-736-8031 x56442",
         "hildegard.org",
     )
+
 val postEntity1 =
     PostEntity(
         1,
         1,
-        "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-        "quia et suscipit\n" + "suscipit recusandae consequuntur expedita et cum\n"
+        "sunt aut facere repellat provident occaecati excepturi " +
+            "optio reprehenderit",
+        "quia et suscipit\n" +
+            "suscipit recusandae consequuntur expedita et cum\n",
     )
+
 val postEntity2 =
     PostEntity(
         1,
         2,
         "qui est esse",
-        "est rerum tempore vitae\n" + "sequi sint nihil reprehenderit dolor beatae ea dolores neque\n"
+        "est rerum tempore vitae\n" +
+            "sequi sint nihil reprehenderit dolor beatae ea dolores neque\n",
     )
 
-val post1 = Post(
-    1,
-    1,
-    "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
-    "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\n" +
+val post1 =
+    Post(
+        1,
+        1,
+        "sunt aut facere repellat provident occaecati excepturi " +
+            "optio reprehenderit",
+        "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\n" +
+            "reprehenderit molestiae ut ut quas totam\n" +
             "nostrum rerum est autem sunt rem eveniet architecto",
-)
-val post2 = Post(
-    1,
-    2,
-    "qui est esse",
-    "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\n" +
+    )
+
+val post2 =
+    Post(
+        1,
+        2,
+        "qui est esse",
+        "est rerum tempore vitae\nsequi sint nihil reprehenderit dolor beatae ea dolores neque\n" +
             "fugiat blanditiis voluptate porro vel nihil molestiae ut reiciendis\n" +
             "qui aperiam non debitis possimus qui neque nisi nulla",
-)
+    )
 
 val commentEntity1 =
     CommentEntity(
@@ -69,18 +81,20 @@ val commentEntity1 =
         "id labore ex et quam laborum",
         "Eliseo@gardner.biz",
         "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\n" +
-                "dolor quam autem quasi\n" +
-                "reiciendis et nam sapiente accusantium",
+            "dolor quam autem quasi\n" +
+            "reiciendis et nam sapiente accusantium",
     )
-val commentEntity2 = CommentEntity(
-    1,
-    2,
-    "quo vero reiciendis velit similique earum",
-    "Jayne_Kuhic@sydney.com",
-    "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\n" +
+
+val commentEntity2 =
+    CommentEntity(
+        1,
+        2,
+        "quo vero reiciendis velit similique earum",
+        "Jayne_Kuhic@sydney.com",
+        "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\n" +
             "voluptatem error expedita pariatur\n" +
             "nihil sint nostrum voluptatem reiciendis et",
-)
+    )
 
 val comment1 =
     Comment(
@@ -89,8 +103,10 @@ val comment1 =
         "id labore ex et quam laborum",
         "Eliseo@gardner.biz",
         "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\n" +
-                "dolor quam autem quasi\nreiciendis et nam sapiente accusantium",
+            "dolor quam autem quasi\n" +
+            "reiciendis et nam sapiente accusantium",
     )
+
 val comment2 =
     Comment(
         1,
@@ -98,5 +114,6 @@ val comment2 =
         "quo vero reiciendis velit similique earum",
         "Jayne_Kuhic@sydney.com",
         "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\n" +
-                "voluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+            "voluptatem error expedita pariatur\n" +
+            "nihil sint nostrum voluptatem reiciendis et",
     )

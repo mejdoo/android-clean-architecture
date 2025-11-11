@@ -11,7 +11,7 @@ fun CommentEntity.toComment() =
         id = id,
         name = name,
         email = email,
-        body = body
+        body = body,
     )
 
 fun Comment.toCommentEntity() =
@@ -20,8 +20,9 @@ fun Comment.toCommentEntity() =
         id = id,
         name = name,
         email = email,
-        body = body
+        body = body,
     )
 
 fun List<CommentEntity>.toCommentList() = map { it.toComment() }
+
 fun List<Comment>.toCommentEntityList() = map { it.toCommentEntity() }

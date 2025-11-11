@@ -1,5 +1,4 @@
-package  com.mejdoo.clean.data.repository
-
+package com.mejdoo.clean.data.repository
 
 import com.mejdoo.clean.data.source.local.abstraction.CommentLocalDataSource
 import com.mejdoo.clean.data.source.remote.abstraction.CommentRemoteDataSource
@@ -11,15 +10,9 @@ class CommentRepositoryImpl(
     private val remoteDataSource: CommentRemoteDataSource,
     private val localDataSource: CommentLocalDataSource,
 ) : CommentRepository {
-
     override fun commentsForPost(postId: Int): Single<List<Comment>> =
-
-        remoteDataSource.commentsForPost(postId)
+        remoteDataSource
+            .commentsForPost(postId)
             .doOnSuccess { it.forEach { comment -> localDataSource.insertComment(comment) } }
             .onErrorResumeNext { localDataSource.commentsForPost(postId) }
-
 }
-
-
-
-

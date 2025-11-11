@@ -22,4 +22,5 @@ fun Post.toPostEntity() =
     )
 
 fun List<PostEntity>.toPostList() = map { it.toPost() }
+
 fun List<Post>.toPostEntityList() = map { it.toPostEntity() }

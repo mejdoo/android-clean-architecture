@@ -11,11 +11,9 @@ val retrofit: Retrofit =
 val cleanApi: CleanApi = retrofit.create(CleanApi::class.java)
 
 fun createNetworkClient(baseUrl: String): Retrofit =
-    Retrofit.Builder()
+    Retrofit
+        .Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
-
-
-
