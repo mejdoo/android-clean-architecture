@@ -2,7 +2,7 @@
 
 buildscript {
     // Define extra properties
-    val gradleVersion by extra("8.13.0")
+    val gradleVersion by extra("8.13.1")
     val kotlinVersion by extra("2.2.21")
 
     repositories {
