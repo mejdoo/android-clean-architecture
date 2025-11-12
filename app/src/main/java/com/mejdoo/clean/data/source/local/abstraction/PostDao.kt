@@ -5,16 +5,16 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import com.mejdoo.clean.data.model.PostEntity
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PostDao {
     @Query("SELECT * from post")
-    fun allPosts(): Single<List<PostEntity>>
+    fun allPosts(): Flow<List<PostEntity>>
 
     @Query("SELECT * from post WHERE id = :postId")
-    fun postById(postId: Int): Single<PostEntity>
+    fun postById(postId: Int): Flow<PostEntity>
 
     @Insert(onConflict = REPLACE)
-    fun insertPost(post: PostEntity)
+    suspend fun insertPost(post: PostEntity)
 }

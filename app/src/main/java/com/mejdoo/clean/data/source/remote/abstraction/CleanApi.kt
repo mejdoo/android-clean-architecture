@@ -3,27 +3,26 @@ package com.mejdoo.clean.data.source.remote.abstraction
 import com.mejdoo.clean.data.model.CommentEntity
 import com.mejdoo.clean.data.model.PostEntity
 import com.mejdoo.clean.data.model.UserEntity
-import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CleanApi {
     @GET("/posts")
-    fun allPosts(): Single<List<PostEntity>>
+    suspend fun allPosts(): List<PostEntity>
 
     @GET("/posts/{id}")
-    fun postById(
+    suspend fun postById(
         @Path("id") postId: Int,
-    ): Single<PostEntity>
+    ): PostEntity
 
     @GET("/users/{id}")
-    fun userById(
+    suspend fun userById(
         @Path("id") userId: Int,
-    ): Single<UserEntity>
+    ): UserEntity
 
     @GET("/comments")
-    fun commentsForPost(
+    suspend fun commentsForPost(
         @Query("postId") postId: Int,
-    ): Single<List<CommentEntity>>
+    ): List<CommentEntity>
 }

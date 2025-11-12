@@ -58,20 +58,18 @@ dependencies {
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-gson:3.0.0")
-    implementation("com.squareup.retrofit2:adapter-rxjava2:3.0.0")
+
+    // Kotlin Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 
     // Android Architecture Components
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.9.4")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.9.4")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
     kapt("androidx.lifecycle:lifecycle-compiler:2.9.4")
     implementation("androidx.room:room-runtime:2.8.3")
     kapt("androidx.room:room-compiler:2.8.3")
-    implementation("androidx.room:room-rxjava2:2.8.3")
-
-    // RxJava
-    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
-    implementation("io.reactivex.rxjava2:rxjava:2.2.21")
-    implementation("io.reactivex.rxjava2:rxkotlin:2.4.0")
+    implementation("androidx.room:room-ktx:2.8.3")
 
     // Koin (Dependency injection framework for Kotlin)
     implementation("io.insert-koin:koin-android:4.1.1")
@@ -84,6 +82,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.20.0")
     testImplementation("org.mockito:mockito-inline:5.2.0")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 
     // UI testing
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")

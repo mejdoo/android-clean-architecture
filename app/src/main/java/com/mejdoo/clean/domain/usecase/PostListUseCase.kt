@@ -2,10 +2,10 @@ package com.mejdoo.clean.domain.usecase
 
 import com.mejdoo.clean.domain.model.Post
 import com.mejdoo.clean.domain.repository.PostRepository
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 
 class PostListUseCase(
     private val postRepository: PostRepository,
 ) {
-    fun postList(): Single<List<Post>> = postRepository.allPosts()
+    operator fun invoke(): Flow<List<Post>> = postRepository.allPosts()
 }

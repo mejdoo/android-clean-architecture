@@ -1,58 +1,32 @@
 package com.mejdoo.clean.presentation.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.mejdoo.clean.domain.usecase.PostDetailUseCase
 import com.mejdoo.clean.presentation.mapper.toPostDetail
 import com.mejdoo.clean.presentation.model.PostDetail
-import com.mejdoo.clean.presentation.model.Resource
-import com.mejdoo.clean.presentation.model.ResourceStatus
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import com.mejdoo.clean.presentation.model.UiState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class PostDetailViewModel(
-    private val postDetailUseCase: PostDetailUseCase,
+    private val postDetailUseCase: PostDetailUseCase
 ) : ViewModel() {
-    val postDetailLiveData = MutableLiveData<Resource<PostDetail>>()
-    private val compositeDisposable = CompositeDisposable()
 
-    fun getPostDetail(
-        postId: Int,
-        userId: Int,
-    ) = compositeDisposable.add(
-        postDetailUseCase
-            .postDetails(postId, userId)
-            .doOnSubscribe {
-                postDetailLiveData.postValue(
-                    Resource(
-                        status = ResourceStatus.LOADING,
-                        data = null,
-                        message = null,
-                    ),
-                )
-            }.subscribeOn(Schedulers.io())
-            .map { it.toPostDetail() }
-            .subscribe({
-                postDetailLiveData.postValue(
-                    Resource(
-                        status = ResourceStatus.SUCCESS,
-                        data = it,
-                        message = null,
-                    ),
-                )
-            }, {
-                postDetailLiveData.postValue(
-                    Resource(
-                        status = ResourceStatus.ERROR,
-                        data = null,
-                        message = it.message,
-                    ),
-                )
-            }),
-    )
+    private val _postDetailState = MutableStateFlow<UiState<PostDetail>>(UiState.Loading)
+    val postDetailState: StateFlow<UiState<PostDetail>> = _postDetailState
 
-    override fun onCleared() {
-        compositeDisposable.dispose()
-        super.onCleared()
+    fun loadPostDetail(postId: Int, userId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            postDetailUseCase(postId, userId)
+                .map { combined -> UiState.Success(combined.toPostDetail()) as UiState<PostDetail> }
+                .catch { e -> emit(UiState.Error(e.message ?: "Unknown error")) }
+                .collect { _postDetailState.value = it }
+        }
+
     }
 }

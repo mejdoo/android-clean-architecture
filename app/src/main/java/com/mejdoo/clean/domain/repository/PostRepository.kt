@@ -1,10 +1,10 @@
 package com.mejdoo.clean.domain.repository
 
 import com.mejdoo.clean.domain.model.Post
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
-    fun allPosts(): Single<List<Post>>
+    fun allPosts(): Flow<List<Post>>
 
-    fun postById(postId: Int): Single<Post>
+    fun postById(postId: Int): Flow<Post>
 }

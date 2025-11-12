@@ -4,15 +4,20 @@ import com.mejdoo.clean.data.source.local.abstraction.UserLocalDataSource
 import com.mejdoo.clean.data.source.remote.abstraction.UserRemoteDataSource
 import com.mejdoo.clean.domain.model.User
 import com.mejdoo.clean.domain.repository.UserRepository
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onStart
 
 class UserRepositoryImpl(
     private val remoteDataSource: UserRemoteDataSource,
     private val localDataSource: UserLocalDataSource,
 ) : UserRepository {
-    override fun userById(userId: Int): Single<User> =
-        remoteDataSource
-            .userById(userId)
-            .doOnSuccess { localDataSource.insertUser(it) }
-            .onErrorResumeNext { localDataSource.userById(userId) }
+    override fun userById(userId: Int): Flow<User> =
+        localDataSource.userById(userId).onStart {
+            try {
+                val user = remoteDataSource.userById(userId)
+                localDataSource.insertUser(user)
+            } catch (_: Exception) {
+                // ignore
+            }
+        }
 }

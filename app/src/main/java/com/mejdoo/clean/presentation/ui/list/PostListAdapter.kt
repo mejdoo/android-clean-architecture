@@ -60,4 +60,9 @@ class PostListAdapter(
     }
 
     override fun getItemCount(): Int = postItems.size
+
+    fun submitList(newList: List<PostItem>) {
+        postItems = newList.toMutableList()
+        notifyDataSetChanged()
+    }
 }

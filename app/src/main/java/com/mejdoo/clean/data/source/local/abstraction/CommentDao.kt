@@ -5,13 +5,13 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import com.mejdoo.clean.data.model.CommentEntity
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CommentDao {
     @Query("SELECT * from comment WHERE postId = :postId")
-    fun commentsForPost(postId: Int): Single<List<CommentEntity>>
+    fun commentsForPost(postId: Int): Flow<List<CommentEntity>>
 
     @Insert(onConflict = REPLACE)
-    fun insertComment(comment: CommentEntity)
+    suspend fun insertComment(comment: CommentEntity)
 }

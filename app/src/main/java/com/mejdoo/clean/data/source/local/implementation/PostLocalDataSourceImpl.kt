@@ -6,22 +6,17 @@ import com.mejdoo.clean.data.mapper.toPostList
 import com.mejdoo.clean.data.source.local.abstraction.PostDao
 import com.mejdoo.clean.data.source.local.abstraction.PostLocalDataSource
 import com.mejdoo.clean.domain.model.Post
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class PostLocalDataSourceImpl(
     private val dao: PostDao,
 ) : PostLocalDataSource {
-    override fun allPosts(): Single<List<Post>> =
-        dao
-            .allPosts()
-            .map { it.toPostList() }
+    override fun allPosts(): Flow<List<Post>> = dao.allPosts().map { it.toPostList() }
 
-    override fun postById(postId: Int): Single<Post> =
-        dao
-            .postById(postId)
-            .map { it.toPost() }
+    override fun postById(postId: Int): Flow<Post> = dao.postById(postId).map { it.toPost() }
 
-    override fun insertPost(post: Post) {
+    override suspend fun insertPost(post: Post) {
         dao.insertPost(post.toPostEntity())
     }
 }

@@ -1,8 +1,7 @@
 package com.mejdoo.clean.data.source.remote.abstraction
 
 import com.mejdoo.clean.domain.model.Comment
-import io.reactivex.Single
 
 interface CommentRemoteDataSource {
-    fun commentsForPost(postId: Int): Single<List<Comment>>
+    suspend fun commentsForPost(postId: Int): List<Comment>
 }

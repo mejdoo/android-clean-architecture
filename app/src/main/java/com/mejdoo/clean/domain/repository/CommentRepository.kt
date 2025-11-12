@@ -1,8 +1,8 @@
 package com.mejdoo.clean.domain.repository
 
 import com.mejdoo.clean.domain.model.Comment
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 
 interface CommentRepository {
-    fun commentsForPost(postId: Int): Single<List<Comment>>
+    fun commentsForPost(postId: Int): Flow<List<Comment>>
 }
