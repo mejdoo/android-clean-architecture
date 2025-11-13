@@ -1,60 +1,99 @@
 package com.mejdoo.clean.data.source.local
 
 import com.mejdoo.clean.data.mapper.toUser
+import com.mejdoo.clean.data.mapper.toUserEntity
+import com.mejdoo.clean.data.model.UserEntity
 import com.mejdoo.clean.data.source.local.abstraction.UserDao
 import com.mejdoo.clean.data.source.local.implementation.UserLocalDataSourceImpl
-import com.mejdoo.clean.userEntity1
-import io.reactivex.Single
-import org.junit.After
+import com.mejdoo.clean.domain.model.User
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(MockitoJUnitRunner::class)
 class UserLocalDataSourceImplTest {
-    private lateinit var closeable: AutoCloseable
 
     @Mock
-    private lateinit var mockDao: UserDao
+    private lateinit var dao: UserDao
 
     private lateinit var dataSource: UserLocalDataSourceImpl
 
-    private val throwable = Throwable()
-
     @Before
     fun setUp() {
-        closeable = MockitoAnnotations.openMocks(this)
-        dataSource = UserLocalDataSourceImpl(mockDao)
+        dataSource = UserLocalDataSourceImpl(dao)
     }
 
-    @After
-    fun tearDown() {
-        closeable.close()
-    }
+    // --------------------------------------------------------------------
+    // userById()
+    // --------------------------------------------------------------------
 
     @Test
-    fun test_UserById_Success() {
+    fun `userById returns mapped user from dao`() = runTest {
+        // given
         val userId = 1
+        val entity = UserEntity(userId, "John Doe", "john@example.com", "+49000000", "example.com")
+        val expectedUser = entity.toUser()
 
-        `when`(mockDao.userById(userId)).thenReturn(Single.just(userEntity1))
+        whenever(dao.userById(userId)).thenReturn(flowOf(entity))
 
-        val test = dataSource.userById(userId).test()
+        // when
+        val result = dataSource.userById(userId).first()
 
-        verify(mockDao).userById(userId)
-        test.assertValue(userEntity1.toUser())
+        // then
+        assertEquals(expectedUser, result)
+        verify(dao).userById(userId)
     }
 
-    @Test
-    fun test_UserById_Failure() {
+    @Test(expected = RuntimeException::class)
+    fun `userById propagates dao exception`() = runTest {
+        // given
         val userId = 1
+        whenever(dao.userById(userId)).thenThrow(RuntimeException("DB failure"))
 
-        `when`(mockDao.userById(userId)).thenReturn(Single.error(throwable))
+        // when
+        dataSource.userById(userId).first() // should throw
+    }
 
-        val test = dataSource.userById(userId).test()
+    // --------------------------------------------------------------------
+    // insertUser()
+    // --------------------------------------------------------------------
 
-        verify(mockDao).userById(userId)
-        test.assertError(throwable)
+    @Test
+    fun `insertUser maps and inserts entity`() = runTest {
+        // given
+        val user = User(1, "John Doe", "john@example.com", "+49000000", "example.com")
+        val expectedEntity = user.toUserEntity()
+
+        // when
+        dataSource.insertUser(user)
+
+        // then
+        val captor = argumentCaptor<UserEntity>()
+        verify(dao).insertUser(captor.capture())
+        assertEquals(expectedEntity, captor.firstValue)
+    }
+
+    @Test(expected = RuntimeException::class)
+    fun `insertUser propagates dao exception`() = runTest {
+        // given
+        val user = User(1, "John Doe", "john@example.com", "+49000000", "example.com")
+        whenever(dao.insertUser(any())).thenThrow(RuntimeException("DB insert failed"))
+
+        // when
+        dataSource.insertUser(user) // should throw
     }
 }
+

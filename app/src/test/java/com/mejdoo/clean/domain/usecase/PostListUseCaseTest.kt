@@ -1,59 +1,60 @@
 package com.mejdoo.clean.domain.usecase
 
+import com.mejdoo.clean.domain.model.Post
 import com.mejdoo.clean.domain.repository.PostRepository
-import com.mejdoo.clean.post1
-import com.mejdoo.clean.post2
-import io.reactivex.Single
-import org.junit.After
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
+@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(MockitoJUnitRunner::class)
 class PostListUseCaseTest {
-    private lateinit var closeable: AutoCloseable
+
+    @Mock
+    private lateinit var postRepository: PostRepository
 
     private lateinit var useCase: PostListUseCase
 
-    @Mock
-    private lateinit var mockRepository: PostRepository
-
-    private val posts = listOf(post1, post2)
-
-    private val throwable = Throwable()
-
     @Before
     fun setUp() {
-        closeable = MockitoAnnotations.openMocks(this)
-        useCase = PostListUseCase(mockRepository)
-    }
-
-    @After
-    fun tearDown() {
-        closeable.close()
+        useCase = PostListUseCase(postRepository)
     }
 
     @Test
-    fun test_PostList_Success() {
-        Mockito.`when`(mockRepository.allPosts()).thenReturn(Single.just(posts))
+    fun `invoke returns posts from repository`() = runTest {
+        // given
+        val posts = listOf(
+            Post(1, 1, "Title 1", "Body 1"),
+            Post(2, 2, "Title 2", "Body 2")
+        )
+        whenever(postRepository.allPosts()).thenReturn(flowOf(posts))
 
-        val test = useCase.postList().test()
+        // when
+        val result = useCase().first()
 
-        verify(mockRepository).allPosts()
-
-        test.assertValue(posts)
+        // then
+        assertEquals(posts, result)
+        verify(postRepository).allPosts()
     }
 
     @Test
-    fun test_PostList_Failure() {
-        Mockito.`when`(mockRepository.allPosts()).thenReturn(Single.error(throwable))
+    fun `invoke emits empty list when repository returns empty`() = runTest {
+        whenever(postRepository.allPosts()).thenReturn(flowOf(emptyList()))
 
-        val test = useCase.postList().test()
+        val result = useCase().first()
 
-        verify(mockRepository).allPosts()
-
-        test.assertError(throwable)
+        assertTrue(result.isEmpty())
+        verify(postRepository).allPosts()
     }
 }
+

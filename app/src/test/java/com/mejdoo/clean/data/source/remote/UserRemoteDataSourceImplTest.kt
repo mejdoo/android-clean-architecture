@@ -1,59 +1,62 @@
 package com.mejdoo.clean.data.source.remote
 
 import com.mejdoo.clean.data.mapper.toUser
+import com.mejdoo.clean.data.model.UserEntity
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.implementation.UserRemoteDataSourceImpl
-import com.mejdoo.clean.userEntity1
-import io.reactivex.Single
-import org.junit.After
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
+@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(MockitoJUnitRunner::class)
 class UserRemoteDataSourceImplTest {
-    private lateinit var closeable: AutoCloseable
 
     @Mock
-    private lateinit var mockApi: CleanApi
+    private lateinit var api: CleanApi
 
     private lateinit var dataSource: UserRemoteDataSourceImpl
-    private val throwable = Throwable()
 
     @Before
     fun setUp() {
-        closeable = MockitoAnnotations.openMocks(this)
-        dataSource = UserRemoteDataSourceImpl(mockApi)
+        dataSource = UserRemoteDataSourceImpl(api)
     }
 
-    @After
-    fun tearDown() {
-        closeable.close()
-    }
+    // --------------------------------------------------------------------
+    // userById()
+    // --------------------------------------------------------------------
 
     @Test
-    fun test_UserById_Success() {
+    fun `userById returns mapped user from api`() = runTest {
+        // given
         val userId = 1
+        val apiResponse =
+            UserEntity(userId, "Name 1", "email1@example.com", "+49000000", "example.com")
+        val expectedUser = apiResponse.toUser()
 
-        `when`(mockApi.userById(userId)).thenReturn(Single.just(userEntity1))
+        whenever(api.userById(userId)).thenReturn(apiResponse)
 
-        val test = dataSource.userById(userId).test()
+        // when
+        val result = dataSource.userById(userId)
 
-        verify(mockApi).userById(userId)
-        test.assertValue(userEntity1.toUser())
+        // then
+        assertEquals(expectedUser, result)
+        verify(api).userById(userId)
     }
 
-    @Test
-    fun test_UserById_Failure() {
+    @Test(expected = RuntimeException::class)
+    fun `userById propagates api exception`() = runTest {
         val userId = 1
+        whenever(api.userById(userId)).thenThrow(RuntimeException("Network error"))
 
-        `when`(mockApi.userById(userId)).thenReturn(Single.error(throwable))
-
-        val test = dataSource.userById(userId).test()
-
-        verify(mockApi).userById(userId)
-        test.assertError(throwable)
+        // when
+        dataSource.userById(userId) // should throw
     }
 }

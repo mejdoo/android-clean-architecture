@@ -1,83 +1,83 @@
 package com.mejdoo.clean.data.repository
 
-import com.mejdoo.clean.comment1
-import com.mejdoo.clean.comment2
 import com.mejdoo.clean.data.source.local.abstraction.CommentLocalDataSource
 import com.mejdoo.clean.data.source.remote.abstraction.CommentRemoteDataSource
-import io.reactivex.Single
-import org.junit.After
+import com.mejdoo.clean.domain.model.Comment
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.never
+import org.mockito.kotlin.times
+import org.mockito.kotlin.whenever
 
+@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(MockitoJUnitRunner::class)
 class CommentRepositoryImplTest {
-    private lateinit var closeable: AutoCloseable
 
+    @Mock
+    private lateinit var remoteDataSource: CommentRemoteDataSource
+
+    @Mock
+    private lateinit var localDataSource: CommentLocalDataSource
     private lateinit var repository: CommentRepositoryImpl
-
-    @Mock
-    private lateinit var mockRemoteDataSource: CommentRemoteDataSource
-
-    @Mock
-    private lateinit var mockLocalDataSource: CommentLocalDataSource
-
-    private val comments = listOf(comment1, comment2)
-
-    private val throwable = Throwable()
 
     @Before
     fun setUp() {
-        closeable = MockitoAnnotations.openMocks(this)
-        repository = CommentRepositoryImpl(mockRemoteDataSource, mockLocalDataSource)
-    }
-
-    @After
-    fun tearDown() {
-        closeable.close()
+        repository = CommentRepositoryImpl(remoteDataSource, localDataSource)
     }
 
     @Test
-    fun test_CommentsForPost_RemoteDataSource_Success() {
-        val postId = 1
+    fun `returns comments from local data source`() = runTest {
+        val localComments = listOf(Comment(1, 1, "Local comment", "local@email.com", "Local Body"))
+        whenever(localDataSource.commentsForPost(1)).thenReturn(flowOf(localComments))
+        whenever(remoteDataSource.commentsForPost(1)).thenReturn(emptyList())
 
-        `when`(mockRemoteDataSource.commentsForPost(postId)).thenReturn(Single.just(comments))
+        val result = repository.commentsForPost(1).first()
 
-        val test = repository.commentsForPost(postId).test()
-
-        verify(mockRemoteDataSource).commentsForPost(postId)
-        test.assertValue(comments)
+        assertEquals(result, localComments)
+        verify(localDataSource).commentsForPost(1)
     }
 
     @Test
-    fun test_CommentsForPost_RemoteDataSource_Failure_LocalDataSource_Success() {
+    fun `fetches from remote and inserts into local on start`() = runTest {
         val postId = 1
+        val remoteComments = listOf(
+            Comment(1, postId, "Remote 1", "remote1@email.com", "Remote Body 1"),
+            Comment(2, postId, "Remote 2", "remote2@email.com", "Remote Body 2"),
+        )
 
-        `when`(mockRemoteDataSource.commentsForPost(postId)).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.commentsForPost(postId)).thenReturn(Single.just(comments))
+        whenever(localDataSource.commentsForPost(postId)).thenReturn(flowOf(emptyList()))
+        whenever(remoteDataSource.commentsForPost(postId)).thenReturn(remoteComments)
 
-        val test = repository.commentsForPost(postId).test()
+        repository.commentsForPost(postId).first()
 
-        verify(mockRemoteDataSource).commentsForPost(postId)
-        verify(mockLocalDataSource).commentsForPost(postId)
+        verify(remoteDataSource).commentsForPost(postId)
 
-        test.assertValue(comments)
+        val captor = argumentCaptor<Comment>()
+        verify(localDataSource, times(remoteComments.size)).insertComment(captor.capture())
+        assertEquals(captor.allValues, remoteComments)
     }
 
     @Test
-    fun test_CommentsForPost_RemoteDataSource_Failure_LocalDataSource_Failure() {
+    fun `ignores remote exception and still emits local data`() = runTest {
         val postId = 1
+        val localComments = listOf(Comment(1, postId, "Local", "local@email.com", "Local Body"))
+        whenever(localDataSource.commentsForPost(postId)).thenReturn(flowOf(localComments))
+        whenever(remoteDataSource.commentsForPost(postId)).thenThrow(RuntimeException("Network error"))
 
-        `when`(mockRemoteDataSource.commentsForPost(postId)).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.commentsForPost(postId)).thenReturn(Single.error(throwable))
+        val result = repository.commentsForPost(postId).first()
 
-        val test = repository.commentsForPost(postId).test()
-
-        verify(mockRemoteDataSource).commentsForPost(postId)
-        verify(mockLocalDataSource).commentsForPost(postId)
-
-        test.assertError(throwable)
+        assertEquals(result, localComments)
+        verify(localDataSource, never()).insertComment(any())
     }
 }

@@ -1,63 +1,101 @@
 package com.mejdoo.clean.data.source.local
 
-import com.mejdoo.clean.commentEntity1
-import com.mejdoo.clean.commentEntity2
+import com.mejdoo.clean.data.mapper.toCommentEntity
 import com.mejdoo.clean.data.mapper.toCommentList
+import com.mejdoo.clean.data.model.CommentEntity
 import com.mejdoo.clean.data.source.local.abstraction.CommentDao
 import com.mejdoo.clean.data.source.local.implementation.CommentLocalDataSourceImpl
-import io.reactivex.Single
-import org.junit.After
+import com.mejdoo.clean.domain.model.Comment
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(MockitoJUnitRunner::class)
 class CommentLocalDataSourceImplTest {
-    private lateinit var closeable: AutoCloseable
 
     @Mock
-    private lateinit var mockDao: CommentDao
+    private lateinit var dao: CommentDao
 
     private lateinit var dataSource: CommentLocalDataSourceImpl
 
-    private val localList = listOf(commentEntity1, commentEntity2)
-
-    private val throwable = Throwable()
-
     @Before
     fun setUp() {
-        closeable = MockitoAnnotations.openMocks(this)
-        dataSource = CommentLocalDataSourceImpl(mockDao)
+        dataSource = CommentLocalDataSourceImpl(dao)
     }
 
-    @After
-    fun tearDown() {
-        closeable.close()
-    }
+    // --------------------------------------------------------------------
+    // commentsForPost()
+    // --------------------------------------------------------------------
 
     @Test
-    fun test_CommentsForPost_Success() {
+    fun `commentsForPost returns mapped comments from dao`() = runTest {
+        // given
         val postId = 1
+        val entities = listOf(
+            CommentEntity(1, postId, "Alice", "Nice post!", "Body 1"),
+            CommentEntity(2, postId, "Bob", "Interesting read.", "Body 2")
+        )
+        val expectedComments = entities.toCommentList()
 
-        `when`(mockDao.commentsForPost(postId)).thenReturn(Single.just(localList))
+        whenever(dao.commentsForPost(postId)).thenReturn(flowOf(entities))
 
-        val test = dataSource.commentsForPost(postId).test()
+        // when
+        val result = dataSource.commentsForPost(postId).first()
 
-        verify(mockDao).commentsForPost(postId)
-        test.assertValue(localList.toCommentList())
+        // then
+        assertEquals(expectedComments, result)
+        verify(dao).commentsForPost(postId)
     }
 
+    @Test(expected = RuntimeException::class)
+    fun `commentsForPost propagates dao exception`() = runTest {
+        // given
+        val postId = 1
+        whenever(dao.commentsForPost(postId)).thenThrow(RuntimeException("DB failure"))
+
+        // when
+        dataSource.commentsForPost(postId).first() // should throw
+    }
+
+    // --------------------------------------------------------------------
+    // insertComment()
+    // --------------------------------------------------------------------
+
     @Test
-    fun test_CommentsForPost_Failure() {
-        val userId = 1
+    fun `insertComment maps and inserts entity`() = runTest {
+        // given
+        val comment = Comment(1, 1, "Alice", "Cool post!", " Great body.")
+        val expectedEntity = comment.toCommentEntity()
 
-        `when`(mockDao.commentsForPost(userId)).thenReturn(Single.error(throwable))
+        // when
+        dataSource.insertComment(comment)
 
-        val test = dataSource.commentsForPost(userId).test()
+        // then
+        val captor = argumentCaptor<CommentEntity>()
+        verify(dao).insertComment(captor.capture())
+        assertEquals(expectedEntity, captor.firstValue)
+    }
 
-        verify(mockDao).commentsForPost(userId)
-        test.assertError(throwable)
+    @Test(expected = RuntimeException::class)
+    fun `insertComment propagates dao exception`() = runTest {
+        // given
+        val comment = Comment(1, 1, "User", "Test comment", "Test body")
+        whenever(dao.insertComment(any())).thenThrow(RuntimeException("DB insert failed"))
+
+        // when
+        dataSource.insertComment(comment) // should throw
     }
 }

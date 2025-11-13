@@ -1,63 +1,65 @@
 package com.mejdoo.clean.data.source.remote
 
-import com.mejdoo.clean.commentEntity1
-import com.mejdoo.clean.commentEntity2
 import com.mejdoo.clean.data.mapper.toCommentList
+import com.mejdoo.clean.data.model.CommentEntity
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.implementation.CommentRemoteDataSourceImpl
-import io.reactivex.Single
-import org.junit.After
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(MockitoJUnitRunner::class)
 class CommentRemoteDataSourceImplTest {
-    private lateinit var closeable: AutoCloseable
 
     @Mock
-    private lateinit var mockApi: CleanApi
+    private lateinit var api: CleanApi
 
     private lateinit var dataSource: CommentRemoteDataSourceImpl
 
-    private val remoteList = listOf(commentEntity1, commentEntity2)
-
-    private val throwable = Throwable()
-
     @Before
     fun setUp() {
-        closeable = MockitoAnnotations.openMocks(this)
-        dataSource = CommentRemoteDataSourceImpl(mockApi)
+        dataSource = CommentRemoteDataSourceImpl(api)
     }
 
-    @After
-    fun tearDown() {
-        closeable.close()
-    }
+    // --------------------------------------------------------------------
+    // commentsForPost()
+    // --------------------------------------------------------------------
 
     @Test
-    fun test_CommentsForPost_Success() {
+    fun `commentsForPost returns mapped comments from api`() = runTest {
+        // given
         val postId = 1
+        val apiResponse = listOf(
+            CommentEntity(postId, 1, "Name 1", "email1@example.com", "Body 1"),
+            CommentEntity(postId, 2, "Name 2", "email2@example.com", "Body 2")
+        )
+        val expectedComments = apiResponse.toCommentList()
 
-        `when`(mockApi.commentsForPost(postId)).thenReturn(Single.just(remoteList))
+        whenever(api.commentsForPost(postId)).thenReturn(apiResponse)
 
-        val test = dataSource.commentsForPost(postId).test()
+        // when
+        val result = dataSource.commentsForPost(postId)
 
-        verify(mockApi).commentsForPost(postId)
-        test.assertValue(remoteList.toCommentList())
+        // then
+        assertEquals(expectedComments, result)
+        verify(api).commentsForPost(postId)
     }
 
-    @Test
-    fun test_CommentsForPost_Failure() {
-        val userId = 1
+    @Test(expected = RuntimeException::class)
+    fun `commentsForPost propagates api exception`() = runTest {
+        val postId = 1
+        whenever(api.commentsForPost(postId)).thenThrow(RuntimeException("Network error"))
 
-        `when`(mockApi.commentsForPost(userId)).thenReturn(Single.error(throwable))
-
-        val test = dataSource.commentsForPost(userId).test()
-
-        verify(mockApi).commentsForPost(userId)
-        test.assertError(throwable)
+        // when
+        dataSource.commentsForPost(postId) // should throw
     }
 }

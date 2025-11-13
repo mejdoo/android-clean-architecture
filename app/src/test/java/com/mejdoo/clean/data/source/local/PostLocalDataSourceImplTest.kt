@@ -1,84 +1,125 @@
 package com.mejdoo.clean.data.source.local
 
 import com.mejdoo.clean.data.mapper.toPost
+import com.mejdoo.clean.data.mapper.toPostEntity
 import com.mejdoo.clean.data.mapper.toPostList
+import com.mejdoo.clean.data.model.PostEntity
 import com.mejdoo.clean.data.source.local.abstraction.PostDao
 import com.mejdoo.clean.data.source.local.implementation.PostLocalDataSourceImpl
-import com.mejdoo.clean.postEntity1
-import com.mejdoo.clean.postEntity2
-import io.reactivex.Single
-import org.junit.After
+import com.mejdoo.clean.domain.model.Post
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(MockitoJUnitRunner::class)
 class PostLocalDataSourceImplTest {
-    private lateinit var closeable: AutoCloseable
 
     @Mock
-    private lateinit var mockDao: PostDao
+    private lateinit var dao: PostDao
 
     private lateinit var dataSource: PostLocalDataSourceImpl
 
-    private val localList = listOf(postEntity1, postEntity2)
-
-    private val throwable = Throwable()
-
     @Before
     fun setUp() {
-        closeable = MockitoAnnotations.openMocks(this)
-        dataSource = PostLocalDataSourceImpl(mockDao)
+        dataSource = PostLocalDataSourceImpl(dao)
     }
 
-    @After
-    fun tearDown() {
-        closeable.close()
-    }
+    // --------------------------------------------------------------------
+    // allPosts()
+    // --------------------------------------------------------------------
 
     @Test
-    fun test_AllPosts_Success() {
-        `when`(mockDao.allPosts()).thenReturn(Single.just(localList))
+    fun `allPosts returns mapped posts from dao`() = runTest {
+        // given
+        val entities = listOf(
+            PostEntity(1, 1, "Title 1", "Body 1"),
+            PostEntity(2, 2, "Title 2", "Body 2")
+        )
+        val expectedPosts = entities.toPostList()
 
-        val test = dataSource.allPosts().test()
+        whenever(dao.allPosts()).thenReturn(flowOf(entities))
 
-        verify(mockDao).allPosts()
-        test.assertValue(localList.toPostList())
+        // when
+        val result = dataSource.allPosts().first()
+
+        // then
+        assertEquals(expectedPosts, result)
+        verify(dao).allPosts()
     }
 
-    @Test
-    fun test_AllPosts_Failure() {
-        `when`(mockDao.allPosts()).thenReturn(Single.error(throwable))
-
-        val test = dataSource.allPosts().test()
-
-        verify(mockDao).allPosts()
-        test.assertError(throwable)
+    @Test(expected = RuntimeException::class)
+    fun `allPosts propagates dao exception`() = runTest {
+        whenever(dao.allPosts()).thenThrow(RuntimeException("DB failure"))
+        dataSource.allPosts().first() // should throw
     }
 
+    // --------------------------------------------------------------------
+    // postById()
+    // --------------------------------------------------------------------
+
     @Test
-    fun test_PostById_Success() {
+    fun `postById returns mapped post from dao`() = runTest {
+        // given
         val postId = 1
+        val entity = PostEntity(postId, 1, "Title", "Body")
+        val expectedPost = entity.toPost()
 
-        `when`(mockDao.postById(postId)).thenReturn(Single.just(postEntity1))
+        whenever(dao.postById(postId)).thenReturn(flowOf(entity))
 
-        val test = dataSource.postById(postId).test()
+        // when
+        val result = dataSource.postById(postId).first()
 
-        verify(mockDao).postById(postId)
-        test.assertValue(postEntity1.toPost())
+        // then
+        assertEquals(expectedPost, result)
+        verify(dao).postById(postId)
     }
 
-    @Test
-    fun test_PostById_Failure() {
+    @Test(expected = RuntimeException::class)
+    fun `postById propagates dao exception`() = runTest {
         val postId = 1
+        whenever(dao.postById(postId)).thenThrow(RuntimeException("DB read error"))
+        dataSource.postById(postId).first() // should throw
+    }
 
-        `when`(mockDao.postById(postId)).thenReturn(Single.error(throwable))
+    // --------------------------------------------------------------------
+    // insertPost()
+    // --------------------------------------------------------------------
 
-        val test = dataSource.postById(postId).test()
+    @Test
+    fun `insertPost maps and inserts entity`() = runTest {
+        // given
+        val post = Post(1, 1, "Title", "Body")
+        val expectedEntity = post.toPostEntity()
 
-        verify(mockDao).postById(postId)
-        test.assertError(throwable)
+        // when
+        dataSource.insertPost(post)
+
+        // then
+        val captor = argumentCaptor<PostEntity>()
+        verify(dao).insertPost(captor.capture())
+        assertEquals(expectedEntity, captor.firstValue)
+    }
+
+    @Test(expected = RuntimeException::class)
+    fun `insertPost propagates dao exception`() = runTest {
+        // given
+        val post = Post(1, 1, "Title", "Body")
+        whenever(dao.insertPost(any())).thenThrow(RuntimeException("DB insert failed"))
+
+        // when
+        dataSource.insertPost(post) // should throw
     }
 }

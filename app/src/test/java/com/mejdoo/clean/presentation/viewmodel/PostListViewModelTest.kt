@@ -1,85 +1,73 @@
 package com.mejdoo.clean.presentation.viewmodel
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.mejdoo.clean.CoroutineTestRule
+import com.mejdoo.clean.domain.model.Post
 import com.mejdoo.clean.domain.usecase.PostListUseCase
-import com.mejdoo.clean.post1
-import com.mejdoo.clean.post2
 import com.mejdoo.clean.presentation.mapper.toPostItemList
-import com.mejdoo.clean.presentation.model.PostItem
-import com.mejdoo.clean.presentation.model.Resource
-import com.mejdoo.clean.presentation.model.ResourceStatus
-import io.reactivex.Single
-import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Before
+import com.mejdoo.clean.presentation.model.UiState
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.whenever
 
+@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(MockitoJUnitRunner::class)
 class PostListViewModelTest {
-    private lateinit var closeable: AutoCloseable
-    private lateinit var listViewModel: PostListViewModel
+
+    @get:Rule
+    val coroutineRule = CoroutineTestRule()
 
     @Mock
-    private lateinit var mockUseCase: PostListUseCase
+    private lateinit var postListUseCase: PostListUseCase
 
-    private val posts = listOf(post1, post2)
-
-    private val throwable = Throwable()
-
-    @Rule
-    @JvmField
-    val rxSchedulersOverrideRule = RxSchedulersOverrideRule()
-
-    @Rule
-    @JvmField
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @Before
-    fun setUp() {
-        closeable = MockitoAnnotations.openMocks(this)
-        listViewModel = PostListViewModel(mockUseCase)
-    }
-
-    @After
-    fun tearDown() {
-        closeable.close()
-    }
+    private lateinit var viewModel: PostListViewModel
 
     @Test
-    fun test_PostList_Success() {
-        `when`(mockUseCase.postList()).thenReturn(Single.just(posts))
+    fun `postItemsState emits Success when posts are loaded`() = coroutineRule.testScope.runTest {
+        val posts = listOf(Post(1, 1, "Title", "Body"))
+        whenever(postListUseCase()).thenReturn(flowOf(posts))
 
-        listViewModel.getPostList()
+        viewModel = PostListViewModel(postListUseCase)
 
-        verify(mockUseCase).postList()
-        assertEquals(
-            Resource<List<PostItem>>(
-                ResourceStatus.SUCCESS,
-                posts.toPostItemList(),
-                null,
-            ),
-            listViewModel.postItemsLiveData.value,
-        )
+        // Wait for the first Success emission
+        val state = viewModel.postItemsState.first { it is UiState.Success }
+
+        assertTrue(state is UiState.Success)
+        assertEquals(posts.toPostItemList(), (state as UiState.Success).data)
     }
 
+
     @Test
-    fun test_PostList_Failure() {
-        `when`(mockUseCase.postList()).thenReturn(Single.error(throwable))
+    fun `postItemsState emits Error when use case throws`() = coroutineRule.testScope.runTest {
+        val exception = RuntimeException("Network error")
+        whenever(postListUseCase()).thenReturn(flow { throw exception })
 
-        listViewModel.getPostList()
+        viewModel = PostListViewModel(postListUseCase)
 
-        verify(mockUseCase).postList()
-        assertEquals(
-            Resource<List<PostItem>>(
-                ResourceStatus.ERROR,
-                null,
-                throwable.message,
-            ),
-            listViewModel.postItemsLiveData.value,
-        )
+        // Wait for the first Error emission
+        val state = viewModel.postItemsState.first { it is UiState.Error }
+
+        assertTrue(state is UiState.Error)
+        assertEquals("Network error", (state as UiState.Error).message)
+    }
+
+
+    @Test
+    fun `postItemsState initial value is Loading`() {
+        whenever(postListUseCase()).thenReturn(flowOf(emptyList()))
+
+        viewModel = PostListViewModel(postListUseCase)
+
+        val initial = viewModel.postItemsState.value
+        assert(initial is UiState.Loading)
     }
 }

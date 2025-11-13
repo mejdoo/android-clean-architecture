@@ -2,83 +2,88 @@ package com.mejdoo.clean.data.source.remote
 
 import com.mejdoo.clean.data.mapper.toPost
 import com.mejdoo.clean.data.mapper.toPostList
+import com.mejdoo.clean.data.model.PostEntity
 import com.mejdoo.clean.data.source.remote.abstraction.CleanApi
 import com.mejdoo.clean.data.source.remote.implementation.PostRemoteDataSourceImpl
-import com.mejdoo.clean.postEntity1
-import com.mejdoo.clean.postEntity2
-import io.reactivex.Single
-import org.junit.After
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
+@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(MockitoJUnitRunner::class)
 class PostRemoteDataSourceImplTest {
-    private lateinit var closeable: AutoCloseable
 
     @Mock
-    private lateinit var mockApi: CleanApi
+    private lateinit var api: CleanApi
 
     private lateinit var dataSource: PostRemoteDataSourceImpl
 
-    private val remoteList = listOf(postEntity1, postEntity2)
-
-    private val throwable = Throwable()
-
     @Before
     fun setUp() {
-        closeable = MockitoAnnotations.openMocks(this)
-        dataSource = PostRemoteDataSourceImpl(mockApi)
+        dataSource = PostRemoteDataSourceImpl(api)
     }
 
-    @After
-    fun tearDown() {
-        closeable.close()
-    }
+    // --------------------------------------------------------------------
+    // allPosts()
+    // --------------------------------------------------------------------
 
     @Test
-    fun test_AllPosts_Success() {
-        `when`(mockApi.allPosts()).thenReturn(Single.just(remoteList))
+    fun `allPosts returns mapped posts from api`() = runTest {
+        // given
+        val apiResponse = listOf(
+            PostEntity(1, 1, "Title 1", "Body 1"),
+            PostEntity(2, 2, "Title 2", "Body 2")
+        )
+        val expectedPosts = apiResponse.toPostList()
 
-        val test = dataSource.allPosts().test()
+        whenever(api.allPosts()).thenReturn(apiResponse)
 
-        verify(mockApi).allPosts()
-        test.assertValue(remoteList.toPostList())
+        // when
+        val result = dataSource.allPosts()
+
+        // then
+        assertEquals(expectedPosts, result)
+        verify(api).allPosts()
     }
 
-    @Test
-    fun test_AllPosts_Failure() {
-        `when`(mockApi.allPosts()).thenReturn(Single.error(throwable))
+    @Test(expected = RuntimeException::class)
+    fun `allPosts propagates api exception`() = runTest {
+        whenever(api.allPosts()).thenThrow(RuntimeException("Network error"))
 
-        val test = dataSource.allPosts().test()
-
-        verify(mockApi).allPosts()
-        test.assertError(throwable)
+        // when
+        dataSource.allPosts() // should throw
     }
 
+    // --------------------------------------------------------------------
+    // postById()
+    // --------------------------------------------------------------------
+
     @Test
-    fun test_PostById_Success() {
+    fun `postById returns mapped post from api`() = runTest {
         val postId = 1
+        val apiResponse = PostEntity(postId, 1, "Title 1", "Body 1")
+        val expectedPost = apiResponse.toPost()
 
-        `when`(mockApi.postById(postId)).thenReturn(Single.just(postEntity1))
+        whenever(api.postById(postId)).thenReturn(apiResponse)
 
-        val test = dataSource.postById(postId).test()
+        val result = dataSource.postById(postId)
 
-        verify(mockApi).postById(postId)
-        test.assertValue(postEntity1.toPost())
+        assertEquals(expectedPost, result)
+        verify(api).postById(postId)
     }
 
-    @Test
-    fun test_PostById_Failure() {
+    @Test(expected = RuntimeException::class)
+    fun `postById propagates api exception`() = runTest {
         val postId = 1
+        whenever(api.postById(postId)).thenThrow(RuntimeException("Network error"))
 
-        `when`(mockApi.postById(postId)).thenReturn(Single.error(throwable))
-
-        val test = dataSource.postById(postId).test()
-
-        verify(mockApi).postById(postId)
-        test.assertError(throwable)
+        dataSource.postById(postId) // should throw
     }
 }

@@ -2,79 +2,96 @@ package com.mejdoo.clean.data.repository
 
 import com.mejdoo.clean.data.source.local.abstraction.UserLocalDataSource
 import com.mejdoo.clean.data.source.remote.abstraction.UserRemoteDataSource
-import com.mejdoo.clean.user1
-import io.reactivex.Single
-import org.junit.After
+import com.mejdoo.clean.domain.model.User
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
-import org.mockito.MockitoAnnotations
+import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
+@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(MockitoJUnitRunner::class)
 class UserRepositoryImplTest {
-    private lateinit var closeable: AutoCloseable
+
+    @Mock
+    private lateinit var remoteDataSource: UserRemoteDataSource
+
+    @Mock
+    private lateinit var localDataSource: UserLocalDataSource
 
     private lateinit var repository: UserRepositoryImpl
 
-    @Mock
-    private lateinit var mockRemoteDataSource: UserRemoteDataSource
-
-    @Mock
-    private lateinit var mockLocalDataSource: UserLocalDataSource
-
-    private val throwable = Throwable()
-
     @Before
     fun setUp() {
-        closeable = MockitoAnnotations.openMocks(this)
-        repository = UserRepositoryImpl(mockRemoteDataSource, mockLocalDataSource)
+        repository = UserRepositoryImpl(remoteDataSource, localDataSource)
     }
 
-    @After
-    fun tearDown() {
-        closeable.close()
+    // --------------------------------------------------------------------
+    // userById() tests
+    // --------------------------------------------------------------------
+
+    @Test
+    fun `userById returns local data`() = runTest {
+        // given
+        val localUser = User(1, "Local Name", "local@email.com", "+49000000", "test.com")
+        whenever(localDataSource.userById(1)).thenReturn(flowOf(localUser))
+        whenever(remoteDataSource.userById(1))
+            .thenReturn(User(1, "Remote Name", "remote@email.com", "+49000000", "test.com"))
+
+        // when
+        val result = repository.userById(1).first()
+
+        // then
+        assertEquals(localUser, result)
+        verify(localDataSource).userById(1)
+        verify(remoteDataSource).userById(1)
     }
 
     @Test
-    fun test_UserById_RemoteDataSource_Success() {
+    fun `userById fetches remote user and inserts into local`() = runTest {
+        // given
         val userId = 1
+        val remoteUser = User(userId, "Remote Name", "remote@email.com", "+49000000", "test.com")
+        val cachedUser =
+            User(userId, "Old Cached Name", "cached@email.com", "+49000000", "test.com")
 
-        `when`(mockRemoteDataSource.userById(userId)).thenReturn(Single.just(user1))
+        whenever(localDataSource.userById(userId)).thenReturn(flowOf(cachedUser))
+        whenever(remoteDataSource.userById(userId)).thenReturn(remoteUser)
 
-        val test = repository.userById(userId).test()
+        // when
+        repository.userById(userId).first()
 
-        verify(mockRemoteDataSource).userById(userId)
-        test.assertValue(user1)
+        // then
+        verify(remoteDataSource).userById(userId)
+        val captor = argumentCaptor<User>()
+        verify(localDataSource).insertUser(captor.capture())
+        assertEquals(remoteUser, captor.firstValue)
     }
 
     @Test
-    fun test_UserById_RemoteDataSource_Failure_LocalDataSource_Success() {
+    fun `userById ignores remote exception and still emits cached user`() = runTest {
+        // given
         val userId = 1
+        val cachedUser = User(userId, "Cached User", "cached@email.com", "+49000000", "test.com")
 
-        `when`(mockRemoteDataSource.userById(userId)).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.userById(userId)).thenReturn(Single.just(user1))
+        whenever(localDataSource.userById(userId)).thenReturn(flowOf(cachedUser))
+        whenever(remoteDataSource.userById(userId)).thenThrow(RuntimeException("Network error"))
 
-        val test = repository.userById(userId).test()
+        // when
+        val result = repository.userById(userId).first()
 
-        verify(mockRemoteDataSource).userById(userId)
-        verify(mockLocalDataSource).userById(userId)
-
-        test.assertValue(user1)
-    }
-
-    @Test
-    fun test_UserById_RemoteDataSource_Failure_LocalDataSource_Failure() {
-        val userId = 1
-
-        `when`(mockRemoteDataSource.userById(userId)).thenReturn(Single.error(throwable))
-        `when`(mockLocalDataSource.userById(userId)).thenReturn(Single.error(throwable))
-
-        val test = repository.userById(userId).test()
-
-        verify(mockRemoteDataSource).userById(userId)
-        verify(mockLocalDataSource).userById(userId)
-
-        test.assertError(throwable)
+        // then
+        assertEquals(cachedUser, result)
+        verify(localDataSource, never()).insertUser(any())
     }
 }
