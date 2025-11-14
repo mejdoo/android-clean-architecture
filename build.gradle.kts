@@ -1,9 +1,8 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    // Define extra properties
-    val gradleVersion by extra("8.13.1")
-    val kotlinVersion by extra("2.2.21")
+    val kotlinVersion = "2.2.21"
+    val gradleVersion = "8.13.1"
 
     repositories {
         google()
@@ -12,6 +11,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:$gradleVersion")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        classpath("org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:$kotlinVersion")
     }
 }
 
@@ -21,7 +21,6 @@ allprojects {
         mavenCentral()
     }
 }
-
 
 // Clean task
 tasks.register<Delete>("clean") {

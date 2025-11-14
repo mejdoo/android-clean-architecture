@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -32,9 +33,19 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
+    // Enable Compose
     buildFeatures {
-        viewBinding = true
-        dataBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        // Kotlin compiler extension version compatible with Compose 1.5.x
+        kotlinCompilerExtensionVersion = "1.5.6"
+    }
+
+    kotlinOptions {
+        // Keep JVM target aligned with compileOptions
+        jvmTarget = "21"
     }
 
     testOptions {
@@ -70,12 +81,20 @@ dependencies {
     implementation("androidx.room:room-runtime:2.8.3")
     kapt("androidx.room:room-compiler:2.8.3")
     implementation("androidx.room:room-ktx:2.8.3")
+    implementation("androidx.core:core-ktx:1.12.0")
 
     // Koin (Dependency injection framework for Kotlin)
     implementation("io.insert-koin:koin-android:4.1.1")
 
-    // Picasso for Image Loading
-    implementation("com.squareup.picasso:picasso:2.71828")
+    // Jetpack Compose
+    implementation("androidx.activity:activity-compose:1.8.0")
+    implementation("androidx.compose.ui:ui:1.5.0")
+    implementation("androidx.compose.material:material:1.5.0")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.5.0")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.5.0")
+
+    // Coil for Compose (Image Loading)
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     // Unit testing
     testImplementation("junit:junit:4.13.2")

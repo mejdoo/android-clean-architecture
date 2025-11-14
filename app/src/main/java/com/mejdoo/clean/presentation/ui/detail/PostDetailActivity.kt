@@ -1,13 +1,28 @@
 package com.mejdoo.clean.presentation.ui.detail
 
 import android.os.Bundle
-import android.view.MenuItem
-import android.widget.Toast
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import com.mejdoo.clean.R
-import com.mejdoo.clean.databinding.ActivityPostDetailBinding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.mejdoo.clean.presentation.model.PostDetail
 import com.mejdoo.clean.presentation.model.UiState
 import com.mejdoo.clean.presentation.ui.misc.BaseActivity
@@ -15,78 +30,96 @@ import com.mejdoo.clean.presentation.viewmodel.PostDetailViewModel
 import com.mejdoo.clean.util.AVATARS_URL
 import com.mejdoo.clean.util.POST_ID_EXTRA_KEY
 import com.mejdoo.clean.util.USER_ID_EXTRA_KEY
-import com.squareup.picasso.Picasso
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PostDetailActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityPostDetailBinding
     private val postDetailViewModel: PostDetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        overridePendingTransition(R.anim.fadein, R.anim.fadeout)
 
-        binding = ActivityPostDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        setSupportActionBar(binding.detailToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        // Get IDs from intent
         val postId = intent.getIntExtra(POST_ID_EXTRA_KEY, 0)
         val userId = intent.getIntExtra(USER_ID_EXTRA_KEY, 0)
 
-        // Collect the post detail state
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                postDetailViewModel.postDetailState.collectLatest { uiState ->
-                    when (uiState) {
-                        is UiState.Loading -> {
-                            // Show loading UI if needed
-                            // binding.progressBar.visibility = View.VISIBLE
-                        }
+        postDetailViewModel.loadPostDetail(postId, userId)
+    }
 
-                        is UiState.Success -> {
-                            // binding.progressBar.visibility = View.GONE
-                            updateUi(uiState.data)
-                        }
+    @Composable
+    override fun ScreenContent() {
+        val uiState by postDetailViewModel.postDetailState.collectAsState()
 
-                        is UiState.Error -> {
-                            // binding.progressBar.visibility = View.GONE
-                            Toast.makeText(
-                                this@PostDetailActivity,
-                                uiState.message,
-                                Toast.LENGTH_SHORT
-                            ).show()
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text(text = "") },
+                    navigationIcon = {
+                        IconButton(onClick = { finish() }) {
+                            Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                         }
+                    }
+                )
+            }
+        ) { paddingValues ->
+            Surface(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(), color = MaterialTheme.colors.background
+            ) {
+
+                when (uiState) {
+                    is UiState.Loading -> {
+                        // Could show progress indicator
+                    }
+
+                    is UiState.Success<*> -> {
+                        UpdateUi((uiState as UiState.Success<com.mejdoo.clean.presentation.model.PostDetail>).data)
+                    }
+
+                    is UiState.Error -> {
+                        val message = (uiState as UiState.Error).message
+                        // In Compose we typically use Snackbar/Toast from activity; keep simple Text here
+                        Text(text = message)
                     }
                 }
             }
         }
-
-        // Load post detail
-        postDetailViewModel.loadPostDetail(postId, userId)
     }
+}
 
-    private fun updateUi(postDetail: PostDetail) {
-        binding.postTitle.text = postDetail.title
-        binding.postBody.text = postDetail.body
-        binding.postAuthor.text = postDetail.userName
-        binding.postComments.text =
-            getString(R.string.comments, postDetail.commentCount)
-        Picasso.get().load("$AVATARS_URL${postDetail.userId}").into(binding.toolbarImage)
+@Composable
+fun UpdateUi(postDetail: PostDetail) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp)
+    ) {
+        val painter = rememberAsyncImagePainter("${AVATARS_URL}${postDetail.userId}")
+        Image(
+            painter = painter, contentDescription = null, modifier = Modifier
+                .fillMaxWidth()
+        )
+
+        Text(
+            text = postDetail.title ?: "",
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+        Text(
+            text = postDetail.body ?: "",
+            style = MaterialTheme.typography.body1,
+            modifier = Modifier.padding(top = 8.dp)
+        )
+        Text(
+            text = postDetail.userName ?: "",
+            style = MaterialTheme.typography.subtitle1,
+            modifier = Modifier.padding(top = 8.dp),
+        )
+        Text(
+            text = "Comments: ${postDetail.commentCount}",
+            style = MaterialTheme.typography.subtitle2,
+            modifier = Modifier.padding(top = 8.dp)
+        )
     }
-
-    override fun onOptionsItemSelected(item: MenuItem) =
-        when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
 }
