@@ -6,16 +6,16 @@ using the MVVM pattern for Android development.
 ## Tech Stack
 
 - Kotlin Programming Language
-- Android X
-- Android Architecture Components (ViewModel, Room & Data Binding)
-- Kotlin Coroutines & Flow
-- Retrofit
-- Koin (Dependency injection framework for Kotlin)
-- Picasso for Image Loading
+- Kotlin Coroutines & Flow for Asynchronous Programming
+- Jetpack Compose for UI
+- Room for Local Database
+- Retrofit for Network Calls
+- Koin for Dependency Injection
+- Coil for Image Loading
 - Junit & Mockito for Unit Tests
 - Espresso for UI Tests
 
-## Guidelines for Using Coroutines: `suspend` Functions vs `Flow` in Clean Architecture
+## Coroutines: `suspend` Functions vs `Flow` in Clean Architecture
 
 When designing your Android app with Clean Architecture, it's important to choose the right function
 types for each layer.
