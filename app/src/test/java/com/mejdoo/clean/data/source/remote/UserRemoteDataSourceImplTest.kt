@@ -18,7 +18,6 @@ import org.mockito.kotlin.whenever
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
 class UserRemoteDataSourceImplTest {
-
     @Mock
     private lateinit var api: CleanApi
 
@@ -34,29 +33,31 @@ class UserRemoteDataSourceImplTest {
     // --------------------------------------------------------------------
 
     @Test
-    fun `userById returns mapped user from api`() = runTest {
-        // given
-        val userId = 1
-        val apiResponse =
-            UserEntity(userId, "Name 1", "email1@example.com", "+49000000", "example.com")
-        val expectedUser = apiResponse.toUser()
+    fun `userById returns mapped user from api`() =
+        runTest {
+            // given
+            val userId = 1
+            val apiResponse =
+                UserEntity(userId, "Name 1", "email1@example.com", "+49000000", "example.com")
+            val expectedUser = apiResponse.toUser()
 
-        whenever(api.userById(userId)).thenReturn(apiResponse)
+            whenever(api.userById(userId)).thenReturn(apiResponse)
 
-        // when
-        val result = dataSource.userById(userId)
+            // when
+            val result = dataSource.userById(userId)
 
-        // then
-        assertEquals(expectedUser, result)
-        verify(api).userById(userId)
-    }
+            // then
+            assertEquals(expectedUser, result)
+            verify(api).userById(userId)
+        }
 
     @Test(expected = RuntimeException::class)
-    fun `userById propagates api exception`() = runTest {
-        val userId = 1
-        whenever(api.userById(userId)).thenThrow(RuntimeException("Network error"))
+    fun `userById propagates api exception`() =
+        runTest {
+            val userId = 1
+            whenever(api.userById(userId)).thenThrow(RuntimeException("Network error"))
 
-        // when
-        dataSource.userById(userId) // should throw
-    }
+            // when
+            dataSource.userById(userId) // should throw
+        }
 }

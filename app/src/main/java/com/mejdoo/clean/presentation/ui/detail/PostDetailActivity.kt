@@ -33,7 +33,6 @@ import com.mejdoo.clean.util.USER_ID_EXTRA_KEY
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PostDetailActivity : BaseActivity() {
-
     private val postDetailViewModel: PostDetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +44,7 @@ class PostDetailActivity : BaseActivity() {
         postDetailViewModel.loadPostDetail(postId, userId)
     }
 
+    @Suppress("FunctionName")
     @Composable
     override fun ScreenContent() {
         val uiState by postDetailViewModel.postDetailState.collectAsState()
@@ -57,23 +57,25 @@ class PostDetailActivity : BaseActivity() {
                         IconButton(onClick = { finish() }) {
                             Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                         }
-                    }
+                    },
                 )
-            }
+            },
         ) { paddingValues ->
             Surface(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize(), color = MaterialTheme.colors.background
+                modifier =
+                    Modifier
+                        .padding(paddingValues)
+                        .fillMaxSize(),
+                color = MaterialTheme.colors.background,
             ) {
-
                 when (uiState) {
                     is UiState.Loading -> {
                         // Could show progress indicator
                     }
 
                     is UiState.Success<*> -> {
-                        UpdateUi((uiState as UiState.Success<com.mejdoo.clean.presentation.model.PostDetail>).data)
+                        val data = (uiState as UiState.Success<PostDetail>).data
+                        UpdateUi(data)
                     }
 
                     is UiState.Error -> {
@@ -85,41 +87,46 @@ class PostDetailActivity : BaseActivity() {
             }
         }
     }
-}
 
-@Composable
-fun UpdateUi(postDetail: PostDetail) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp)
-    ) {
-        val painter = rememberAsyncImagePainter("${AVATARS_URL}${postDetail.userId}")
-        Image(
-            painter = painter, contentDescription = null, modifier = Modifier
-                .fillMaxWidth()
-        )
+    @Suppress("FunctionName")
+    @Composable
+    fun UpdateUi(postDetail: PostDetail) {
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+        ) {
+            val painter = rememberAsyncImagePainter("${AVATARS_URL}${postDetail.userId}")
+            Image(
+                painter = painter,
+                contentDescription = null,
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
+            )
 
-        Text(
-            text = postDetail.title ?: "",
-            style = MaterialTheme.typography.h6,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-        Text(
-            text = postDetail.body ?: "",
-            style = MaterialTheme.typography.body1,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-        Text(
-            text = postDetail.userName ?: "",
-            style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.padding(top = 8.dp),
-        )
-        Text(
-            text = "Comments: ${postDetail.commentCount}",
-            style = MaterialTheme.typography.subtitle2,
-            modifier = Modifier.padding(top = 8.dp)
-        )
+            Text(
+                text = postDetail.title,
+                style = MaterialTheme.typography.h6,
+                modifier = Modifier.padding(top = 8.dp),
+            )
+            Text(
+                text = postDetail.body,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.padding(top = 8.dp),
+            )
+            Text(
+                text = postDetail.userName,
+                style = MaterialTheme.typography.subtitle1,
+                modifier = Modifier.padding(top = 8.dp),
+            )
+            Text(
+                text = "Comments: ${postDetail.commentCount}",
+                style = MaterialTheme.typography.subtitle2,
+                modifier = Modifier.padding(top = 8.dp),
+            )
+        }
     }
 }

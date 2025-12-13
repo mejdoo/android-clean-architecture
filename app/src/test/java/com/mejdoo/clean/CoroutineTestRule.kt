@@ -26,4 +26,3 @@ class CoroutineTestRule(
         Dispatchers.resetMain()
     }
 }
-

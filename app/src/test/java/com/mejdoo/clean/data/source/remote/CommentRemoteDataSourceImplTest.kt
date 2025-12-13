@@ -15,11 +15,9 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
 class CommentRemoteDataSourceImplTest {
-
     @Mock
     private lateinit var api: CleanApi
 
@@ -35,31 +33,34 @@ class CommentRemoteDataSourceImplTest {
     // --------------------------------------------------------------------
 
     @Test
-    fun `commentsForPost returns mapped comments from api`() = runTest {
-        // given
-        val postId = 1
-        val apiResponse = listOf(
-            CommentEntity(postId, 1, "Name 1", "email1@example.com", "Body 1"),
-            CommentEntity(postId, 2, "Name 2", "email2@example.com", "Body 2")
-        )
-        val expectedComments = apiResponse.toCommentList()
+    fun `commentsForPost returns mapped comments from api`() =
+        runTest {
+            // given
+            val postId = 1
+            val apiResponse =
+                listOf(
+                    CommentEntity(postId, 1, "Name 1", "email1@example.com", "Body 1"),
+                    CommentEntity(postId, 2, "Name 2", "email2@example.com", "Body 2"),
+                )
+            val expectedComments = apiResponse.toCommentList()
 
-        whenever(api.commentsForPost(postId)).thenReturn(apiResponse)
+            whenever(api.commentsForPost(postId)).thenReturn(apiResponse)
 
-        // when
-        val result = dataSource.commentsForPost(postId)
+            // when
+            val result = dataSource.commentsForPost(postId)
 
-        // then
-        assertEquals(expectedComments, result)
-        verify(api).commentsForPost(postId)
-    }
+            // then
+            assertEquals(expectedComments, result)
+            verify(api).commentsForPost(postId)
+        }
 
     @Test(expected = RuntimeException::class)
-    fun `commentsForPost propagates api exception`() = runTest {
-        val postId = 1
-        whenever(api.commentsForPost(postId)).thenThrow(RuntimeException("Network error"))
+    fun `commentsForPost propagates api exception`() =
+        runTest {
+            val postId = 1
+            whenever(api.commentsForPost(postId)).thenThrow(RuntimeException("Network error"))
 
-        // when
-        dataSource.commentsForPost(postId) // should throw
-    }
+            // when
+            dataSource.commentsForPost(postId) // should throw
+        }
 }

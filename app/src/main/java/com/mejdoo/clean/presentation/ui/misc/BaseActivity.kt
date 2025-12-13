@@ -25,6 +25,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 private const val TAG = "BaseActivity"
+private const val SNACKBAR_BG_HEX = 0xFF323232
+private val SNACKBAR_BG_COLOR = Color(SNACKBAR_BG_HEX)
+private val SNACKBAR_PADDING = 16.dp
 
 open class BaseActivity : AppCompatActivity() {
     // Use Compose's SnackbarHostState instead of Android Snackbar anchored to legacy views
@@ -47,18 +50,17 @@ open class BaseActivity : AppCompatActivity() {
             connectivityAsFlow(applicationContext).collectLatest { isConnected ->
                 Log.d(TAG, "connectivity changed: $isConnected")
                 if (!isConnected) {
-                    Log.d(
-                        TAG,
-                        "No connection - showing snackbar/toast. currentSnackbarData=${snackbarHostState.currentSnackbarData != null}"
-                    )
+                    val isSnackbarShown = snackbarHostState.currentSnackbarData != null
+                    Log.d(TAG, "No connection - showing snackbar/toast. currentSnackbarData=$isSnackbarShown")
+
                     // show a persistent snackbar until connection is back
                     // launch in lifecycleScope (not the collecting coroutine) and ensure we don't
                     // create duplicates if a snackbar is already shown.
-                    if (snackbarHostState.currentSnackbarData == null) {
+                    if (!isSnackbarShown) {
                         lifecycleScope.launch {
                             snackbarHostState.showSnackbar(
                                 message = getString(R.string.no_connection),
-                                duration = SnackbarDuration.Indefinite
+                                duration = SnackbarDuration.Indefinite,
                             )
                         }
                     }
@@ -75,14 +77,19 @@ open class BaseActivity : AppCompatActivity() {
      * Subclasses should override this to provide their Compose UI. Keep it empty by default.
      * This ensures the BaseActivity's Scaffold and SnackbarHost remain the single root composition.
      */
+    @Suppress("FunctionName")
     @Composable
     protected open fun ScreenContent() {
         // default empty content
     }
 }
 
+@Suppress("FunctionName")
 @Composable
-private fun AppHost(snackbarHostState: SnackbarHostState, content: @Composable () -> Unit) {
+private fun AppHost(
+    snackbarHostState: SnackbarHostState,
+    content: @Composable () -> Unit,
+) {
     MaterialTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             // Activity content (fills the available space)
@@ -92,15 +99,17 @@ private fun AppHost(snackbarHostState: SnackbarHostState, content: @Composable (
 
             // Snackbar overlay placed on top of content, bottom-centered with padding
             Box(
-                modifier = Modifier
-                    .fillMaxSize(), contentAlignment = Alignment.BottomCenter
+                modifier =
+                    Modifier
+                        .fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter,
             ) {
                 SnackbarHost(hostState = snackbarHostState) { data ->
                     Snackbar(
                         snackbarData = data,
-                        modifier = Modifier.padding(16.dp),
-                        backgroundColor = Color(0xFF323232),
-                        contentColor = Color.White
+                        modifier = Modifier.padding(SNACKBAR_PADDING),
+                        backgroundColor = SNACKBAR_BG_COLOR,
+                        contentColor = Color.White,
                     )
                 }
             }

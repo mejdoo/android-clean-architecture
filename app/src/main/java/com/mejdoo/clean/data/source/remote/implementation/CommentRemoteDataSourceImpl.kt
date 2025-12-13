@@ -8,6 +8,5 @@ import com.mejdoo.clean.domain.model.Comment
 class CommentRemoteDataSourceImpl(
     private val api: CleanApi,
 ) : CommentRemoteDataSource {
-    override suspend fun commentsForPost(postId: Int): List<Comment> =
-        api.commentsForPost(postId).toCommentList()
+    override suspend fun commentsForPost(postId: Int): List<Comment> = api.commentsForPost(postId).toCommentList()
 }

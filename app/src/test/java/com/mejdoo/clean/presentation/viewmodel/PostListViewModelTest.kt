@@ -22,7 +22,6 @@ import org.mockito.kotlin.whenever
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
 class PostListViewModelTest {
-
     @get:Rule
     val coroutineRule = CoroutineTestRule()
 
@@ -32,34 +31,34 @@ class PostListViewModelTest {
     private lateinit var viewModel: PostListViewModel
 
     @Test
-    fun `postItemsState emits Success when posts are loaded`() = coroutineRule.testScope.runTest {
-        val posts = listOf(Post(1, 1, "Title", "Body"))
-        whenever(postListUseCase()).thenReturn(flowOf(posts))
+    fun `postItemsState emits Success when posts are loaded`() =
+        coroutineRule.testScope.runTest {
+            val posts = listOf(Post(1, 1, "Title", "Body"))
+            whenever(postListUseCase()).thenReturn(flowOf(posts))
 
-        viewModel = PostListViewModel(postListUseCase)
+            viewModel = PostListViewModel(postListUseCase)
 
-        // Wait for the first Success emission
-        val state = viewModel.postItemsState.first { it is UiState.Success }
+            // Wait for the first Success emission
+            val state = viewModel.postItemsState.first { it is UiState.Success }
 
-        assertTrue(state is UiState.Success)
-        assertEquals(posts.toPostItemList(), (state as UiState.Success).data)
-    }
-
+            assertTrue(state is UiState.Success)
+            assertEquals(posts.toPostItemList(), (state as UiState.Success).data)
+        }
 
     @Test
-    fun `postItemsState emits Error when use case throws`() = coroutineRule.testScope.runTest {
-        val exception = RuntimeException("Network error")
-        whenever(postListUseCase()).thenReturn(flow { throw exception })
+    fun `postItemsState emits Error when use case throws`() =
+        coroutineRule.testScope.runTest {
+            val exception = RuntimeException("Network error")
+            whenever(postListUseCase()).thenReturn(flow { throw exception })
 
-        viewModel = PostListViewModel(postListUseCase)
+            viewModel = PostListViewModel(postListUseCase)
 
-        // Wait for the first Error emission
-        val state = viewModel.postItemsState.first { it is UiState.Error }
+            // Wait for the first Error emission
+            val state = viewModel.postItemsState.first { it is UiState.Error }
 
-        assertTrue(state is UiState.Error)
-        assertEquals("Network error", (state as UiState.Error).message)
-    }
-
+            assertTrue(state is UiState.Error)
+            assertEquals("Network error", (state as UiState.Error).message)
+        }
 
     @Test
     fun `postItemsState initial value is Loading`() {

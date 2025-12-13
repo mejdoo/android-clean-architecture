@@ -16,20 +16,18 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class PostListViewModel(
-    postListUseCase: PostListUseCase
+    postListUseCase: PostListUseCase,
 ) : ViewModel() {
-
-    val postItemsState: StateFlow<UiState<List<PostItem>>> = postListUseCase()
-        .map<List<Post>, UiState<List<PostItem>>> { posts ->
-            UiState.Success(posts.toPostItemList())
-        }
-        .catch { e ->
-            emit(UiState.Error(e.message ?: "Unknown error"))
-        }
-        .flowOn(Dispatchers.IO)
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            initialValue = UiState.Loading
-        )
+    val postItemsState: StateFlow<UiState<List<PostItem>>> =
+        postListUseCase()
+            .map<List<Post>, UiState<List<PostItem>>> { posts ->
+                UiState.Success(posts.toPostItemList())
+            }.catch { e ->
+                emit(UiState.Error(e.message ?: "Unknown error"))
+            }.flowOn(Dispatchers.IO)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.Lazily,
+                initialValue = UiState.Loading,
+            )
 }

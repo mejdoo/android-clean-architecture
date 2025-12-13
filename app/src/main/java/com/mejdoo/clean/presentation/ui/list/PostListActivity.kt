@@ -32,7 +32,6 @@ import com.mejdoo.clean.util.USER_ID_EXTRA_KEY
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PostListActivity : BaseActivity() {
-
     private val postListViewModel: PostListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,29 +39,35 @@ class PostListActivity : BaseActivity() {
         // Keep any non-UI initialization here. UI is provided via ScreenContent().
     }
 
+    @Suppress("FunctionName")
     @Composable
     override fun ScreenContent() {
         Surface(color = MaterialTheme.colors.background, modifier = Modifier.fillMaxSize()) {
             PostListScreen(postListViewModel) { postId, userId ->
-                val intent = Intent(this@PostListActivity, PostDetailActivity::class.java).apply {
-                    putExtra(POST_ID_EXTRA_KEY, postId)
-                    putExtra(USER_ID_EXTRA_KEY, userId)
-                }
+                val intent =
+                    Intent(this@PostListActivity, PostDetailActivity::class.java).apply {
+                        putExtra(POST_ID_EXTRA_KEY, postId)
+                        putExtra(USER_ID_EXTRA_KEY, userId)
+                    }
                 startActivity(intent)
             }
         }
     }
 }
 
+@Suppress("FunctionName")
 @Composable
-fun PostListScreen(viewModel: PostListViewModel, onItemClick: (Int, Int) -> Unit) {
+fun PostListScreen(
+    viewModel: PostListViewModel,
+    onItemClick: (Int, Int) -> Unit,
+) {
     val uiState by viewModel.postItemsState.collectAsState()
 
     when (uiState) {
         is UiState.Loading -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 CircularProgressIndicator(modifier = Modifier.padding(top = 48.dp))
             }
@@ -81,7 +86,7 @@ fun PostListScreen(viewModel: PostListViewModel, onItemClick: (Int, Int) -> Unit
             val message = (uiState as UiState.Error).message
             Column(
                 modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(text = message)
             }
@@ -89,21 +94,26 @@ fun PostListScreen(viewModel: PostListViewModel, onItemClick: (Int, Int) -> Unit
     }
 }
 
+@Suppress("FunctionName")
 @Composable
-fun PostListItem(title: String, onClick: () -> Unit) {
+fun PostListItem(
+    title: String,
+    onClick: () -> Unit,
+) {
     Card(
         shape = RoundedCornerShape(4.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(4.dp)
-            .clickable { onClick() }
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(4.dp)
+                .clickable { onClick() },
     ) {
         Text(
             text = title,
             modifier = Modifier.padding(16.dp),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.subtitle1
+            style = MaterialTheme.typography.subtitle1,
         )
     }
 }

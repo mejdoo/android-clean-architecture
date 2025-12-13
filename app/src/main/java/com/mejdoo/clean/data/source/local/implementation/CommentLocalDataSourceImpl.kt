@@ -12,7 +12,9 @@ class CommentLocalDataSourceImpl(
     private val dao: CommentDao,
 ) : CommentLocalDataSource {
     override fun commentsForPost(postId: Int): Flow<List<Comment>> =
-        dao.commentsForPost(postId).map { it.toCommentList() }
+        dao
+            .commentsForPost(postId)
+            .map { it.toCommentList() }
 
     override suspend fun insertComment(comment: Comment) {
         dao.insertComment(comment.toCommentEntity())

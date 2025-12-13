@@ -21,11 +21,9 @@ import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(MockitoJUnitRunner::class)
 class UserLocalDataSourceImplTest {
-
     @Mock
     private lateinit var dao: UserDao
 
@@ -41,59 +39,62 @@ class UserLocalDataSourceImplTest {
     // --------------------------------------------------------------------
 
     @Test
-    fun `userById returns mapped user from dao`() = runTest {
-        // given
-        val userId = 1
-        val entity = UserEntity(userId, "John Doe", "john@example.com", "+49000000", "example.com")
-        val expectedUser = entity.toUser()
+    fun `userById returns mapped user from dao`() =
+        runTest {
+            // given
+            val userId = 1
+            val entity = UserEntity(userId, "John Doe", "john@example.com", "+49000000", "example.com")
+            val expectedUser = entity.toUser()
 
-        whenever(dao.userById(userId)).thenReturn(flowOf(entity))
+            whenever(dao.userById(userId)).thenReturn(flowOf(entity))
 
-        // when
-        val result = dataSource.userById(userId).first()
+            // when
+            val result = dataSource.userById(userId).first()
 
-        // then
-        assertEquals(expectedUser, result)
-        verify(dao).userById(userId)
-    }
+            // then
+            assertEquals(expectedUser, result)
+            verify(dao).userById(userId)
+        }
 
     @Test(expected = RuntimeException::class)
-    fun `userById propagates dao exception`() = runTest {
-        // given
-        val userId = 1
-        whenever(dao.userById(userId)).thenThrow(RuntimeException("DB failure"))
+    fun `userById propagates dao exception`() =
+        runTest {
+            // given
+            val userId = 1
+            whenever(dao.userById(userId)).thenThrow(RuntimeException("DB failure"))
 
-        // when
-        dataSource.userById(userId).first() // should throw
-    }
+            // when
+            dataSource.userById(userId).first() // should throw
+        }
 
     // --------------------------------------------------------------------
     // insertUser()
     // --------------------------------------------------------------------
 
     @Test
-    fun `insertUser maps and inserts entity`() = runTest {
-        // given
-        val user = User(1, "John Doe", "john@example.com", "+49000000", "example.com")
-        val expectedEntity = user.toUserEntity()
+    fun `insertUser maps and inserts entity`() =
+        runTest {
+            // given
+            val user = User(1, "John Doe", "john@example.com", "+49000000", "example.com")
+            val expectedEntity = user.toUserEntity()
 
-        // when
-        dataSource.insertUser(user)
+            // when
+            dataSource.insertUser(user)
 
-        // then
-        val captor = argumentCaptor<UserEntity>()
-        verify(dao).insertUser(captor.capture())
-        assertEquals(expectedEntity, captor.firstValue)
-    }
+            // then
+            val captor = argumentCaptor<UserEntity>()
+            verify(dao).insertUser(captor.capture())
+            assertEquals(expectedEntity, captor.firstValue)
+        }
 
     @Test(expected = RuntimeException::class)
-    fun `insertUser propagates dao exception`() = runTest {
-        // given
-        val user = User(1, "John Doe", "john@example.com", "+49000000", "example.com")
-        whenever(dao.insertUser(any())).thenThrow(RuntimeException("DB insert failed"))
+    fun `insertUser propagates dao exception`() =
+        runTest {
+            // given
+            val user = User(1, "John Doe", "john@example.com", "+49000000", "example.com")
+            whenever(dao.insertUser(any())).thenThrow(RuntimeException("DB insert failed"))
 
-        // when
-        dataSource.insertUser(user) // should throw
-    }
+            // when
+            dataSource.insertUser(user) // should throw
+        }
 }
-
