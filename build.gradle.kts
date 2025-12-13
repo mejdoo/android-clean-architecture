@@ -7,7 +7,7 @@ plugins {
 
 buildscript {
     val kotlinVersion = "2.2.21"
-    val gradleVersion = "8.13.1"
+    val gradleVersion = "8.13.2"
 
     repositories {
         google()
