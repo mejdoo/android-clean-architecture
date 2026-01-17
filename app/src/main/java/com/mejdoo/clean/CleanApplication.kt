@@ -27,7 +27,7 @@ class CleanApplication : Application() {
                 repositoryModule,
                 dataSourceModule,
                 networkModule,
-                cacheModule,
+                cacheModule
             )
         }
     }

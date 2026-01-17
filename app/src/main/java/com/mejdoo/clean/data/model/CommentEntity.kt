@@ -16,5 +16,5 @@ data class CommentEntity(
     @SerializedName("email")
     val email: String,
     @SerializedName("body")
-    val body: String,
+    val body: String
 )

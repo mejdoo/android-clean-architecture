@@ -16,5 +16,5 @@ data class UserEntity(
     @SerializedName("phone")
     val phone: String,
     @SerializedName("website")
-    val website: String,
+    val website: String
 )

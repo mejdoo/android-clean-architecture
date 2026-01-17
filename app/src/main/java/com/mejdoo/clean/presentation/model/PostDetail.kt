@@ -6,5 +6,5 @@ data class PostDetail(
     val title: String,
     val body: String,
     val userName: String,
-    val commentCount: Int,
+    val commentCount: Int
 )

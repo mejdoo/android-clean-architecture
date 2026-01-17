@@ -34,59 +34,55 @@ class PostRemoteDataSourceImplTest {
     // --------------------------------------------------------------------
 
     @Test
-    fun `allPosts returns mapped posts from api`() =
-        runTest {
-            // given
-            val apiResponse =
-                listOf(
-                    PostEntity(1, 1, "Title 1", "Body 1"),
-                    PostEntity(2, 2, "Title 2", "Body 2"),
-                )
-            val expectedPosts = apiResponse.toPostList()
+    fun `allPosts returns mapped posts from api`() = runTest {
+        // given
+        val apiResponse =
+            listOf(
+                PostEntity(1, 1, "Title 1", "Body 1"),
+                PostEntity(2, 2, "Title 2", "Body 2")
+            )
+        val expectedPosts = apiResponse.toPostList()
 
-            whenever(api.allPosts()).thenReturn(apiResponse)
+        whenever(api.allPosts()).thenReturn(apiResponse)
 
-            // when
-            val result = dataSource.allPosts()
+        // when
+        val result = dataSource.allPosts()
 
-            // then
-            assertEquals(expectedPosts, result)
-            verify(api).allPosts()
-        }
+        // then
+        assertEquals(expectedPosts, result)
+        verify(api).allPosts()
+    }
 
     @Test(expected = RuntimeException::class)
-    fun `allPosts propagates api exception`() =
-        runTest {
-            whenever(api.allPosts()).thenThrow(RuntimeException("Network error"))
+    fun `allPosts propagates api exception`() = runTest {
+        whenever(api.allPosts()).thenThrow(RuntimeException("Network error"))
 
-            // when
-            dataSource.allPosts() // should throw
-        }
+        // when
+        dataSource.allPosts() // should throw
+    }
     // --------------------------------------------------------------------
     // postById()
     // --------------------------------------------------------------------
 
     @Test
-    fun `postById returns mapped post from api`() =
-        runTest {
-            val postId = 1
-            val apiResponse = PostEntity(postId, 1, "Title 1", "Body 1")
-            val expectedPost = apiResponse.toPost()
+    fun `postById returns mapped post from api`() = runTest {
+        val postId = 1
+        val apiResponse = PostEntity(postId, 1, "Title 1", "Body 1")
+        val expectedPost = apiResponse.toPost()
 
-            whenever(api.postById(postId)).thenReturn(apiResponse)
+        whenever(api.postById(postId)).thenReturn(apiResponse)
 
-            val result = dataSource.postById(postId)
+        val result = dataSource.postById(postId)
 
-            assertEquals(expectedPost, result)
-            verify(api).postById(postId)
-        }
+        assertEquals(expectedPost, result)
+        verify(api).postById(postId)
+    }
 
     @Test(expected = RuntimeException::class)
-    fun `postById propagates api exception`() =
-        runTest {
-            val postId = 1
-            whenever(api.postById(postId)).thenThrow(RuntimeException("Network error"))
+    fun `postById propagates api exception`() = runTest {
+        val postId = 1
+        whenever(api.postById(postId)).thenThrow(RuntimeException("Network error"))
 
-            dataSource.postById(postId) // should throw
-        }
+        dataSource.postById(postId) // should throw
+    }
 }

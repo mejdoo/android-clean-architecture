@@ -14,7 +14,7 @@ class PostMappersTest {
                 userId = 10,
                 id = 100,
                 title = "Post Title",
-                body = "Post body content",
+                body = "Post body content"
             )
 
         // Act
@@ -35,7 +35,7 @@ class PostMappersTest {
                 userId = 10,
                 id = 100,
                 title = "Post Title",
-                body = "Post body content",
+                body = "Post body content"
             )
 
         // Act
@@ -54,7 +54,7 @@ class PostMappersTest {
         val entities =
             listOf(
                 PostEntity(1, 101, "Title 1", "Body 1"),
-                PostEntity(2, 102, "Title 2", "Body 2"),
+                PostEntity(2, 102, "Title 2", "Body 2")
             )
 
         // Act
@@ -76,7 +76,7 @@ class PostMappersTest {
         val posts =
             listOf(
                 Post(1, 101, "Title 1", "Body 1"),
-                Post(2, 102, "Title 2", "Body 2"),
+                Post(2, 102, "Title 2", "Body 2")
             )
 
         // Act

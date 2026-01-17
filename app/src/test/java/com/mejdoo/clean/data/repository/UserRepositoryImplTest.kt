@@ -40,60 +40,57 @@ class UserRepositoryImplTest {
     // --------------------------------------------------------------------
 
     @Test
-    fun `userById returns local data`() =
-        runTest {
-            // given
-            val localUser = User(1, "Local Name", "local@email.com", "+49000000", "test.com")
-            whenever(localDataSource.userById(1)).thenReturn(flowOf(localUser))
-            whenever(remoteDataSource.userById(1))
-                .thenReturn(User(1, "Remote Name", "remote@email.com", "+49000000", "test.com"))
+    fun `userById returns local data`() = runTest {
+        // given
+        val localUser = User(1, "Local Name", "local@email.com", "+49000000", "test.com")
+        whenever(localDataSource.userById(1)).thenReturn(flowOf(localUser))
+        whenever(remoteDataSource.userById(1))
+            .thenReturn(User(1, "Remote Name", "remote@email.com", "+49000000", "test.com"))
 
-            // when
-            val result = repository.userById(1).first()
+        // when
+        val result = repository.userById(1).first()
 
-            // then
-            assertEquals(localUser, result)
-            verify(localDataSource).userById(1)
-            verify(remoteDataSource).userById(1)
-        }
-
-    @Test
-    fun `userById fetches remote user and inserts into local`() =
-        runTest {
-            // given
-            val userId = 1
-            val remoteUser = User(userId, "Remote Name", "remote@email.com", "+49000000", "test.com")
-            val cachedUser =
-                User(userId, "Old Cached Name", "cached@email.com", "+49000000", "test.com")
-
-            whenever(localDataSource.userById(userId)).thenReturn(flowOf(cachedUser))
-            whenever(remoteDataSource.userById(userId)).thenReturn(remoteUser)
-
-            // when
-            repository.userById(userId).first()
-
-            // then
-            verify(remoteDataSource).userById(userId)
-            val captor = argumentCaptor<User>()
-            verify(localDataSource).insertUser(captor.capture())
-            assertEquals(remoteUser, captor.firstValue)
-        }
+        // then
+        assertEquals(localUser, result)
+        verify(localDataSource).userById(1)
+        verify(remoteDataSource).userById(1)
+    }
 
     @Test
-    fun `userById ignores remote exception and still emits cached user`() =
-        runTest {
-            // given
-            val userId = 1
-            val cachedUser = User(userId, "Cached User", "cached@email.com", "+49000000", "test.com")
+    fun `userById fetches remote user and inserts into local`() = runTest {
+        // given
+        val userId = 1
+        val remoteUser = User(userId, "Remote Name", "remote@email.com", "+49000000", "test.com")
+        val cachedUser =
+            User(userId, "Old Cached Name", "cached@email.com", "+49000000", "test.com")
 
-            whenever(localDataSource.userById(userId)).thenReturn(flowOf(cachedUser))
-            whenever(remoteDataSource.userById(userId)).thenThrow(RuntimeException("Network error"))
+        whenever(localDataSource.userById(userId)).thenReturn(flowOf(cachedUser))
+        whenever(remoteDataSource.userById(userId)).thenReturn(remoteUser)
 
-            // when
-            val result = repository.userById(userId).first()
+        // when
+        repository.userById(userId).first()
 
-            // then
-            assertEquals(cachedUser, result)
-            verify(localDataSource, never()).insertUser(any())
-        }
+        // then
+        verify(remoteDataSource).userById(userId)
+        val captor = argumentCaptor<User>()
+        verify(localDataSource).insertUser(captor.capture())
+        assertEquals(remoteUser, captor.firstValue)
+    }
+
+    @Test
+    fun `userById ignores remote exception and still emits cached user`() = runTest {
+        // given
+        val userId = 1
+        val cachedUser = User(userId, "Cached User", "cached@email.com", "+49000000", "test.com")
+
+        whenever(localDataSource.userById(userId)).thenReturn(flowOf(cachedUser))
+        whenever(remoteDataSource.userById(userId)).thenThrow(RuntimeException("Network error"))
+
+        // when
+        val result = repository.userById(userId).first()
+
+        // then
+        assertEquals(cachedUser, result)
+        verify(localDataSource, never()).insertUser(any())
+    }
 }

@@ -15,9 +15,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-class PostListViewModel(
-    postListUseCase: PostListUseCase,
-) : ViewModel() {
+class PostListViewModel(postListUseCase: PostListUseCase) : ViewModel() {
     val postItemsState: StateFlow<UiState<List<PostItem>>> =
         postListUseCase()
             .map<List<Post>, UiState<List<PostItem>>> { posts ->
@@ -28,6 +26,6 @@ class PostListViewModel(
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.Lazily,
-                initialValue = UiState.Loading,
+                initialValue = UiState.Loading
             )
 }

@@ -40,91 +40,85 @@ class PostLocalDataSourceImplTest {
     // --------------------------------------------------------------------
 
     @Test
-    fun `allPosts returns mapped posts from dao`() =
-        runTest {
-            // given
-            val entities =
-                listOf(
-                    PostEntity(1, 1, "Title 1", "Body 1"),
-                    PostEntity(2, 2, "Title 2", "Body 2"),
-                )
-            val expectedPosts = entities.toPostList()
+    fun `allPosts returns mapped posts from dao`() = runTest {
+        // given
+        val entities =
+            listOf(
+                PostEntity(1, 1, "Title 1", "Body 1"),
+                PostEntity(2, 2, "Title 2", "Body 2")
+            )
+        val expectedPosts = entities.toPostList()
 
-            whenever(dao.allPosts()).thenReturn(flowOf(entities))
+        whenever(dao.allPosts()).thenReturn(flowOf(entities))
 
-            // when
-            val result = dataSource.allPosts().first()
+        // when
+        val result = dataSource.allPosts().first()
 
-            // then
-            assertEquals(expectedPosts, result)
-            verify(dao).allPosts()
-        }
+        // then
+        assertEquals(expectedPosts, result)
+        verify(dao).allPosts()
+    }
 
     @Test(expected = RuntimeException::class)
-    fun `allPosts propagates dao exception`() =
-        runTest {
-            whenever(dao.allPosts()).thenThrow(RuntimeException("DB failure"))
-            dataSource.allPosts().first() // should throw
-        }
+    fun `allPosts propagates dao exception`() = runTest {
+        whenever(dao.allPosts()).thenThrow(RuntimeException("DB failure"))
+        dataSource.allPosts().first() // should throw
+    }
 
     // --------------------------------------------------------------------
     // postById()
     // --------------------------------------------------------------------
 
     @Test
-    fun `postById returns mapped post from dao`() =
-        runTest {
-            // given
-            val postId = 1
-            val entity = PostEntity(postId, 1, "Title", "Body")
-            val expectedPost = entity.toPost()
+    fun `postById returns mapped post from dao`() = runTest {
+        // given
+        val postId = 1
+        val entity = PostEntity(postId, 1, "Title", "Body")
+        val expectedPost = entity.toPost()
 
-            whenever(dao.postById(postId)).thenReturn(flowOf(entity))
+        whenever(dao.postById(postId)).thenReturn(flowOf(entity))
 
-            // when
-            val result = dataSource.postById(postId).first()
+        // when
+        val result = dataSource.postById(postId).first()
 
-            // then
-            assertEquals(expectedPost, result)
-            verify(dao).postById(postId)
-        }
+        // then
+        assertEquals(expectedPost, result)
+        verify(dao).postById(postId)
+    }
 
     @Test(expected = RuntimeException::class)
-    fun `postById propagates dao exception`() =
-        runTest {
-            val postId = 1
-            whenever(dao.postById(postId)).thenThrow(RuntimeException("DB read error"))
-            dataSource.postById(postId).first() // should throw
-        }
+    fun `postById propagates dao exception`() = runTest {
+        val postId = 1
+        whenever(dao.postById(postId)).thenThrow(RuntimeException("DB read error"))
+        dataSource.postById(postId).first() // should throw
+    }
 
     // --------------------------------------------------------------------
     // insertPost()
     // --------------------------------------------------------------------
 
     @Test
-    fun `insertPost maps and inserts entity`() =
-        runTest {
-            // given
-            val post = Post(1, 1, "Title", "Body")
-            val expectedEntity = post.toPostEntity()
+    fun `insertPost maps and inserts entity`() = runTest {
+        // given
+        val post = Post(1, 1, "Title", "Body")
+        val expectedEntity = post.toPostEntity()
 
-            // when
-            dataSource.insertPost(post)
+        // when
+        dataSource.insertPost(post)
 
-            // then
-            val captor = argumentCaptor<PostEntity>()
-            verify(dao).insertPost(captor.capture())
-            assertEquals(expectedEntity, captor.firstValue)
-        }
+        // then
+        val captor = argumentCaptor<PostEntity>()
+        verify(dao).insertPost(captor.capture())
+        assertEquals(expectedEntity, captor.firstValue)
+    }
 
     @Test(expected = RuntimeException::class)
-    fun `insertPost propagates dao exception`() =
-        runTest {
-            // given
-            val post = Post(1, 1, "Title", "Body")
-            whenever(dao.insertPost(any())).thenThrow(RuntimeException("DB insert failed"))
+    fun `insertPost propagates dao exception`() = runTest {
+        // given
+        val post = Post(1, 1, "Title", "Body")
+        whenever(dao.insertPost(any())).thenThrow(RuntimeException("DB insert failed"))
 
-            // when
-            dataSource.insertPost(post) // should throw
-        }
+        // when
+        dataSource.insertPost(post) // should throw
+    }
 }

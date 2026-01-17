@@ -22,7 +22,8 @@ subprojects {
             "detekt",
             "setBuildUponDefaultConfig" to true,
             "setAllRules" to true,
-            "setIgnoreFailures" to false
+            "setIgnoreFailures" to false,
+            "setConfig" to files("$rootDir/detekt.yml")
         )
     }
 }

@@ -9,25 +9,23 @@ import kotlinx.coroutines.flow.onStart
 
 class PostRepositoryImpl(
     private val remoteDataSource: PostRemoteDataSource,
-    private val localDataSource: PostLocalDataSource,
+    private val localDataSource: PostLocalDataSource
 ) : PostRepository {
-    override fun allPosts(): Flow<List<Post>> =
-        localDataSource.allPosts().onStart {
-            try {
-                val posts = remoteDataSource.allPosts()
-                posts.forEach { post -> localDataSource.insertPost(post) }
-            } catch (_: Exception) {
-                // ignore remote errors, local flow will emit cached data
-            }
+    override fun allPosts(): Flow<List<Post>> = localDataSource.allPosts().onStart {
+        try {
+            val posts = remoteDataSource.allPosts()
+            posts.forEach { post -> localDataSource.insertPost(post) }
+        } catch (_: Exception) {
+            // ignore remote errors, local flow will emit cached data
         }
+    }
 
-    override fun postById(postId: Int): Flow<Post> =
-        localDataSource.postById(postId).onStart {
-            try {
-                val post = remoteDataSource.postById(postId)
-                localDataSource.insertPost(post)
-            } catch (_: Exception) {
-                // ignore
-            }
+    override fun postById(postId: Int): Flow<Post> = localDataSource.postById(postId).onStart {
+        try {
+            val post = remoteDataSource.postById(postId)
+            localDataSource.insertPost(post)
+        } catch (_: Exception) {
+            // ignore
         }
+    }
 }

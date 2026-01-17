@@ -9,15 +9,14 @@ import kotlinx.coroutines.flow.onStart
 
 class CommentRepositoryImpl(
     private val remoteDataSource: CommentRemoteDataSource,
-    private val localDataSource: CommentLocalDataSource,
+    private val localDataSource: CommentLocalDataSource
 ) : CommentRepository {
-    override fun commentsForPost(postId: Int): Flow<List<Comment>> =
-        localDataSource.commentsForPost(postId).onStart {
-            try {
-                val comments = remoteDataSource.commentsForPost(postId)
-                comments.forEach { comment -> localDataSource.insertComment(comment) }
-            } catch (_: Exception) {
-                // ignore
-            }
+    override fun commentsForPost(postId: Int): Flow<List<Comment>> = localDataSource.commentsForPost(postId).onStart {
+        try {
+            val comments = remoteDataSource.commentsForPost(postId)
+            comments.forEach { comment -> localDataSource.insertComment(comment) }
+        } catch (_: Exception) {
+            // ignore
         }
+    }
 }

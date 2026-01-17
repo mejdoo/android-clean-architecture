@@ -38,6 +38,6 @@ import org.junit.runners.Suite
     PostItemMappersTest::class,
     PostDetailMappersTest::class,
     PostListViewModelTest::class,
-    PostDetailViewModelTest::class,
+    PostDetailViewModelTest::class
 )
 class UnitTestSuite

@@ -60,7 +60,7 @@ open class BaseActivity : AppCompatActivity() {
                         lifecycleScope.launch {
                             snackbarHostState.showSnackbar(
                                 message = getString(R.string.no_connection),
-                                duration = SnackbarDuration.Indefinite,
+                                duration = SnackbarDuration.Indefinite
                             )
                         }
                     }
@@ -86,10 +86,7 @@ open class BaseActivity : AppCompatActivity() {
 
 @Suppress("FunctionName")
 @Composable
-private fun AppHost(
-    snackbarHostState: SnackbarHostState,
-    content: @Composable () -> Unit,
-) {
+private fun AppHost(snackbarHostState: SnackbarHostState, content: @Composable () -> Unit) {
     MaterialTheme {
         Box(modifier = Modifier.fillMaxSize()) {
             // Activity content (fills the available space)
@@ -100,16 +97,16 @@ private fun AppHost(
             // Snackbar overlay placed on top of content, bottom-centered with padding
             Box(
                 modifier =
-                    Modifier
-                        .fillMaxSize(),
-                contentAlignment = Alignment.BottomCenter,
+                Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.BottomCenter
             ) {
                 SnackbarHost(hostState = snackbarHostState) { data ->
                     Snackbar(
                         snackbarData = data,
                         modifier = Modifier.padding(SNACKBAR_PADDING),
                         backgroundColor = SNACKBAR_BG_COLOR,
-                        contentColor = Color.White,
+                        contentColor = Color.White
                     )
                 }
             }

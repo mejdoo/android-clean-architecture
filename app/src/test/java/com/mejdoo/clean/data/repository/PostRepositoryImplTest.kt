@@ -40,104 +40,98 @@ class PostRepositoryImplTest {
     // --------------------------------------------------------------------
 
     @Test
-    fun `allPosts returns data from local source`() =
-        runTest {
-            val localPosts = listOf(Post(1, 1, "Local Title", "Local Body"))
-            whenever(localDataSource.allPosts()).thenReturn(flowOf(localPosts))
-            whenever(remoteDataSource.allPosts()).thenReturn(emptyList())
+    fun `allPosts returns data from local source`() = runTest {
+        val localPosts = listOf(Post(1, 1, "Local Title", "Local Body"))
+        whenever(localDataSource.allPosts()).thenReturn(flowOf(localPosts))
+        whenever(remoteDataSource.allPosts()).thenReturn(emptyList())
 
-            val result = repository.allPosts().first()
+        val result = repository.allPosts().first()
 
-            assertEquals(result, localPosts)
+        assertEquals(result, localPosts)
 
-            verify(localDataSource).allPosts()
-            verify(remoteDataSource).allPosts()
-        }
-
-    @Test
-    fun `allPosts fetches from remote and inserts into local`() =
-        runTest {
-            val remotePosts =
-                listOf(
-                    Post(1, 1, "Remote 1", "Remote Body 1"),
-                    Post(2, 2, "Remote 2", "Remote Body 2"),
-                )
-            whenever(localDataSource.allPosts()).thenReturn(flowOf(emptyList()))
-            whenever(remoteDataSource.allPosts()).thenReturn(remotePosts)
-
-            repository.allPosts().first()
-
-            verify(remoteDataSource).allPosts()
-
-            val captor = argumentCaptor<Post>()
-            verify(localDataSource, times(remotePosts.size)).insertPost(captor.capture())
-            assertEquals(captor.allValues, remotePosts)
-        }
+        verify(localDataSource).allPosts()
+        verify(remoteDataSource).allPosts()
+    }
 
     @Test
-    fun `allPosts ignores remote exceptions and still emits local`() =
-        runTest {
-            val localPosts = listOf(Post(1, 1, "Cached", "Cached Body"))
-            whenever(localDataSource.allPosts()).thenReturn(flowOf(localPosts))
-            whenever(remoteDataSource.allPosts()).thenThrow(RuntimeException("Network error"))
+    fun `allPosts fetches from remote and inserts into local`() = runTest {
+        val remotePosts =
+            listOf(
+                Post(1, 1, "Remote 1", "Remote Body 1"),
+                Post(2, 2, "Remote 2", "Remote Body 2")
+            )
+        whenever(localDataSource.allPosts()).thenReturn(flowOf(emptyList()))
+        whenever(remoteDataSource.allPosts()).thenReturn(remotePosts)
 
-            val result = repository.allPosts().first()
+        repository.allPosts().first()
 
-            assertEquals(result, localPosts)
-            verify(localDataSource, never()).insertPost(any())
-        }
+        verify(remoteDataSource).allPosts()
+
+        val captor = argumentCaptor<Post>()
+        verify(localDataSource, times(remotePosts.size)).insertPost(captor.capture())
+        assertEquals(captor.allValues, remotePosts)
+    }
+
+    @Test
+    fun `allPosts ignores remote exceptions and still emits local`() = runTest {
+        val localPosts = listOf(Post(1, 1, "Cached", "Cached Body"))
+        whenever(localDataSource.allPosts()).thenReturn(flowOf(localPosts))
+        whenever(remoteDataSource.allPosts()).thenThrow(RuntimeException("Network error"))
+
+        val result = repository.allPosts().first()
+
+        assertEquals(result, localPosts)
+        verify(localDataSource, never()).insertPost(any())
+    }
 
     // --------------------------------------------------------------------
     // postById() tests
     // --------------------------------------------------------------------
 
     @Test
-    fun `postById returns local data`() =
-        runTest {
-            val localPost = Post(1, 1, "Local post", "Local Body")
-            whenever(localDataSource.postById(1)).thenReturn(flowOf(localPost))
-            whenever(remoteDataSource.postById(1)).thenReturn(Post(1, 1, "Remote post", "Remote Body"))
+    fun `postById returns local data`() = runTest {
+        val localPost = Post(1, 1, "Local post", "Local Body")
+        whenever(localDataSource.postById(1)).thenReturn(flowOf(localPost))
+        whenever(remoteDataSource.postById(1)).thenReturn(Post(1, 1, "Remote post", "Remote Body"))
 
-            val result = repository.postById(1).first()
+        val result = repository.postById(1).first()
 
-            assertEquals(result, localPost)
-            verify(localDataSource).postById(1)
-            verify(remoteDataSource).postById(1)
-        }
-
-    @Test
-    fun `postById fetches remote post and inserts into local`() =
-        runTest {
-            val postId = 1
-            val remotePost = Post(postId, 1, "Remote post", "Remote Body")
-            val cachedPost = Post(postId, 1, "Old cached post", "Old Body")
-
-            whenever(localDataSource.postById(postId)).thenReturn(flowOf(cachedPost))
-            whenever(remoteDataSource.postById(postId)).thenReturn(remotePost)
-
-            repository.postById(postId).first()
-
-            verify(remoteDataSource).postById(postId)
-
-            val captor = argumentCaptor<Post>()
-            verify(localDataSource).insertPost(captor.capture())
-
-            val insertedPost = captor.firstValue
-            assertEquals(insertedPost, remotePost)
-        }
+        assertEquals(result, localPost)
+        verify(localDataSource).postById(1)
+        verify(remoteDataSource).postById(1)
+    }
 
     @Test
-    fun `postById ignores remote exception and still emits cached post`() =
-        runTest {
-            val postId = 1
-            val cachedPost = Post(postId, 1, "Cached post", "Cached Body")
+    fun `postById fetches remote post and inserts into local`() = runTest {
+        val postId = 1
+        val remotePost = Post(postId, 1, "Remote post", "Remote Body")
+        val cachedPost = Post(postId, 1, "Old cached post", "Old Body")
 
-            whenever(localDataSource.postById(postId)).thenReturn(flowOf(cachedPost))
-            whenever(remoteDataSource.postById(postId)).thenThrow(RuntimeException("Network error"))
+        whenever(localDataSource.postById(postId)).thenReturn(flowOf(cachedPost))
+        whenever(remoteDataSource.postById(postId)).thenReturn(remotePost)
 
-            val result = repository.postById(postId).first()
+        repository.postById(postId).first()
 
-            assertEquals(result, cachedPost)
-            verify(localDataSource, never()).insertPost(any())
-        }
+        verify(remoteDataSource).postById(postId)
+
+        val captor = argumentCaptor<Post>()
+        verify(localDataSource).insertPost(captor.capture())
+
+        val insertedPost = captor.firstValue
+        assertEquals(insertedPost, remotePost)
+    }
+
+    @Test
+    fun `postById ignores remote exception and still emits cached post`() = runTest {
+        val postId = 1
+        val cachedPost = Post(postId, 1, "Cached post", "Cached Body")
+
+        whenever(localDataSource.postById(postId)).thenReturn(flowOf(cachedPost))
+        whenever(remoteDataSource.postById(postId)).thenThrow(RuntimeException("Network error"))
+
+        val result = repository.postById(postId).first()
+
+        assertEquals(result, cachedPost)
+        verify(localDataSource, never()).insertPost(any())
+    }
 }

@@ -39,66 +39,62 @@ class CommentLocalDataSourceImplTest {
     // --------------------------------------------------------------------
 
     @Test
-    fun `commentsForPost returns mapped comments from dao`() =
-        runTest {
-            // given
-            val postId = 1
-            val entities =
-                listOf(
-                    CommentEntity(1, postId, "Alice", "Nice post!", "Body 1"),
-                    CommentEntity(2, postId, "Bob", "Interesting read.", "Body 2"),
-                )
-            val expectedComments = entities.toCommentList()
+    fun `commentsForPost returns mapped comments from dao`() = runTest {
+        // given
+        val postId = 1
+        val entities =
+            listOf(
+                CommentEntity(1, postId, "Alice", "Nice post!", "Body 1"),
+                CommentEntity(2, postId, "Bob", "Interesting read.", "Body 2")
+            )
+        val expectedComments = entities.toCommentList()
 
-            whenever(dao.commentsForPost(postId)).thenReturn(flowOf(entities))
+        whenever(dao.commentsForPost(postId)).thenReturn(flowOf(entities))
 
-            // when
-            val result = dataSource.commentsForPost(postId).first()
+        // when
+        val result = dataSource.commentsForPost(postId).first()
 
-            // then
-            assertEquals(expectedComments, result)
-            verify(dao).commentsForPost(postId)
-        }
+        // then
+        assertEquals(expectedComments, result)
+        verify(dao).commentsForPost(postId)
+    }
 
     @Test(expected = RuntimeException::class)
-    fun `commentsForPost propagates dao exception`() =
-        runTest {
-            // given
-            val postId = 1
-            whenever(dao.commentsForPost(postId)).thenThrow(RuntimeException("DB failure"))
+    fun `commentsForPost propagates dao exception`() = runTest {
+        // given
+        val postId = 1
+        whenever(dao.commentsForPost(postId)).thenThrow(RuntimeException("DB failure"))
 
-            // when
-            dataSource.commentsForPost(postId).first() // should throw
-        }
+        // when
+        dataSource.commentsForPost(postId).first() // should throw
+    }
 
     // --------------------------------------------------------------------
     // insertComment()
     // --------------------------------------------------------------------
 
     @Test
-    fun `insertComment maps and inserts entity`() =
-        runTest {
-            // given
-            val comment = Comment(1, 1, "Alice", "Cool post!", " Great body.")
-            val expectedEntity = comment.toCommentEntity()
+    fun `insertComment maps and inserts entity`() = runTest {
+        // given
+        val comment = Comment(1, 1, "Alice", "Cool post!", " Great body.")
+        val expectedEntity = comment.toCommentEntity()
 
-            // when
-            dataSource.insertComment(comment)
+        // when
+        dataSource.insertComment(comment)
 
-            // then
-            val captor = argumentCaptor<CommentEntity>()
-            verify(dao).insertComment(captor.capture())
-            assertEquals(expectedEntity, captor.firstValue)
-        }
+        // then
+        val captor = argumentCaptor<CommentEntity>()
+        verify(dao).insertComment(captor.capture())
+        assertEquals(expectedEntity, captor.firstValue)
+    }
 
     @Test(expected = RuntimeException::class)
-    fun `insertComment propagates dao exception`() =
-        runTest {
-            // given
-            val comment = Comment(1, 1, "User", "Test comment", "Test body")
-            whenever(dao.insertComment(any())).thenThrow(RuntimeException("DB insert failed"))
+    fun `insertComment propagates dao exception`() = runTest {
+        // given
+        val comment = Comment(1, 1, "User", "Test comment", "Test body")
+        whenever(dao.insertComment(any())).thenThrow(RuntimeException("DB insert failed"))
 
-            // when
-            dataSource.insertComment(comment) // should throw
-        }
+        // when
+        dataSource.insertComment(comment) // should throw
+    }
 }

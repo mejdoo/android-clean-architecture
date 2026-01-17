@@ -15,7 +15,7 @@ class CommentMappersTest {
                 id = 100,
                 name = "John Doe",
                 email = "john@example.com",
-                body = "This is a comment.",
+                body = "This is a comment."
             )
 
         // Act
@@ -38,7 +38,7 @@ class CommentMappersTest {
                 id = 100,
                 name = "John Doe",
                 email = "john@example.com",
-                body = "This is a comment.",
+                body = "This is a comment."
             )
 
         // Act
@@ -58,7 +58,7 @@ class CommentMappersTest {
         val entities =
             listOf(
                 CommentEntity(1, 1, "Alice", "alice@mail.com", "First body"),
-                CommentEntity(2, 2, "Bob", "bob@mail.com", "Second body"),
+                CommentEntity(2, 2, "Bob", "bob@mail.com", "Second body")
             )
 
         // Act
@@ -81,7 +81,7 @@ class CommentMappersTest {
         val comments =
             listOf(
                 Comment(1, 1, "Alice", "alice@mail.com", "First body"),
-                Comment(2, 2, "Bob", "bob@mail.com", "Second body"),
+                Comment(2, 2, "Bob", "bob@mail.com", "Second body")
             )
 
         // Act

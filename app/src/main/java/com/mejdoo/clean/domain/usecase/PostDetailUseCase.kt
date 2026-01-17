@@ -12,23 +12,15 @@ import kotlinx.coroutines.flow.combine
 class PostDetailUseCase(
     private val postRepository: PostRepository,
     private val userRepository: UserRepository,
-    private val commentRepository: CommentRepository,
+    private val commentRepository: CommentRepository
 ) {
-    operator fun invoke(
-        postId: Int,
-        userId: Int,
-    ): Flow<CombinedPostUserComments> =
-        combine(
-            postRepository.postById(postId),
-            userRepository.userById(userId),
-            commentRepository.commentsForPost(postId),
-        ) { post, user, comments ->
-            CombinedPostUserComments(post, user, comments)
-        }
+    operator fun invoke(postId: Int, userId: Int): Flow<CombinedPostUserComments> = combine(
+        postRepository.postById(postId),
+        userRepository.userById(userId),
+        commentRepository.commentsForPost(postId)
+    ) { post, user, comments ->
+        CombinedPostUserComments(post, user, comments)
+    }
 }
 
-data class CombinedPostUserComments(
-    val post: Post,
-    val user: User,
-    val comments: List<Comment>,
-)
+data class CombinedPostUserComments(val post: Post, val user: User, val comments: List<Comment>)

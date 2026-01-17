@@ -8,9 +8,7 @@ import com.mejdoo.clean.domain.model.User
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserLocalDataSourceImpl(
-    private val dao: UserDao,
-) : UserLocalDataSource {
+class UserLocalDataSourceImpl(private val dao: UserDao) : UserLocalDataSource {
     override fun userById(userId: Int): Flow<User> = dao.userById(userId).map { it.toUser() }
 
     override suspend fun insertUser(user: User) {

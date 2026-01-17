@@ -9,15 +9,14 @@ import kotlinx.coroutines.flow.onStart
 
 class UserRepositoryImpl(
     private val remoteDataSource: UserRemoteDataSource,
-    private val localDataSource: UserLocalDataSource,
+    private val localDataSource: UserLocalDataSource
 ) : UserRepository {
-    override fun userById(userId: Int): Flow<User> =
-        localDataSource.userById(userId).onStart {
-            try {
-                val user = remoteDataSource.userById(userId)
-                localDataSource.insertUser(user)
-            } catch (_: Exception) {
-                // ignore
-            }
+    override fun userById(userId: Int): Flow<User> = localDataSource.userById(userId).onStart {
+        try {
+            val user = remoteDataSource.userById(userId)
+            localDataSource.insertUser(user)
+        } catch (_: Exception) {
+            // ignore
         }
+    }
 }

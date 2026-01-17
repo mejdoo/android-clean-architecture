@@ -13,7 +13,7 @@ class PostItemMappersTest {
                 id = 101,
                 userId = 10,
                 title = "Sample Post",
-                body = "This is a post body",
+                body = "This is a post body"
             )
 
         // Act
@@ -31,7 +31,7 @@ class PostItemMappersTest {
         val posts =
             listOf(
                 Post(id = 101, userId = 10, title = "Post 1", body = "Body 1"),
-                Post(id = 102, userId = 20, title = "Post 2", body = "Body 2"),
+                Post(id = 102, userId = 20, title = "Post 2", body = "Body 2")
             )
 
         // Act

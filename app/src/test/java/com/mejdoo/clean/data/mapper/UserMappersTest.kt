@@ -15,7 +15,7 @@ class UserMappersTest {
                 name = "Alice",
                 email = "alice@mail.com",
                 phone = "123-456-7890",
-                website = "alice.com",
+                website = "alice.com"
             )
 
         // Act
@@ -38,7 +38,7 @@ class UserMappersTest {
                 name = "Alice",
                 email = "alice@mail.com",
                 phone = "123-456-7890",
-                website = "alice.com",
+                website = "alice.com"
             )
 
         // Act
@@ -58,7 +58,7 @@ class UserMappersTest {
         val entities =
             listOf(
                 UserEntity(1, "Alice", "alice@mail.com", "123-456", "alice.com"),
-                UserEntity(2, "Bob", "bob@mail.com", "987-654", "bob.com"),
+                UserEntity(2, "Bob", "bob@mail.com", "987-654", "bob.com")
             )
 
         // Act
@@ -81,7 +81,7 @@ class UserMappersTest {
         val users =
             listOf(
                 User(1, "Alice", "alice@mail.com", "123-456", "alice.com"),
-                User(2, "Bob", "bob@mail.com", "987-654", "bob.com"),
+                User(2, "Bob", "bob@mail.com", "987-654", "bob.com")
             )
 
         // Act

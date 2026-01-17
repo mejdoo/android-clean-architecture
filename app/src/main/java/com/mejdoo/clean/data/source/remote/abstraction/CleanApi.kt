@@ -12,17 +12,11 @@ interface CleanApi {
     suspend fun allPosts(): List<PostEntity>
 
     @GET("/posts/{id}")
-    suspend fun postById(
-        @Path("id") postId: Int,
-    ): PostEntity
+    suspend fun postById(@Path("id") postId: Int): PostEntity
 
     @GET("/users/{id}")
-    suspend fun userById(
-        @Path("id") userId: Int,
-    ): UserEntity
+    suspend fun userById(@Path("id") userId: Int): UserEntity
 
     @GET("/comments")
-    suspend fun commentsForPost(
-        @Query("postId") postId: Int,
-    ): List<CommentEntity>
+    suspend fun commentsForPost(@Query("postId") postId: Int): List<CommentEntity>
 }

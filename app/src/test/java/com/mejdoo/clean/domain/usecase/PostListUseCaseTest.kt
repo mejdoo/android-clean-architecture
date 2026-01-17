@@ -30,32 +30,30 @@ class PostListUseCaseTest {
     }
 
     @Test
-    fun `invoke returns posts from repository`() =
-        runTest {
-            // given
-            val posts =
-                listOf(
-                    Post(1, 1, "Title 1", "Body 1"),
-                    Post(2, 2, "Title 2", "Body 2"),
-                )
-            whenever(postRepository.allPosts()).thenReturn(flowOf(posts))
+    fun `invoke returns posts from repository`() = runTest {
+        // given
+        val posts =
+            listOf(
+                Post(1, 1, "Title 1", "Body 1"),
+                Post(2, 2, "Title 2", "Body 2")
+            )
+        whenever(postRepository.allPosts()).thenReturn(flowOf(posts))
 
-            // when
-            val result = useCase().first()
+        // when
+        val result = useCase().first()
 
-            // then
-            assertEquals(posts, result)
-            verify(postRepository).allPosts()
-        }
+        // then
+        assertEquals(posts, result)
+        verify(postRepository).allPosts()
+    }
 
     @Test
-    fun `invoke emits empty list when repository returns empty`() =
-        runTest {
-            whenever(postRepository.allPosts()).thenReturn(flowOf(emptyList()))
+    fun `invoke emits empty list when repository returns empty`() = runTest {
+        whenever(postRepository.allPosts()).thenReturn(flowOf(emptyList()))
 
-            val result = useCase().first()
+        val result = useCase().first()
 
-            assertTrue(result.isEmpty())
-            verify(postRepository).allPosts()
-        }
+        assertTrue(result.isEmpty())
+        verify(postRepository).allPosts()
+    }
 }

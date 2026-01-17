@@ -40,35 +40,33 @@ class PostDetailViewModelTest {
     private val postDetail = combined.toPostDetail() // Assuming this extension function exists
 
     @Test
-    fun `postDetailState emits Success when data is loaded`() =
-        coroutineRule.testScope.runTest {
-            whenever(postDetailUseCase(1, 1)).thenReturn(flowOf(combined))
+    fun `postDetailState emits Success when data is loaded`() = coroutineRule.testScope.runTest {
+        whenever(postDetailUseCase(1, 1)).thenReturn(flowOf(combined))
 
-            viewModel = PostDetailViewModel(postDetailUseCase)
-            viewModel.loadPostDetail(1, 1)
+        viewModel = PostDetailViewModel(postDetailUseCase)
+        viewModel.loadPostDetail(1, 1)
 
-            // Wait for the first Success emission
-            val state = viewModel.postDetailState.first { it is UiState.Success }
+        // Wait for the first Success emission
+        val state = viewModel.postDetailState.first { it is UiState.Success }
 
-            assertTrue(state is UiState.Success)
-            assertEquals(postDetail, (state as UiState.Success).data)
-        }
+        assertTrue(state is UiState.Success)
+        assertEquals(postDetail, (state as UiState.Success).data)
+    }
 
     @Test
-    fun `postDetailState emits Error when use case throws`() =
-        coroutineRule.testScope.runTest {
-            val exception = RuntimeException("Network error")
-            whenever(postDetailUseCase(1, 1)).thenReturn(flow { throw exception })
+    fun `postDetailState emits Error when use case throws`() = coroutineRule.testScope.runTest {
+        val exception = RuntimeException("Network error")
+        whenever(postDetailUseCase(1, 1)).thenReturn(flow { throw exception })
 
-            viewModel = PostDetailViewModel(postDetailUseCase)
-            viewModel.loadPostDetail(1, 1)
+        viewModel = PostDetailViewModel(postDetailUseCase)
+        viewModel.loadPostDetail(1, 1)
 
-            // Suspend until the first Error emission arrives
-            val state = viewModel.postDetailState.first { it is UiState.Error }
+        // Suspend until the first Error emission arrives
+        val state = viewModel.postDetailState.first { it is UiState.Error }
 
-            assertTrue(state is UiState.Error)
-            assertEquals("Network error", (state as UiState.Error).message)
-        }
+        assertTrue(state is UiState.Error)
+        assertEquals("Network error", (state as UiState.Error).message)
+    }
 
     @Test
     fun `postDetailState initial value is Loading`() {
