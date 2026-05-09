@@ -23,6 +23,7 @@ import com.mejdoo.clean.domain.repository.PostRepository
 import com.mejdoo.clean.domain.repository.UserRepository
 import com.mejdoo.clean.domain.usecase.PostDetailUseCase
 import com.mejdoo.clean.domain.usecase.PostListUseCase
+import com.mejdoo.clean.presentation.viewmodel.FeedViewModel
 import com.mejdoo.clean.presentation.viewmodel.PostDetailViewModel
 import com.mejdoo.clean.presentation.viewmodel.PostListViewModel
 import com.mejdoo.clean.util.DB_NAME
@@ -35,6 +36,7 @@ val viewModelModule: Module =
     module {
         viewModel { PostListViewModel(get()) }
         viewModel { PostDetailViewModel(get()) }
+        viewModel { FeedViewModel(get(), get()) }
     }
 
 val useCaseModule: Module =
@@ -48,19 +50,19 @@ val repositoryModule: Module =
         single {
             PostRepositoryImpl(
                 get(),
-                get(),
+                get()
             ) as PostRepository
         }
         single {
             UserRepositoryImpl(
                 get(),
-                get(),
+                get()
             ) as UserRepository
         }
         single {
             CommentRepositoryImpl(
                 get(),
-                get(),
+                get()
             ) as CommentRepository
         }
     }
@@ -69,32 +71,32 @@ val dataSourceModule: Module =
     module {
         single {
             PostRemoteDataSourceImpl(
-                api = cleanApi,
+                api = cleanApi
             ) as PostRemoteDataSource
         }
         single {
             UserRemoteDataSourceImpl(
-                api = cleanApi,
+                api = cleanApi
             ) as UserRemoteDataSource
         }
         single {
             CommentRemoteDataSourceImpl(
-                api = cleanApi,
+                api = cleanApi
             ) as CommentRemoteDataSource
         }
         single {
             PostLocalDataSourceImpl(
-                get(),
+                get()
             ) as PostLocalDataSource
         }
         single {
             UserLocalDataSourceImpl(
-                get(),
+                get()
             ) as UserLocalDataSource
         }
         single {
             CommentLocalDataSourceImpl(
-                get(),
+                get()
             ) as CommentLocalDataSource
         }
     }

@@ -12,7 +12,7 @@ ktlint_code_style = android_studio
 
 # Ktlint rules configuration
 ktlint_standard_function-naming = enabled
-function_naming.ignoreAnnotated = Composable
+ktlint_standard_function-naming.ignoreAnnotated = Composable
 
 ktlint_standard_max-line-length = enabled
 ktlint_standard_no-wildcard-imports = enabled

@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".presentation.ui.list.PostListActivity"
+            android:name=".presentation.ui.feed.FeedActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
@@ -23,14 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".presentation.ui.detail.PostDetailActivity"
-            android:configChanges="orientation|screenSize"
-            android:exported="false"
-            android:label=""
-            android:theme="@style/AppTheme.NoActionBar" />
-
 
         <activity
             android:name=".presentation.ui.misc.BaseActivity"
